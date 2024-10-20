@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 console.log("injected :)");
 let quotes = `Hello, world!
+
 Join the CS club!
 Time flies like an arrow. Fruit flies like a banana.
 I had a crazy dream last night! I was swimming in an ocean of orange soda. Turns out it was just a Fanta sea.
