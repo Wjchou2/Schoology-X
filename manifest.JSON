@@ -1,0 +1,35 @@
+{
+  "name":"Schoology Pro",
+  "description":"Cool Stuff",
+  "version":"1.01",
+  "manifest_version":3,
+  "permissions": ["storage", "activeTab","tabs"],
+  "action":{
+    "default_popup": "index.html"
+
+},
+
+"icons": {
+  "16": "School.png",
+  "32": "School.png",
+  "48": "School.png",
+  "128": "School.png"
+},
+"web_accessible_resources": [
+  {
+    "resources": ["injected.js"],
+    "matches": ["<all_urls>"]
+  }
+],
+  "content_scripts": [
+      {
+        "matches": ["https://schoology.shschools.org/*"],
+        "js": ["script.js","pdf.js"],
+        "run_at": "document_end"
+
+      }
+     
+
+      
+    ]
+  }
