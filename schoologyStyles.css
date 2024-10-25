@@ -1,0 +1,142 @@
+/*! CSS Used from: https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/modern_icons.css */
+/*! @import https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/css/modern_icons/assessment.css */
+[data-theme="modern"] .common-assessment-icon,[data-theme="modern"] .upcoming-event .mini-icon.common-assessment-icon{background-image:var(--sgy-icon-assessment);background-position-y:center;}
+/*! end @import */
+/*! @import https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/css/modern_icons/assignment.css */
+[data-theme="modern"] .grade-item-icon,[data-theme="modern"] .upcoming-event .mini-icon.grade-item-icon{background-image:var(--sgy-icon-assignment);background-position-y:center;}
+/*! end @import */
+/*! CSS Used from: Embedded ; media=all */
+@media all{
+/*! @import https://asset-cdn.schoology.com/assets/bundles/js/common/common-1c313630b0042bfd6284.css */
+body span.infotip{background:url(https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/clue-tip.png) right center no-repeat;padding:2px 18px;padding-inline-start:0;cursor:help;}
+body .infotip .infotip-content,body span.infotip .infotip-content{display:none;}
+*,a{outline:0;}
+a{text-decoration:none;}
+*{margin:0;padding:0;word-wrap:break-word;}
+img{border:none;}
+h3{font-size:14px;}
+h4{font-size:12px;}
+h4{margin:7px 0 0;border-bottom:1px solid #eaeaea;color:#9a9fa8;}
+a{color:#4479B3;font-weight:700;}
+a:hover{text-decoration:underline;}
+[role=button]:focus,a:focus{outline:#888 dotted thin;outline:-webkit-focus-ring-color auto 5px;outline-offset:-2px;}
+[role=button]:active,[role=button]:hover,a:active,a:hover{outline:0;}
+img[alt]{font-size:0;}
+.hidden{display:none;}
+.hidden-important{display:none!important;}
+.visually-hidden{position:absolute;inset-inline-start:-9999px;top:auto;width:10px;height:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);word-break:normal;display:block;}
+#right-column h3{padding-bottom:3px;border-bottom:1px solid #ddd;margin-bottom:5px;}
+.date-header h4,.upcoming-event h4 span,.upcoming-list h4 a{font-weight:400;}
+.common-assessment-icon,.grade-item-icon{display:block;float:left;margin-inline-end:7px;background:url(https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/icons_sprite_large.png) no-repeat;width:32px;height:32px;}
+.grade-item-icon{background-position:0 -40px;}
+.common-assessment-icon{background-position:0 -2200px;}
+.upcoming-event h4{border:none;padding:10px 0;padding-inline-start:37px;margin-top:5px;}
+.date-header h4{margin-top:10px;padding-bottom:3px;}
+.upcoming-list h4 a{font-size:12px;padding:0 3px;padding-inline-start:0;}
+.upcoming-event .common-assessment-icon,.upcoming-event .grade-item-icon{margin:-7px 0 -10px;margin-inline-start:-37px;float:left;}
+body .upcoming-event span.infotip{background:0 0;padding:0;padding-inline-start:39px;margin-inline-start:-37px;display:block;}
+.upcoming-event-block{display:flex;align-items:center;}
+.upcoming-events-popup{display:flex;justify-content:center;padding-top:20px;}
+.overdue-submissions-wrapper:not(:empty){margin-bottom:20px;}
+.realm-title-course div.realm-icon,.realm-title-course div.realm-title-course-title{float:left;}
+.realm-icon{background:url(https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/icons_sprite_realm.png) no-repeat;height:20px;width:20px;display:inline-block;margin:2px 7px -7px;margin-inline-start:0;}
+.realm-title-course{display:inline-block;padding:3px 0 2px;}
+.realm-title-course div.realm-icon{margin-top:-1px;}
+.realm-title-course div.realm-title-course-title{text-align:start;display:inline;}
+.realm-title-course-csl{text-align:start;}
+:focus{outline:0;}
+.theme-2016-layout #right-column-inner>div:not(:empty){box-shadow:0 1px 3px 0 rgba(0,0,0,.15);}
+.theme-2016-layout #right-column-inner>div:not(:empty){box-sizing:border-box;background:#fff;}
+.theme-2016 #right-column-inner>div:not(:empty),.theme-2016-layout #right-column-inner>div:not(:empty){box-sizing:border-box;margin-top:0;margin-bottom:15px;padding:15px;}
+.theme-2016 #right-column h4 a:not(.subevent-count),.theme-2016 #right-column h4 span:not(.infotip){font-size:12px;line-height:16px;padding-top:2px;}
+.theme-2016 #right-column a{color:#4479b3;}
+.theme-2016 #right-column h4 span:not(.subevent-count){color:#677583;}
+.theme-2016 #right-column h3{margin-bottom:0;color:#556370;border-bottom:1px solid #c1c7cb;padding:0 0 3px;}
+.theme-2016 .date-header h4{margin-top:20px;text-transform:uppercase;color:#677583;border-bottom:1px solid #eaebed;}
+.theme-2016 .date-header:first-child h4{margin-top:15px;}
+.theme-2016 #right-column .mini-icon{display:block;float:left;margin:auto;}
+.theme-2016 .upcoming-event h4{position:relative;margin:10px auto auto;padding:0;}
+.theme-2016 .date-header+.upcoming-event>h4{margin-top:10px;}
+.theme-2016 .upcoming-event .readonly-title,.theme-2016 .upcoming-event a:not(.subevent-count){display:block;float:left;width:calc(100% - 75px);max-width:none;padding:0;margin:auto 10px;}
+.event-title,.event-title a{font-weight:700!important;}
+.event-subtitle{margin-inline-start:25px!important;width:90%!important;}
+.submission-event-icon{margin-top:4px!important;margin-bottom:-10px!important;}
+.theme-2016 .upcoming-event h4:after{content:' ';display:block;clear:both;}
+.theme-2016 .mini-icon{width:16px;height:16px;}
+.theme-2016 .mini-icon{background:url(https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/icons_sprite_new.png) no-repeat;}
+.theme-2016 .mini-icon.grade-item-icon{background-position:0 -25px;}
+.theme-2016 .mini-icon.common-assessment-icon{background-position:0 -2070px;}
+.theme-2016 .upcoming-event span.infotip{float:left;width:100%;padding:0;padding-inline-start:5px;margin:0;margin-inline-start:-5px;}
+.todo-header{font-size:14px;font-weight:700;}
+.submissions-title{font-size:12px;font-weight:700;}
+.submission-infotip{width:10%!important;text-align:end;}
+/*! end @import */
+}
+/*! CSS Used from: Embedded ; media=all */
+@media all{
+/*! @import https://asset-cdn.schoology.com/assets/drupal-css-files/style_9f95a7a4c948235c60d316d1fc240c3f_67125aa5500a5ed6.css */
+*{margin:0;padding:0;outline:none;word-wrap:break-word;}
+img{border:none;}
+h3{font-size:14px;}
+h4{margin:7px 0 0;border-bottom:1px solid #eaeaea;color:#9a9fa8;font-size:12px;}
+a{outline:none;color:#4479B3;font-weight:bold;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a:focus,[role=button]:focus{outline:thin dotted #888;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
+a:hover,[role=button]:hover,a:active,[role=button]:active{outline:none;}
+img[alt]{font-size:0em;}
+.hidden{display:none;}
+.hidden-important{display:none!important;}
+.visually-hidden{position:absolute;inset-inline-start:-9999px;top:auto;width:10px;height:1px;overflow:hidden;clip:rect(1px, 1px, 1px, 1px);word-break:normal;display:block;}
+#right-column h3{padding-bottom:3px;border-bottom:1px solid #ddd;margin-bottom:5px;}
+.grade-item-icon,.common-assessment-icon{display:block;float:left;margin-inline-end:7px;background:url('https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/icons_sprite_large.png?67125aa5500a5ed6') no-repeat;width:32px;height:32px;}
+.grade-item-icon{background-position:0 -40px;}
+.common-assessment-icon{background-position:0 -2200px;}
+.upcoming-event h4{border:none;padding:10px 0 10px;padding-inline-start:37px;margin-top:5px;}
+.upcoming-event h4 span{font-weight:normal;}
+.date-header h4{font-weight:normal;margin-top:10px;padding-bottom:3px;}
+.upcoming-list h4 a{font-weight:normal;font-size:12px;padding:0 3px 0;padding-inline-start:0;}
+.upcoming-event .grade-item-icon,.upcoming-event .common-assessment-icon{margin:-7px 0 -10px;margin-inline-start:-37px;float:left;}
+body .upcoming-event span.infotip{background:none;padding:0 0 0;padding-inline-start:39px;margin-inline-start:-37px;display:block;}
+.upcoming-event-block{display:flex;align-items:center;}
+.upcoming-events-popup{display:flex;justify-content:center;padding-top:20px;}
+.overdue-submissions-wrapper:not(:empty){margin-bottom:20px;}
+.realm-icon{background:url('https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/icons_sprite_realm.png?67125aa5500a5ed6') no-repeat 0 0;height:20px;width:20px;display:inline-block;margin:2px 7px -7px;margin-inline-start:0;}
+.realm-title-course{display:inline-block;padding:3px 0 2px;}
+.realm-title-course div.realm-icon{margin-top:-1px;}
+.realm-title-course div.realm-icon,.realm-title-course div.realm-title-course-title{float:left;}
+.realm-title-course div.realm-title-course-title{text-align:start;display:inline;}
+.realm-title-course-csl{text-align:start;}
+:focus{outline:none;}
+.theme-2016-layout #right-column-inner > div:not(:empty){box-shadow:0 1px 3px 0 rgba(0, 0, 0, 0.15);}
+.theme-2016-layout #right-column-inner > div:not(:empty){box-sizing:border-box;background:#fff;}
+.theme-2016-layout #right-column-inner > div:not(:empty),.theme-2016 #right-column-inner > div:not(:empty){box-sizing:border-box;margin-top:0;margin-bottom:15px;padding:15px;}
+.theme-2016 #right-column h4 span:not(.infotip),.theme-2016 #right-column h4 a:not(.subevent-count){font-size:12px;line-height:16px;padding-top:2px;}
+.theme-2016 #right-column a{color:#4479b3;}
+.theme-2016 #right-column h4 span:not(.subevent-count){color:#677583;}
+.theme-2016 #right-column h3{margin-bottom:0;color:#556370;border-bottom:1px solid #c1c7cb;padding:0 0 3px;}
+.theme-2016 .date-header h4{margin-top:20px;text-transform:uppercase;color:#677583;border-bottom:1px solid #eaebed;}
+.theme-2016 .date-header:first-child h4{margin-top:15px;}
+.theme-2016  #right-column .mini-icon{display:block;float:left;margin:auto;}
+.theme-2016 .upcoming-event h4{position:relative;margin:10px auto auto;padding:0;}
+.theme-2016 .date-header + .upcoming-event > h4{margin-top:10px;}
+.theme-2016 .upcoming-event a:not(.subevent-count),.theme-2016 .upcoming-event .readonly-title{display:block;float:left;width:calc(100% - 75px);max-width:none;padding:0;margin:auto 10px;}
+.event-title,.event-title a{font-weight:bold!important;}
+.event-subtitle{margin-inline-start:25px!important;width:90%!important;}
+.submission-event-icon{margin-top:4px!important;margin-bottom:-10px!important;}
+.theme-2016 .upcoming-event h4:after{content:' ';display:block;clear:both;}
+.theme-2016 .mini-icon{width:16px;height:16px;}
+.theme-2016 .mini-icon{background:url('https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/icons_sprite_new.png?67125aa5500a5ed6') no-repeat;}
+.theme-2016 .mini-icon.grade-item-icon{background-position:0 -25px;}
+.theme-2016 .mini-icon.common-assessment-icon{background-position:0 -2070px;}
+.theme-2016 .upcoming-event span.infotip{float:left;width:100%;padding:0 0 0;padding-inline-start:5px;margin:0 0 0;margin-inline-start:-5px;}
+.todo-header{font-size:14px;font-weight:bold;}
+.submissions-title{font-size:12px;font-weight:bold;}
+.submission-infotip{width:10%!important;text-align:end;}
+/*! end @import */
+}
+/*! CSS Used from: https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/school_themes/style.css.php?theme=17938425&updated=1409782594&67125aa5500a5ed6 ; media=all */
+@media all{
+body a{color:#930123;}
+}
+/*! CSS Used from: Embedded */
+.visually-hidden{position:absolute;inset-inline-start:-9999px;top:auto;width:10px;height:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);word-break:normal;display:block;}

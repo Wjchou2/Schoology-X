@@ -117,6 +117,17 @@ let allowedURL = [
     "https://schoology.shschools.org/",
     "https://schoology.shschools.org",
 ];
+function isBackgroundDark(hexColor) {
+    // Convert hex to RGB
+    let r = parseInt(hexColor.slice(1, 3), 16);
+    let g = parseInt(hexColor.slice(3, 5), 16);
+    let b = parseInt(hexColor.slice(5, 7), 16);
+    // Calculate luminance
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    // Return true if the background is dark (luminance < 128)
+    return luminance < 128;
+}
+// Usage example
 let currentclass = null;
 let distancefromtoday = 0;
 let distancefromtodayWeeks = 0;
@@ -275,23 +286,30 @@ function getCurrentClass(day, currentHour, currentMinute) {
     // Return the name of the class if found, otherwise return null
     return currentClass ? currentClass.name : null;
 }
-// let originalColor = "#ffffff";
-// let hoverColor = adjustBrightness(originalColor, -10); // Lighten by 20%
-let originalColor = "#0677bb";
-let hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
+let originalColor = "#ffffff";
+let hoverColor = adjustBrightness(originalColor, -20); // Lighten by 20%
+// let originalColor = "#0677bb";
+// let hoverColor = adjustBrightness(originalColor, 20); // Lighten by 20%
 window.addEventListener("colorChange", function (e) {
     // Cast the event to CustomEvent
     const customEvent = e;
     if (customEvent.detail && typeof customEvent.detail.value !== "undefined") {
         const deleteAsignValue = customEvent.detail.value; // Access the value from the event detail
         originalColor = deleteAsignValue;
-        hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
+        if (isBackgroundDark(originalColor)) {
+            hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
+        }
+        else {
+            hoverColor = adjustBrightness(originalColor, -10); // Lighten by 20%
+        }
+        //lightenhere
         changeHeaderColor();
     }
     else {
         console.error("No value found in event detail");
     }
 });
+window.addEventListener("resize", changeHeaderColor);
 function changeHeaderColor() {
     // Function to check if any ancestor of the element is a <header>
     function hasHeaderAncestor(element) {
@@ -314,8 +332,29 @@ function changeHeaderColor() {
     document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0].style.backgroundColor = originalColor;
     document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0].style.borderTop = `3px solid ${originalColor}`;
     let IMGParent = document.getElementsByClassName("util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q")[0];
+    //thishere
+    let ids = [
+        "icon-search-v2-3US0j",
+        "icon-app-grid-v2-xZFWs",
+        "icon-calendar-v2-16S3z",
+        "icon-mail-v2-2Mxyq",
+        "icon-bell-v2-3oo-G",
+    ];
+    for (let i = 0; i < ids.length; i++) {
+        let elm = document.getElementById(ids[i]);
+        let path = elm.firstElementChild;
+        console.log(elm.firstElementChild.tagName);
+        // elm.firstElementChild.id = "hi";
+        if (isBackgroundDark(originalColor)) {
+            path.setAttribute("fill", "#ffffff");
+        }
+        else {
+            path.setAttribute("fill", "#333333");
+        }
+    }
     const IMG = IMGParent.firstElementChild;
-    IMG.src = "https://i.ibb.co/v3Cc2mX/shs-removebg-preview.png"; // Replace this with the direct URL of the image
+    // IMG.src = "https://i.ibb.co/v3Cc2mX/shs-removebg-preview.png"; // Replace this with the direct URL of the image
+    IMG.src = "    https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
     for (let i = 0; i < anchors.length; i++) {
         if (hasHeaderAncestor(anchors[i])) {
             if (anchors[i].title !== "Home") {
@@ -333,11 +372,15 @@ function changeHeaderColor() {
     for (let i = 0; i < btns.length; i++) {
         if (hasHeaderAncestor(btns[i])) {
             btns[i].style.backgroundColor = originalColor;
-            if (originalColor !== "#ffffff") {
-                if (btns[i].firstElementChild.role !==
-                    "menuitem") {
+            // if (originalColor !== "#ffffff") {
+            if (btns[i].firstElementChild.role !== "menuitem") {
+                if (isBackgroundDark(originalColor)) {
                     btns[i].firstElementChild.style.color =
                         "#ffffff";
+                }
+                else {
+                    btns[i].firstElementChild.style.color =
+                        "#333333";
                 }
             }
             btns[i].style.borderRadius = "10px";
@@ -358,8 +401,11 @@ function changeHeaderColor() {
                     "_2JX1Q _1tpub _3EZZc _1FFms nOK4_ sExtlink-processed") {
                     listItems[i].style.borderRadius = "10px";
                     listItems[i].style.backgroundColor = originalColor;
-                    if (originalColor !== "#ffffff") {
-                        item.style.color = "#ffffff";
+                    if (isBackgroundDark(originalColor)) {
+                        listItems[i].firstElementChild.style.color = "#ffffff";
+                    }
+                    else {
+                        listItems[i].firstElementChild.style.color = "#333333";
                     }
                     listItems[i].addEventListener("mouseover", function () {
                         listItems[i].style.backgroundColor = hoverColor;
@@ -508,48 +554,57 @@ function unhovered(arrownum) {
 }
 let saveState = {};
 if (allowedURL.includes(window.location.href)) {
-    setTimeout(function () {
-        var _a, _b, _c;
-        checkBoxmaker();
-        createSchedule();
-        let p = document.createElement("p");
-        p.innerHTML = "";
-        p.id = "progress";
-        (_a = document.getElementById("todo")) === null || _a === void 0 ? void 0 : _a.appendChild(p);
-        p.style.position = "absolute";
-        p.style.top = "80px";
-        p.style.left = "95%";
-        p.style.fontSize = "16px";
-        let div = document.createElement("div");
-        div.id = "myProgress";
-        (_b = document.getElementById("todo")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
-        div.style.position = "absolute";
-        div.style.top = "75px";
-        div.style.left = "75%";
-        div.style.width = "0%";
-        div.style.height = "22px";
-        div.style.borderRadius = "10px";
-        div.style.backgroundColor = "#0677bb";
-        div.style.textAlign = "center";
-        div.style.color = "white";
-        div.style.margin = "auto";
-        // div.style.fontSize = "16px";
-        div.style.fontSizeAdjust = "0.6";
-        div.style.padding = "2px";
-        let div2 = document.createElement("div");
-        div2.id = "myProgressFrame";
-        (_c = document.getElementById("todo")) === null || _c === void 0 ? void 0 : _c.appendChild(div2);
-        div2.style.position = "absolute";
-        div2.style.top = "75px";
-        div2.style.left = "75%";
-        div2.style.width = "200px";
-        div2.style.height = "22px";
-        div2.style.borderRadius = "10px";
-        div2.style.borderWidth = "2px";
-        div2.style.borderStyle = "solid";
-        // div2.style.backgroundColor = "#0677bb";
-        changeAmount();
-    }, 600);
+    let interval = setInterval(function () {
+        console.log("waiting");
+        if (document.getElementsByClassName("submissions-title")[0] !==
+            undefined &&
+            document.getElementsByClassName("submissions-title")[1] !==
+                undefined) {
+            clearInterval(interval);
+            setTimeout(function () {
+                var _a, _b, _c;
+                checkBoxmaker();
+                createSchedule();
+                let p = document.createElement("p");
+                p.innerHTML = "";
+                p.id = "progress";
+                (_a = document.getElementById("todo")) === null || _a === void 0 ? void 0 : _a.appendChild(p);
+                p.style.position = "absolute";
+                p.style.top = "80px";
+                p.style.left = "95%";
+                p.style.fontSize = "16px";
+                let div = document.createElement("div");
+                div.id = "myProgress";
+                (_b = document.getElementById("todo")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
+                div.style.position = "absolute";
+                div.style.top = "75px";
+                div.style.left = "75%";
+                div.style.width = "0%";
+                div.style.height = "22px";
+                div.style.borderRadius = "10px";
+                div.style.backgroundColor = "#0677bb";
+                div.style.textAlign = "center";
+                div.style.margin = "auto";
+                div.style.color = "white";
+                // div.style.fontSize = "16px";
+                div.style.fontSizeAdjust = "0.6";
+                div.style.padding = "2px";
+                let div2 = document.createElement("div");
+                div2.id = "myProgressFrame";
+                (_c = document.getElementById("todo")) === null || _c === void 0 ? void 0 : _c.appendChild(div2);
+                div2.style.position = "absolute";
+                div2.style.top = "75px";
+                div2.style.left = "75%";
+                div2.style.width = "200px";
+                div2.style.height = "22px";
+                div2.style.borderRadius = "10px";
+                div2.style.borderWidth = "2px";
+                div2.style.borderStyle = "solid";
+                // div2.style.backgroundColor = "#0677bb";
+                changeAmount();
+            }, 0);
+        }
+    }, 10);
 }
 function createSchedule() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -572,31 +627,31 @@ function createSchedule() {
             divstyle.backgroundColor = "#ffffff";
             divstyle.position = "absolute";
             div.className = "todo todo-wrapper";
-            divstyle.top = "8.25%";
+            divstyle.top = "6.1%";
             divstyle.left = "2%";
             divstyle.padding = "15px";
             divstyle.textAlign = "";
             divstyle.fontSize = "12px";
             divstyle.fontFamily = "Roboto";
-            const btn = document.createElement("button");
-            const btnStyle = btn.style;
-            btnStyle.width = "100px";
-            btn.id = "notes";
-            btn.innerHTML = "Notes";
-            btnStyle.height = "30px";
-            // btnStyle.backgroundColor = "#ffffff";
-            btnStyle.position = "absolute";
-            // btn.className = "todo todo-wrapper";
-            btnStyle.top = "40%";
-            btnStyle.left = "3%";
-            btnStyle.padding = "15px";
-            // btnStyle.textAlign = "";
-            btnStyle.zIndex = "100";
-            btnStyle.fontSize = "12px";
-            btnStyle.fontFamily = "Roboto";
-            btn.addEventListener("click", function () {
-                location.replace(`/${btn.id}`);
-            });
+            // const btn = document.createElement("button");
+            // const btnStyle = btn.style;
+            // btnStyle.width = "100px";
+            // btn.id = "notes";
+            // btn.innerHTML = "Notes";
+            // btnStyle.height = "30px";
+            // // btnStyle.backgroundColor = "#ffffff";
+            // btnStyle.position = "absolute";
+            // // btn.className = "todo todo-wrapper";
+            // btnStyle.top = "40%";
+            // btnStyle.left = "3%";
+            // btnStyle.padding = "15px";
+            // // btnStyle.textAlign = "";
+            // btnStyle.zIndex = "100";
+            // btnStyle.fontSize = "12px";
+            // btnStyle.fontFamily = "Roboto";
+            // btn.addEventListener("click", function () {
+            //     location.replace(`/${btn.id}`);
+            // });
             let now = new Date();
             now.setDate(now.getDate() + distancefromtoday);
             const day = now.getDay();
@@ -740,18 +795,17 @@ function createSchedule() {
                 div.innerHTML +=
                     " <h3 style='text-align:left'>Schedule not saved, open course menu to load. Make sure your courses are ordered in the order you have them!<h3>";
             }
-            // alert(quotes[dayNow]);
-            let quotesArr = quotes.split("\n");
-            let todayQuote = quotesArr[dayNow];
-            todayQuote = todayQuote
-                .replace(/â€œ/g, '"') // Replace the opening quotation marks
-                .replace(/â€/g, '"') // Replace the closing quotation marks
-                .replace(/â€™/g, "'"); // Replace the apostrophe
-            div.innerHTML += `<br/><span style="font-size:10px">${todayQuote}</span>`;
+            // let quotesArr = quotes.split("\n");
+            // let todayQuote = quotesArr[dayNow];
+            // todayQuote = todayQuote
+            //     .replace(/â€œ/g, '"') // Replace the opening quotation marks
+            //     .replace(/â€/g, '"') // Replace the closing quotation marks
+            //     .replace(/â€™/g, "'"); // Replace the apostrophe
+            // div.innerHTML += `<br/><span style="font-size:10px">${todayQuote}</span>`;
             const container = document.getElementById("container");
             if (container) {
                 container.appendChild(div);
-                container.appendChild(btn);
+                // container.appendChild(btn);
             }
             // div.innerHTML +=
             //     "<button onclick='crash()' style=`width=50px;height=50px;`>hi</button>";
@@ -983,7 +1037,7 @@ function notePage() {
         });
     }
 }
-notePage();
+// notePage();
 // let url: any;
 // function loadFrame() {
 //     let link = (
@@ -1063,3 +1117,13 @@ document.getElementsByClassName("button-reset clickable refresh-button")[0].clic
 //         }" ></iframe>`;
 //     }
 // }, 2000);
+// import "jquery-ui/ui/widgets/resizable";
+// import jq
+// let homeFeed = document.getElementById("home-feed-container") as HTMLDivElement;
+// if (homeFeed) {
+//     $(homeFeed).resizable({
+//         handles: "n,w,s,e",
+//         minWidth: 200,
+//         maxWidth: 400,
+//     });
+// }

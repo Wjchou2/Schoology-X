@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let deleteAsign = document.getElementById("deleteAsignBox");
     let colorchangebox = document.getElementById("colorchangebox");
     let resetColor = document.getElementById("resetColor");
+    let resetColorBlue = document.getElementById("resetColorBlue");
 
     // Load the saved values from chrome.storage when the popup opens
     chrome.storage.sync.get(["colorChange", "deleteAsign"], function (data) {
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         deleteAsign.checked = data.deleteAsign || false;
 
         // Set the color input value based on the saved value
-        colorchangebox.value = data.colorChange || "#0677bb"; // Default color if not set
+        colorchangebox.value = data.colorChange || "#ffffff";
     });
 
     // Save the deleteAsign value when checkbox changes
@@ -29,6 +30,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Reset color when the reset button is clicked
     resetColor.addEventListener("click", function () {
+        colorchangebox.value = "#ffffff"; // Default color
+        send("colorChange");
+    });
+
+    resetColorBlue.addEventListener("click", function () {
         colorchangebox.value = "#0677bb"; // Default color
         send("colorChange");
     });
