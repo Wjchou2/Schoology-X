@@ -317,7 +317,7 @@ function getCurrentClass(
     return currentClass ? currentClass.name : null;
 }
 
-let originalColor = "#ffffff";
+let originalColor: any = "#ffffff";
 let hoverColor = adjustBrightness(originalColor, -20); // Lighten by 20%
 
 // let originalColor = "#0677bb";
@@ -330,6 +330,8 @@ window.addEventListener("colorChange", function (e: Event) {
     if (customEvent.detail && typeof customEvent.detail.value !== "undefined") {
         const deleteAsignValue = customEvent.detail.value; // Access the value from the event detail
         originalColor = deleteAsignValue;
+        localStorage.setItem("color", originalColor);
+
         if (isBackgroundDark(originalColor)) {
             hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
         } else {
@@ -342,6 +344,10 @@ window.addEventListener("colorChange", function (e: Event) {
         console.error("No value found in event detail");
     }
 });
+if (localStorage.getItem("color")) {
+    originalColor = localStorage.getItem("color");
+}
+
 window.addEventListener("resize", changeHeaderColor);
 
 function changeHeaderColor() {
@@ -1336,17 +1342,20 @@ newbtn();
         "button-reset clickable refresh-button"
     )[0] as HTMLButtonElement
 ).click();
-// setInterval(() => {
-//     let RecentCompletelist = document.getElementsByClassName(
-//         "recently-completed-event"
-//     );
+// setTimeout(() => {
+let RecentCompletelist = document.getElementsByClassName(
+    "recently-completed-event"
+);
 
-//     for (let i = 0; i < RecentCompletelist.length; i++) {
-//         document.body.innerHTML += `<iframe src="${
-//             (RecentCompletelist[i] as any).childNodes[0].childNodes[1]
-//                 .childNodes[1].href
-//         }" ></iframe>`;
-//     }
+// for (let i = 0; i < RecentCompletelist.length; i++) {
+// let i = 1;
+// setTimeout(() => {
+//     document.body.innerHTML += `<iframe src="${
+//         (RecentCompletelist[i] as any).childNodes[0].childNodes[1].childNodes[1]
+//             .href
+//     }" ></iframe>`;
+// }, i * 1000);
+// }
 // }, 2000);
 // import "jquery-ui/ui/widgets/resizable";
 // import jq

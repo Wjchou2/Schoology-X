@@ -296,6 +296,7 @@ window.addEventListener("colorChange", function (e) {
     if (customEvent.detail && typeof customEvent.detail.value !== "undefined") {
         const deleteAsignValue = customEvent.detail.value; // Access the value from the event detail
         originalColor = deleteAsignValue;
+        localStorage.setItem("color", originalColor);
         if (isBackgroundDark(originalColor)) {
             hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
         }
@@ -309,6 +310,9 @@ window.addEventListener("colorChange", function (e) {
         console.error("No value found in event detail");
     }
 });
+if (localStorage.getItem("color")) {
+    originalColor = localStorage.getItem("color");
+}
 window.addEventListener("resize", changeHeaderColor);
 function changeHeaderColor() {
     // Function to check if any ancestor of the element is a <header>
@@ -1106,16 +1110,17 @@ newbtn();
 //     }
 // });
 document.getElementsByClassName("button-reset clickable refresh-button")[0].click();
-// setInterval(() => {
-//     let RecentCompletelist = document.getElementsByClassName(
-//         "recently-completed-event"
-//     );
-//     for (let i = 0; i < RecentCompletelist.length; i++) {
-//         document.body.innerHTML += `<iframe src="${
-//             (RecentCompletelist[i] as any).childNodes[0].childNodes[1]
-//                 .childNodes[1].href
-//         }" ></iframe>`;
-//     }
+// setTimeout(() => {
+let RecentCompletelist = document.getElementsByClassName("recently-completed-event");
+// for (let i = 0; i < RecentCompletelist.length; i++) {
+// let i = 1;
+// setTimeout(() => {
+//     document.body.innerHTML += `<iframe src="${
+//         (RecentCompletelist[i] as any).childNodes[0].childNodes[1].childNodes[1]
+//             .href
+//     }" ></iframe>`;
+// }, i * 1000);
+// }
 // }, 2000);
 // import "jquery-ui/ui/widgets/resizable";
 // import jq
