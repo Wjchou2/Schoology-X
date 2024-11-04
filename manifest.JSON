@@ -25,6 +25,8 @@
       {
         "matches": ["https://schoology.shschools.org/*"],
         "js": ["script.js","pdf.js"],
+        "css": ["Injectedstyles.css"],
+
         "run_at": "document_end"
 
       }

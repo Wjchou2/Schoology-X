@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 console.log("injected :)");
+let ready = 0;
 let quotes = `Hello, world!
 
 Join the CS club!
@@ -312,6 +313,7 @@ window.addEventListener("colorChange", function (e) {
 });
 if (localStorage.getItem("color")) {
     originalColor = localStorage.getItem("color");
+    hoverColor = adjustBrightness(originalColor, -20); // Lighten by 20%
 }
 window.addEventListener("resize", changeHeaderColor);
 function changeHeaderColor() {
@@ -567,6 +569,7 @@ if (allowedURL.includes(window.location.href)) {
             clearInterval(interval);
             setTimeout(function () {
                 var _a, _b, _c;
+                ready = 1;
                 checkBoxmaker();
                 createSchedule();
                 let p = document.createElement("p");
@@ -1132,3 +1135,48 @@ let RecentCompletelist = document.getElementsByClassName("recently-completed-eve
 //         maxWidth: 400,
 //     });
 // }
+let bell = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[6];
+bell.click();
+const elements = document.getElementsByClassName("_2awxe _3skcp _1tpub _26UWf _1pP6Q util-hover-background-color-cloud-grey-wHghL util-focus-background-color-cloud-grey-3x07X");
+setTimeout(() => {
+    for (let i = 0; i < elements.length; i++) {
+        let elm = document.getElementsByClassName("_2qcpH _3ghFm _22tOa drGks xjR5v _1wP6w")[i];
+        let iframe = document.createElement("iframe");
+        document.body.appendChild(iframe);
+        let a = elm.getElementsByTagName("a")[0];
+        iframe.src = a.href;
+        bell.click();
+        setTimeout(() => {
+            var _a;
+            if (iframe.contentDocument) {
+                let grade = iframe.contentDocument.getElementsByClassName("grading-grade")[0].innerText;
+                // iframe.style.display = "none";
+                grade = grade.replace("Grade:", "").trim();
+                let message = `You got <span style="color:blue">${grade}</span> on ${elm.getElementsByTagName("a")[0].innerText}`;
+                // Get the container element
+                // Create the popup banner element
+                const popupBanner = document.createElement("div");
+                popupBanner.id = "popupBanner";
+                // Set styles for the popup banner
+                // Set the banner's text content
+                popupBanner.innerHTML = message;
+                // Append the popup banner to the container
+                document.body.appendChild(popupBanner);
+                // Trigger the slide-in animation after a short delay
+                setTimeout(() => {
+                    popupBanner.style.right = "20px"; // Slide in
+                }, 100);
+                setTimeout(() => {
+                    document.getElementById("popupBanner").style.right = "20px";
+                }, 100); // Delay to allow the transition to trigger
+                (_a = document
+                    .getElementById("popupBanner")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+                    document.getElementById("popupBanner").style.right = "-300px";
+                });
+                setTimeout(() => {
+                    document.getElementById("popupBanner").style.right = "-300px";
+                }, 4000); // Delay to allow the transition to trigger
+            }
+        }, 2000);
+    }
+}, 500);

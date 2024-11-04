@@ -3,6 +3,7 @@ let el4 = document.createElement("script");
 
 let el2 = document.createElement("link");
 let el3 = document.createElement("style");
+let el5 = document.createElement("link");
 
 // let el2 = document.createElement("script");
 // let el3 = document.createElement("script");
@@ -10,6 +11,8 @@ el.src = chrome.runtime.getURL("injected.js");
 el4.src = chrome.runtime.getURL("pdf.js");
 
 el2.rel = "stylesheet";
+el5.rel = "stylesheet";
+
 el3.style = `.material-symbols-outlined{
   font-variation-settings:
   'FILL' 0,
@@ -23,7 +26,7 @@ el2.href =
 // el3.src = chrome.runtime.getURL("tsdeliver2.js");
 el.type = "text/javascript";
 el4.type = "text/javascript";
-
+el5.src = chrome.runtime.getURL("Injectedstyles.css");
 document.head.appendChild(el);
 document.head.appendChild(el4);
 document.head.appendChild(el2);
