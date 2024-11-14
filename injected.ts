@@ -1,113 +1,19 @@
 console.log("injected :)");
 let ready = 0;
-let quotes = `Hello, world!
-
-Join the CS club!
-Time flies like an arrow. Fruit flies like a banana.
-I had a crazy dream last night! I was swimming in an ocean of orange soda. Turns out it was just a Fanta sea.
-What was Forrest Gumpâ€™s email password? 1forrest1
-Need an ark to save two of every animal? I noah guy.
-My grandpa has the heart of the lion and a lifetime ban from the zoo.
-I donâ€™t trust stairs because theyâ€™re always up to something.
-Why was Dumbo sad? He felt irrelephant.
-A man sued an airline company after it lost his luggage. Sadly, he lost his case.
-Yesterday, I accidentally swallowed some food coloring. The doctor says Iâ€™m okay, but I feel like Iâ€™ve dyed a little inside.
-I was wondering why the ball was getting bigger. Then it hit me.
-Waking up this morning was an eye-opening experience.
-The Middle Ages were called the Dark Ages because there were too many knights.
-My sister bet that I couldnâ€™t build a car out of spaghetti. You shouldâ€™ve seen her face when I drove pasta.
-It's hard to explain puns to kleptomaniacs because they always take things literally.
-Two windmills are standing in a wind farm. One asks, â€œWhatâ€™s your favorite kind of music?â€ The other says, â€œIâ€™m a big metal fan.â€
-I canâ€™t believe I got fired from the calendar factory. All I did was take a day off!
-I wasnâ€™t originally going to get a brain transplant, but then I changed my mind.
-There was a kidnapping at school yesterday. Donâ€™t worry, though - he woke up!
-Whatâ€™s the difference between a poorly dressed man on a bicycle and a nicely dressed man on a tricycle? A tire.
-What do you call an alligator in a vest? An investigator.
-Why did the scarecrow get an award? He was outstanding in his field.
-The machine at the coin factory just suddenly stopped working, with no explanation. It doesnâ€™t make any cents.
-Somebody stole all my lamps. I couldnâ€™t be more de-lighted!
-Why was the baby ant confused? Because all his uncles were ants!
-What did the sushi say to the bee? Wasabee!
-Did you know deer can jump higher than the average house? Itâ€™s because of their strong hind legs and the fact that the average house canâ€™t jump.
-The past, the present, and the future walk into a bar. It was tense!
-What did the duck say when she purchased new lipstick? Put it on my bill!
-Did you hear about that cheese factory that exploded in France? There was nothing left but de Brie!
-I tried to take a photo of a wheat field. It turned out grainy.
-A photon checks into a hotel. The front desk asks if it has any luggage. It replies, â€œno, Iâ€™m traveling light.â€
-I'm afraid of speed bumps, but I'm slowly getting over it.
-I was caught stealing luggage, but my trial only lasted a few minutes.  It was a brief case.
-Why did the can crusher quit her job? It was soda-pressing.
-My friend fell into an upholstery machine. Heâ€™s fully recovered now.
-What do you call a broken can opener? A canâ€™t opener.
-Why canâ€™t bikes stand up unsupported? Theyâ€™re two tired.
-Why do people love Switzerland? Well, the flag is a big plus
-I got fired from my job at the keyboard factory.  I wasn't putting in enough shifts.
-Why did the belt go to jail? It held up a pair of pants.
-Most people are shocked when they find out how bad an electrician I am.
-Iâ€™ve got a phobia of over-engineered buildings. Itâ€™s a complex complex complex.
-My landlord says he needs to come talk to me about how high my heating bill is. I told him, â€œMy door is always openâ€.
-Making mirrors is a job I can really see myself doing.
-What's the best way to make a hot dog stand? Take away its chair.
-What do you call a dog magician? A Labracadabrador Retriever.
-Iâ€™m reading a book about anti-gravity. I just canâ€™t put it down.
-I stayed up all night to see where the sun went. Then it dawned on me.
-RIP Boiling Water. You will be mist.
-Broken pencils are pointless.
-â€œDoctor, help! Iâ€™m shrinking!â€ â€œTake this and youâ€™ll be back to normal in a few weeks. Until then, youâ€™ll just have to be a little patient.â€
-I donâ€™t enjoy computer jokes. Not one bit.
-Did you hear that Magnesium formed an oxide layer? OMg!
-Whatâ€™d the pirate say on his 80th birthday? Aye matey!
-Somebody just broke into my apartment and stole every lamp, flashlight, and lightbulb. Iâ€™m so delighted.
-How many tickles does it need before an octopus laughs? Ten tickles.
-I just opened a fortune cookie with nothing inside. How unfortunate!
-I fired my masseuse today. He just rubbed me the wrong way
-Why are two helium isotopes so funny? HeHe!
-Argon walks into a bar. The bartender said â€œHey, get out of here, we donâ€™t serve noble gasesâ€. Argon didnâ€™t react at all.
-I stayed on a ranch last weekend, but couldnâ€™t really sleep well. Every time Iâ€™d drift off, a female horse would whinny and wake me back off. It was a night mare.
-Did you hear about all the hidden meanings in the Lion King? Yeah, itâ€™s full of Simbalism.
-Whatâ€™s the difference between Batman and a shoplifter? Batman can go into a store without Robin.
-My friend David just had his ID stolen. We just call him Dav now.
-A Spanish magician told his audience he would disappear on the count of three. He wrapped his cape around himself and counted. â€œUnoâ€¦ Dosâ€¦â€ and then disappeared without a Tres.
-Did you hear about the claustrophobic astronaut? He needed some space. 
-How did the dictionary end up starring on Broadway? In a play on words. 
-I used to be addicted to the hokey pokey. But then I turned myself around.
-Did you hear about the man who lost his left side? He's all right now.
-I couldn't figure out how to put my seatbelt on, but then it clicked.
-I tried to make a belt out of watches. It was a waist of time.
-Thanks for explaining the word 'many' to me, it means a lot.
-Two antennas met on a roof, fell in love and got married. The ceremony wasn't much, but the reception was excellent.
-I'm reading a book about anti-gravity. It's impossible to put down!
-The shovel was a ground-breaking invention.
-It was a terrible summer for Humpty Dumpty... but he had a great fall.
-You didnâ€™t hear about the three big holes in the ground? Well, well, well.
-Iâ€™m a big fan of whiteboards. I find them quite re-markable.
-Did you hear about the two silk worms in a race? It ended in a tie!
-Iâ€™m friends with 25 letters of the alphabet. I donâ€™t know why.
-What would you call a fish with a missing eye? A fsh, probably.
-Broken puppets for sale. No strings attached.
-Once youâ€™ve seen one shopping center youâ€™ve seen a mall.
-Jill broke her finger today. On the other hand she was completely fine.
-I lost my job at the bank on my very first day. A woman asked me to check her balance, so I pushed her over.
-A police officer just knocked on my door and told me my dogs are chasing people on bikes. Thatâ€™s ridiculous. My dogs donâ€™t even own bikes.
-What do you call a bee that canâ€™t make up its mind? A maybe.
-Is it ignorance or apathy that's destroying the world today? I don't know and don't really care.
-How do you throw a party in outer space? You planet.
-Two fish are in a tank, one says to the other "how do you drive this thing?"
-I hate how funerals are always at 9 a.m. Iâ€™m not really a mourning person.
-What did one flag say to the other? Nothing, it just waved.
-I poured root beer in a square glass. Now I just have beer.
-There are 10 types of people in the world: those who understand binary and those who don't.
-Why did the computer programmer quit?  He didn't get arrays.
-I would tell you a UDP joke, but you might not get it.
-Why canâ€™t your nose grow to be 12 inches long? Because then it would be a foot.
-I love the way the earth rotates.  It really makes my day.
-Why was Pavlov's hair so soft?  Because he used classical conditioning.`;
+// document.head.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+// `;
 let allowedURL = [
     "https://schoology.shschools.org/home",
     "https://schoology.shschools.org/home/",
     "https://schoology.shschools.org/",
     "https://schoology.shschools.org",
+    "https://schoology.shschools.org/home/recent-activity",
 ];
+let readMessage: any = [];
+let temp = localStorage.getItem("readMessage");
+if (temp) {
+    readMessage = JSON.parse(temp);
+}
 
 function isBackgroundDark(hexColor: any) {
     // Convert hex to RGB
@@ -265,7 +171,21 @@ window.addEventListener("deleteAsign", function (e: Event) {
         console.error("No value found in event detail");
     }
 });
+function creatVolunteerBtn() {
+    let clone = document.getElementsByClassName("_24avl _3Rh90 _349XD")[1];
+    let btn = document.createElement("button");
+    btn.className = "volunteerBtn";
 
+    document.head.innerHTML += `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=volunteer_activism" />`;
+    btn.innerHTML = `<span class="material-symbols-outlined">
+volunteer_activism
+</span>`;
+    btn.addEventListener("click", function () {
+        window.open("https://app.mobileserve.com/app/#/");
+    });
+    clone.before(btn);
+}
+creatVolunteerBtn();
 function adjustBrightness(hexColor: any, percent: any) {
     // Ensure percent is between -100 and 100
     percent = Math.max(-100, Math.min(100, percent));
@@ -347,7 +267,11 @@ window.addEventListener("colorChange", function (e: Event) {
 });
 if (localStorage.getItem("color")) {
     originalColor = localStorage.getItem("color");
-    hoverColor = adjustBrightness(originalColor, -20); // Lighten by 20%
+    if (isBackgroundDark(originalColor)) {
+        hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
+    } else {
+        hoverColor = adjustBrightness(originalColor, -10); // Lighten by 20%
+    }
 }
 
 window.addEventListener("resize", changeHeaderColor);
@@ -402,7 +326,7 @@ function changeHeaderColor() {
     for (let i = 0; i < ids.length; i++) {
         let elm = document.getElementById(ids[i]) as any;
         let path = elm.firstElementChild;
-        console.log(elm.firstElementChild.tagName);
+
         // elm.firstElementChild.id = "hi";
 
         if (isBackgroundDark(originalColor)) {
@@ -416,7 +340,7 @@ function changeHeaderColor() {
 
     // IMG.src = "https://i.ibb.co/v3Cc2mX/shs-removebg-preview.png"; // Replace this with the direct URL of the image
 
-    IMG.src = "    https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
+    IMG.src = "https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
     for (let i = 0; i < anchors.length; i++) {
         if (hasHeaderAncestor(anchors[i])) {
             if (anchors[i].title !== "Home") {
@@ -437,6 +361,7 @@ function changeHeaderColor() {
             btns[i].style.backgroundColor = originalColor;
             // if (originalColor !== "#ffffff") {
             if (
+                (btns[i].firstElementChild as HTMLElement) !== null &&
                 (btns[i].firstElementChild as HTMLElement).role !== "menuitem"
             ) {
                 if (isBackgroundDark(originalColor)) {
@@ -659,8 +584,6 @@ let saveState: any = {};
 
 if (allowedURL.includes(window.location.href)) {
     let interval = setInterval(function () {
-        console.log("waiting");
-
         if (
             document.getElementsByClassName("submissions-title")[0] !==
                 undefined &&
@@ -946,7 +869,6 @@ async function createSchedule() {
 }
 // }
 function crash() {
-    // alert();
     for (let i = 0; i < 5; i++) {
         window.location.reload();
     }
@@ -1005,9 +927,9 @@ function changeAmount() {
                             Math.round(width / 2)
                         )}%`;
                         myProgress.style.backgroundColor = `rgb(${
-                            255 / 2 - (Math.round(width / 2) * 2.25) / 2
+                            255 / 2 - (Math.round(width / 2) * 2.25) / 1.5
                         }, ${Math.round(width / 2) * 2.25},${
-                            (Math.round(width / 2) * 2.25) / 2
+                            (Math.round(width / 2) * 2.25) / 1.5
                         } )`;
                     }
                 }
@@ -1023,10 +945,28 @@ function checkBoxmaker() {
             let upcoming = document.getElementsByClassName(
                 "upcoming-event upcoming-event-block course-event"
             );
+            console.log("hi");
+            for (let j = 0; j < upcoming.length; j++) {
+                console.log(
+                    upcoming[j].getElementsByTagName("span")[0]
+                        .firstElementChild as HTMLImageElement
+                );
+                if (upcoming[j].className.includes("hidden-important")) {
+                    if (
+                        (
+                            upcoming[j].getElementsByTagName("span")[0]
+                                .firstElementChild as HTMLImageElement
+                        ).src ==
+                        "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/error_outline.png"
+                    ) {
+                        let newClass = upcoming[j].className;
+                        newClass = newClass.replace("hidden-important", "");
+                        upcoming[j].className = newClass;
+                    }
+                }
 
-            for (let i = 0; i < upcoming.length; i++) {
                 if (
-                    upcoming[i].className.includes("hidden-important") == false
+                    upcoming[j].className.includes("hidden-important") == false
                 ) {
                     let input = document.createElement("input");
                     input.type = "checkbox";
@@ -1035,13 +975,23 @@ function checkBoxmaker() {
                     input.style.borderRadius = "20px";
                     input.style.left = "1120px";
                     input.style.position = "absolute";
+                    input.className = "form-check";
                     input.className = "progressCheck";
+
+                    //                     upcoming[j].innerHTML += `
+                    // <div class="cntr">
+                    //   <input id="cbx" class="hidden-xs-up" type="checkbox" />
+                    //   <label class="cbx" for="cbx"></label>
+                    //   <label class="lbl" for="cbx">Make Magic</label>
+                    // </div>
+                    // `;
                     let save = localStorage.getItem("saveState");
-                    upcoming[i].appendChild(input);
+                    upcoming[j].appendChild(input);
 
                     let children = input.parentElement?.firstElementChild
                         ?.children as HTMLCollection;
                     let childrenchild = children[0].children[1].children;
+
                     if (childrenchild) {
                         for (let i = 0; i < childrenchild.length; i++) {
                             if (
@@ -1052,12 +1002,13 @@ function checkBoxmaker() {
                                 let lower = original.toLowerCase();
 
                                 if (
-                                    lower.includes("quiz") ||
-                                    lower.includes("test") ||
-                                    lower.includes("minor") ||
-                                    lower.includes("c4u") ||
-                                    lower.includes("cfu") ||
-                                    lower.includes("major")
+                                    (lower.includes("quiz") ||
+                                        lower.includes("test") ||
+                                        lower.includes("minor") ||
+                                        lower.includes("c4u") ||
+                                        lower.includes("cfu") ||
+                                        lower.includes("major")) &&
+                                    lower.includes("hw") == false
                                 ) {
                                     input.style.accentColor = "green";
 
@@ -1108,6 +1059,46 @@ function checkBoxmaker() {
                                             i
                                         ].innerHTML.replace(/<\/?s>/g, "")}`;
                                     }
+                                }
+                            } else if (childrenchild[i].tagName == "SPAN") {
+                                let duedate = childrenchild[i]
+                                    ?.firstElementChild as HTMLSpanElement;
+
+                                let dateStr = duedate.innerText;
+                                let parsedDate = dateStr.replace(
+                                    /\sat\s\d{1,2}:\d{2}\s[ap]m$/,
+                                    ""
+                                );
+                                let duedate2 = upcoming[j + 1].firstElementChild
+                                    ?.children[0].children[1].children[1]
+                                    .firstElementChild as HTMLSpanElement;
+
+                                let parsedDate2: any = "";
+                                if (duedate2) {
+                                    let dateStr2 = duedate2.innerText;
+                                    parsedDate2 = dateStr2.replace(
+                                        /\sat\s\d{1,2}:\d{2}\s[ap]m$/,
+                                        ""
+                                    );
+                                }
+
+                                if (
+                                    parsedDate2 !== parsedDate &&
+                                    parsedDate.includes("overdue") == false
+                                ) {
+                                    let newbreak = document.createElement("h4");
+                                    // newbreak.className = "submissions-title";
+                                    newbreak.id = "hiofhd";
+                                    newbreak.innerHTML = parsedDate2;
+                                    newbreak.style.position = "relative";
+                                    newbreak.style.width = "350px";
+
+                                    newbreak.style.borderBottom =
+                                        "2px solid #eaeaea";
+                                    // newbreak.style.top += 50 + "px";
+                                    // newbreak.className = "upcoming-event-block";
+                                    // upcoming[j].appendChild(newbreak);
+                                    upcoming[j].after(newbreak);
                                 }
                             }
                         }
@@ -1224,9 +1215,8 @@ function gradeUpdate() {
     }
 }
 gradeUpdate();
-
+notePage();
 function notePage() {
-    console.log(window.location.href);
     if (window.location.href == "https://schoology.shschools.org/notes") {
         let text = localStorage.getItem("textSave");
 
@@ -1314,17 +1304,17 @@ function notePage() {
 // }
 //
 
-function newbtn() {
-    let parent = document.getElementsByClassName(
-        "_2trRU _2K08O fSqCh _1tpub"
-    )[1];
-    let item = parent.firstElementChild?.cloneNode() as HTMLLIElement;
-    if (item) {
-        item.id;
-        parent.appendChild(item);
-    }
-}
-newbtn();
+// function newbtn() {
+//     let parent = document.getElementsByClassName(
+//         "_2trRU _2K08O fSqCh _1tpub"
+//     )[1];
+//     let item = parent.firstElementChild?.cloneNode() as HTMLLIElement;
+//     if (item) {
+//         item.id;
+//         parent.appendChild(item);
+//     }
+// }
+// newbtn();
 
 // let btnTemp = document.getElementById("edit-submit") as HTMLInputElement;
 
@@ -1339,110 +1329,176 @@ newbtn();
 //         alert("submited");
 //     }
 // });
+let recentlyCompleted = document.getElementsByClassName(
+    "refresh-button"
+)[0] as HTMLButtonElement;
 
-(
-    document.getElementsByClassName(
-        "button-reset clickable refresh-button"
-    )[0] as HTMLButtonElement
-).click();
-// setTimeout(() => {
-let RecentCompletelist = document.getElementsByClassName(
-    "recently-completed-event"
-);
+if (recentlyCompleted) {
+    recentlyCompleted.click();
+}
 
-// for (let i = 0; i < RecentCompletelist.length; i++) {
-// let i = 1;
-// setTimeout(() => {
-//     document.body.innerHTML += `<iframe src="${
-//         (RecentCompletelist[i] as any).childNodes[0].childNodes[1].childNodes[1]
-//             .href
-//     }" ></iframe>`;
-// }, i * 1000);
-// }
-// }, 2000);
-// import "jquery-ui/ui/widgets/resizable";
-// import jq
-// let homeFeed = document.getElementById("home-feed-container") as HTMLDivElement;
-// if (homeFeed) {
-//     $(homeFeed).resizable({
-//         handles: "n,w,s,e",
-//         minWidth: 200,
-//         maxWidth: 400,
-//     });
-// }
-
-let bell = document.getElementsByClassName(
-    "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-)[6] as HTMLButtonElement;
-bell.click();
-const elements = document.getElementsByClassName(
-    "_2awxe _3skcp _1tpub _26UWf _1pP6Q util-hover-background-color-cloud-grey-wHghL util-focus-background-color-cloud-grey-3x07X"
-);
 setTimeout(() => {
-    for (let i = 0; i < elements.length; i++) {
-        let elm = document.getElementsByClassName(
-            "_2qcpH _3ghFm _22tOa drGks xjR5v _1wP6w"
-        )[i];
-        let iframe = document.createElement("iframe");
-        document.body.appendChild(iframe);
-        let a = elm.getElementsByTagName("a")[0];
-        iframe.src = a.href;
-        bell.click();
+    // let RecentCompletelist = document.getElementsByClassName(
+    //     "recently-completed-event"
+    // );
 
-        setTimeout(() => {
-            if (iframe.contentDocument) {
-                let grade = (
-                    iframe.contentDocument.getElementsByClassName(
-                        "grading-grade"
-                    )[0] as HTMLDivElement
-                ).innerText;
+    let RecentCompletelist = document.getElementsByClassName(
+        "recently-completed-event"
+    );
+    for (let i = 0; i < RecentCompletelist.length; i++) {
+        let elm = RecentCompletelist[i] as HTMLDivElement;
+        let stored = localStorage.getItem("oldGrade");
+        let old = [];
 
-                // iframe.style.display = "none";
-                grade = grade.replace("Grade:", "").trim();
+        if (stored) {
+            old = JSON.parse(stored);
+        } else {
+            old = [];
+        }
+        if (old.includes(elm.innerText) == false) {
+            let link: any = RecentCompletelist[i].firstElementChild
+                ?.getElementsByTagName("span")[1]
+                .getElementsByTagName("a")[0];
+            link = link as HTMLLinkElement;
+            old.push(elm.innerText);
+            localStorage.setItem("oldGrade", JSON.stringify(old));
+            // let grade =
+            //     RecentCompletelist[i].getElementsByTagName("span")[5].innerHTML;
+            let grade = "";
+            let iframe = document.createElement("iframe");
+            document.body.appendChild(iframe);
+            // iframe.src = a[j].href;
+            iframe.src = link.href;
 
-                let message = `You got <span style="color:blue">${grade}</span> on ${
-                    elm.getElementsByTagName("a")[0].innerText
-                }`;
+            iframe.onload = () => {
+                if (iframe.contentDocument) {
+                    grade = (
+                        iframe.contentDocument.getElementsByClassName(
+                            "grading-grade"
+                        )[0] as HTMLDivElement
+                    ).innerText;
+                    iframe.remove();
+                    grade = grade.replace("Grade:", "").trim();
+                    let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${link.href}>${link.innerText}</a>`;
+                    let popupBanner = document.createElement("div");
+                    popupBanner.id = "popupBanner";
 
-                // Get the container element
+                    popupBanner.innerHTML = message;
+                    popupBanner.style.top = `${20 + i * 100}px`;
+                    document.body.appendChild(popupBanner);
 
-                // Create the popup banner element
-                const popupBanner = document.createElement("div");
-                popupBanner.id = "popupBanner";
-
-                // Set styles for the popup banner
-
-                // Set the banner's text content
-                popupBanner.innerHTML = message;
-
-                // Append the popup banner to the container
-                document.body.appendChild(popupBanner);
-
-                // Trigger the slide-in animation after a short delay
-                setTimeout(() => {
-                    popupBanner.style.right = "20px"; // Slide in
-                }, 100);
-
-                setTimeout(() => {
-                    (
-                        document.getElementById("popupBanner") as HTMLDivElement
-                    ).style.right = "20px";
-                }, 100); // Delay to allow the transition to trigger
-                document
-                    .getElementById("popupBanner")
-                    ?.addEventListener("click", function () {
-                        (
-                            document.getElementById(
-                                "popupBanner"
-                            ) as HTMLDivElement
-                        ).style.right = "-300px";
-                    });
-                setTimeout(() => {
-                    (
-                        document.getElementById("popupBanner") as HTMLDivElement
-                    ).style.right = "-300px";
-                }, 4000); // Delay to allow the transition to trigger
-            }
-        }, 2000);
+                    setTimeout(() => {
+                        popupBanner.style.right = "20px";
+                    }, 100);
+                    setTimeout(() => {
+                        popupBanner.style.right = "-300px";
+                    }, 6000);
+                }
+            };
+        }
     }
-}, 500);
+}, 1000);
+// let bell = document.getElementsByClassName(
+//     "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
+// )[6] as HTMLButtonElement;
+// bell.click();
+// let bellopup = document.getElementsByClassName(
+//     "_3Xw3k _2trRU j17AQ S42JQ _1Z0RM util-width-thirty-nine-1B-gb _1Z0RM D4hfr HeaderDropMenu-menu-border-3vo5S HeaderDropMenu-menu-position-top-1iEEN VSOiH _3RmDr fjQuT uQOmx"
+// )[0] as HTMLDivElement;
+// bellopup.style.opacity = "0";
+// const elements = document.getElementsByClassName(
+//     "_2qcpH _3ghFm _22tOa drGks xjR5v _1wP6w"
+// );
+
+// setTimeout(() => {
+//     for (let i = 0; i < elements.length; i++) {
+//         let elm = document.getElementsByClassName(
+//             "_2qcpH _3ghFm _22tOa drGks xjR5v _1wP6w"
+//         )[i] as HTMLSpanElement;
+
+//         // let elm = elements[i] as HTMLDivElement;
+//         if (elm.classList.contains("_2sW1K") == false) {
+//             let a = elm.getElementsByTagName("a");
+//             for (let j = 0; j < a.length; j++) {
+//                 setTimeout(() => {
+//                     if (
+//                         readMessage.includes(a[j].href) == false &&
+//                         elm.innerHTML.includes("A new grade was posted")
+//                     ) {
+//                         let iframe = document.createElement("iframe");
+//                         document.body.appendChild(iframe);
+//                         // iframe.src = a[j].href;
+//                         iframe.src = a[j].href;
+//                         readMessage.push(a[j].href);
+
+//                         localStorage.setItem(
+//                             "readMessage",
+//                             JSON.stringify(readMessage)
+//                         );
+//                         iframe.onload = () => {
+//                             if (iframe.contentDocument) {
+//                                 let grade = (
+//                                     iframe.contentDocument.getElementsByClassName(
+//                                         "grading-grade"
+//                                     )[0] as HTMLDivElement
+//                                 ).innerText;
+//                                 iframe.remove();
+//                                 grade = grade.replace("Grade:", "").trim();
+//                                 let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${
+//                                     elm.getElementsByTagName("a")[j].href
+//                                 }>${
+//                                     elm.getElementsByTagName("a")[j].innerText
+//                                 }</a>`;
+//                                 let popupBanner = document.createElement("div");
+//                                 popupBanner.id = "popupBanner";
+
+//                                 popupBanner.innerHTML = message;
+//                                 popupBanner.style.top = `${20 + j * 100}px`;
+//                                 document.body.appendChild(popupBanner);
+
+//                                 setTimeout(() => {
+//                                     popupBanner.style.right = "20px";
+//                                 }, 100);
+//                                 setTimeout(() => {
+//                                     popupBanner.style.right = "-300px";
+//                                 }, 6000);
+//                             }
+//                         };
+//                     }
+//                 }, j * 2000);
+//             }
+//         }
+//     }
+//     bellopup.style.opacity = "1";
+
+//     bell.click();
+// }, 500);
+
+function getCookie(cname: string) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == " ") {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function setCookie(cname: string, cvalue: string, exdays: number) {
+    const d = new Date();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+// setCookie(
+//     "SESSc27f95b74fa0402376b3244aa389e9ac",
+//     getCookie("SESSc27f95b74fa0402376b3244aa389e9ac"),
+//     10
+// );

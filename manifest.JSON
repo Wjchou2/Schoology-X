@@ -27,11 +27,12 @@
         "js": ["script.js","pdf.js"],
         "css": ["Injectedstyles.css"],
 
-        "run_at": "document_end"
+        "run_at": "document_idle"
 
       }
-     
 
       
     ]
+
+    
   }
