@@ -103,4 +103,35 @@ text-align: center;
     width: 100%;
     text-align: center;
   }
+/* #dropdown{
+  color:#930123
+} */
+/* .dropdowndiv::before{
+  transform: rotate(180deg) scaleX(-1);
+
+} */
+.dropdowndiv{
+margin-left: 39%;
+
+}
+/* .dropdowndiv {
+  position: relative;
+  overflow: hidden;
+  /* transform: rotate(30deg); 
+} */
+
+.dropdowndiv2{
+  margin-left: 45.5%;
+}
+/* .dropdowndiv::before {
+    content: "";
+    position: absolute;
   
+    z-index: -1;
+    /* background: url(background.png) 0 0 repeat;
+    transform: rotate(30deg);
+  } */
+   #dropdownLess{
+background: url(arrowup.png) 0 0 repeat;
+
+   }

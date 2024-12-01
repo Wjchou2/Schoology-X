@@ -15,9 +15,11 @@ function loadFrame() {
             )[0].href = url;
         });
 }
+let docx = document.getElementsByClassName("attachments-file-name")[0];
+if (docx) {
+    let link = docx.firstElementChild.href;
+}
 
-let link = document.getElementsByClassName("attachments-file-name")[0]
-    .firstElementChild.href;
 if (window.location.href.includes("materials/gp") && !link.includes(".docx")) {
     loadFrame();
     setTimeout(() => {

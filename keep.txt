@@ -343,23 +343,12 @@ function changeHeaderColor() {
 
     const IMG = IMGParent.firstElementChild as HTMLImageElement;
 
+    // IMG.src = "https://i.ibb.co/v3Cc2mX/shs-removebg-preview.png"; // Replace this with the direct URL of the image
+
     IMG.src = "https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
     for (let i = 0; i < anchors.length; i++) {
         if (hasHeaderAncestor(anchors[i])) {
-            if (
-                anchors[i].title !== "Home" &&
-                anchors[i].innerHTML !== "My Courses" &&
-                anchors[i].role !== "menuitem"
-            ) {
-                // alert(anchors[i].href);
-                if ((anchors[i] as HTMLElement) !== null) {
-                    if (isBackgroundDark(originalColor)) {
-                        (anchors[i] as HTMLElement).style.color = "#ffffff";
-                    } else {
-                        (anchors[i] as HTMLElement).style.color = "#333333";
-                    }
-                }
-
+            if (anchors[i].title !== "Home") {
                 anchors[i].style.backgroundColor = originalColor;
                 anchors[i].style.borderRadius = "10px";
 
@@ -372,28 +361,20 @@ function changeHeaderColor() {
             }
         }
     }
-
     for (let i = 0; i < btns.length; i++) {
         if (hasHeaderAncestor(btns[i])) {
             btns[i].style.backgroundColor = originalColor;
             // if (originalColor !== "#ffffff") {
-            if ((btns[i].firstElementChild as HTMLElement) !== null) {
+            if (
+                (btns[i].firstElementChild as HTMLElement) !== null &&
+                (btns[i].firstElementChild as HTMLElement).role !== "menuitem"
+            ) {
                 if (isBackgroundDark(originalColor)) {
                     (btns[i].firstElementChild as HTMLElement).style.color =
                         "#ffffff";
-                    (btns[i] as HTMLElement).style.color = "#ffffff";
-                    let gradebtn = document.getElementsByClassName(
-                        "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-                    )[2] as HTMLDivElement;
-                    gradebtn.style.color = "#ffffff";
                 } else {
                     (btns[i].firstElementChild as HTMLElement).style.color =
                         "#333333";
-                    (btns[i] as HTMLElement).style.color = "#333333";
-                    let gradebtn = document.getElementsByClassName(
-                        "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-                    )[2] as HTMLDivElement;
-                    gradebtn.style.color = "#333333";
                 }
             }
 
@@ -406,37 +387,38 @@ function changeHeaderColor() {
             });
         }
     }
+    // Check for <li> elements
+    for (let i = 0; i < listItems.length; i++) {
+        if (hasHeaderAncestor(listItems[i])) {
+            const item = listItems[i].firstElementChild as HTMLElement;
+            if (item) {
+                if (
+                    item.className !==
+                    "_2JX1Q _1tpub _3EZZc _1FFms nOK4_ sExtlink-processed"
+                ) {
+                    listItems[i].style.borderRadius = "10px";
+                    listItems[i].style.backgroundColor = originalColor;
+                    if (isBackgroundDark(originalColor)) {
+                        (
+                            listItems[i].firstElementChild as HTMLElement
+                        ).style.color = "#ffffff";
+                    } else {
+                        (
+                            listItems[i].firstElementChild as HTMLElement
+                        ).style.color = "#333333";
+                    }
 
-    // for (let i = 0; i < listItems.length; i++) {
-    //     if (hasHeaderAncestor(listItems[i])) {
-    //         const item = listItems[i].firstElementChild as HTMLElement;
-    //         if (item) {
-    //             if (
-    //                 item.className !==
-    //                     "_2JX1Q _1tpub _3EZZc _1FFms nOK4_ sExtlink-processed" &&
-    //                 listItems[i].firstElementChild?.role !== "menuitem"
-    //             ) {
-    //                 listItems[i].style.borderRadius = "10px";
-    //                 listItems[i].style.backgroundColor = originalColor;
-    //                 if (isBackgroundDark(originalColor)) {
-    //                     // (
-    //                     //     listItems[i].firstElementChild as HTMLElement
-    //                     // ).style.color = "#ffffff";
-    //                 } else {
-    //                     (
-    //                         listItems[i].firstElementChild as HTMLElement
-    //                     ).style.color = "#333333";
-    //                 }
-    //                 listItems[i].addEventListener("mouseover", function () {
-    //                     listItems[i].style.backgroundColor = hoverColor;
-    //                 });
-    //                 listItems[i].addEventListener("mouseleave", function () {
-    //                     listItems[i].style.backgroundColor = originalColor;
-    //                 });
-    //             }
-    //         }
-    //     }
-    // }
+                    listItems[i].addEventListener("mouseover", function () {
+                        listItems[i].style.backgroundColor = hoverColor;
+                    });
+                    listItems[i].addEventListener("mouseleave", function () {
+                        listItems[i].style.backgroundColor = originalColor;
+                    });
+                }
+                // Example: listItems[i].style.color = "red";
+            }
+        }
+    }
 }
 function getClass() {
     const now = new Date();
@@ -482,81 +464,99 @@ function waitForElement(className: string, callback: Function) {
     observer.observe(document.body, { childList: true, subtree: true });
 }
 changeHeaderColor();
-let debounce = true;
-
 function coursesChange() {
     setInterval(function () {
-        if (debounce) {
-            debounce = false;
+        waitForElement(".Card-card-data-17m6S", function () {
+            const courses = document.getElementsByClassName(
+                "Card-card-data-17m6S"
+            );
+            const imgs = document.getElementsByClassName(
+                " _2q19q Card-card-image-uV6Bu"
+            );
 
-            waitForElement(".Card-card-data-17m6S", function () {
-                console.log("going");
-                const courses = document.getElementsByClassName(
-                    "Card-card-data-17m6S"
-                );
-                const imgs = document.getElementsByClassName(
-                    " _2q19q Card-card-image-uV6Bu"
-                );
+            let ongoingClass = getClass();
+            // const coursediv = document.getElementsByClassName(
+            //     "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
+            // )[0] as HTMLElement;
 
-                let ongoingClass = getClass();
-                // const coursediv = document.getElementsByClassName(
-                //     "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-                // )[0] as HTMLElement;
+            // const span = coursediv.firstElementChild as HTMLElement;
 
-                // const span = coursediv.firstElementChild as HTMLElement;
-
-                for (let i = 0; i < Math.max(courses.length, 7); i++) {
-                    const courseDiv = courses[i] as HTMLElement;
-                    let firstChild = courseDiv.firstElementChild;
-                    let secondChild = firstChild?.firstElementChild;
-                    let className = secondChild?.innerHTML;
-                    if (className) {
-                        order[i] = className;
-                    }
-                    // ongoingClass = "Geometry Honors";
-                    if (order.indexOf(ongoingClass) == i) {
-                        if (ongoingClass !== null) {
-                            courseDiv.style.backgroundColor = "#000000";
-                        }
-                    } else {
-                        courseDiv.style.backgroundColor = "#ffffff";
-                    }
-
-                    courseDiv.style.borderRadius = "0  0 15px 15px";
-
-                    let imgelm = imgs[i] as HTMLElement;
-                    imgelm.style.borderRadius = " 15px 15px 0 0";
-
-                    const div = courseDiv.parentElement as HTMLElement;
-                    (div.parentElement as HTMLElement).style.borderRadius =
-                        "15px";
-
-                    const div2 = courseDiv.parentElement as HTMLElement;
-                    // const div3 = div2.parentElement as HTMLElement;
-                    if (div2) {
-                        imgelm.style.borderColor = "blue";
-
-                        courseDiv.style.borderColor = "blue";
-                        // ongoingClass = "Geometry Honors";
-                        // if (order.indexOf(ongoingClass) == i) {
-                        //     if (ongoingClass !== null) {
-                        //         div2.style.borderColor = "blue";
-                        //     }
-                        // }
-
-                        div2.style.borderRadius = "15px";
-                    }
+            for (let i = 0; i < Math.max(courses.length, 7); i++) {
+                const courseDiv = courses[i] as HTMLElement;
+                let firstChild = courseDiv.firstElementChild;
+                let secondChild = firstChild?.firstElementChild;
+                let className = secondChild?.innerHTML;
+                if (className) {
+                    order[i] = className;
                 }
-                localStorage.setItem("schedule", JSON.stringify(order));
+                // ongoingClass = "Geometry Honors";
+                if (order.indexOf(ongoingClass) == i) {
+                    if (ongoingClass !== null) {
+                        courseDiv.style.backgroundColor = "#000000";
+                    }
+                } else {
+                    courseDiv.style.backgroundColor = "#ffffff";
+                }
 
-                // createSchedule();
-                debounce = true;
-            });
-        }
+                courseDiv.style.borderRadius = "0  0 15px 15px";
+
+                let imgelm = imgs[i] as HTMLElement;
+                imgelm.style.borderRadius = " 15px 15px 0 0";
+
+                const div = courseDiv.parentElement as HTMLElement;
+                (div.parentElement as HTMLElement).style.borderRadius = "15px";
+
+                const div2 = courseDiv.parentElement as HTMLElement;
+                // const div3 = div2.parentElement as HTMLElement;
+                if (div2) {
+                    imgelm.style.borderColor = "blue";
+
+                    courseDiv.style.borderColor = "blue";
+                    // ongoingClass = "Geometry Honors";
+                    // if (order.indexOf(ongoingClass) == i) {
+                    //     if (ongoingClass !== null) {
+                    //         div2.style.borderColor = "blue";
+                    //     }
+                    // }
+
+                    div2.style.borderRadius = "15px";
+                }
+            }
+            localStorage.setItem("schedule", JSON.stringify(order));
+
+            createSchedule();
+        });
     }, 100);
 }
 
+function redirect() {
+    // let repeated = 0;
+    // let interval = setInterval(function () {
+    //     repeated += 1;
+    //     if (repeated >= 10) {
+    //         clearInterval(interval);
+    //     }
+    // }, 20);
+
+    setTimeout(function () {
+        if (currentclass !== null && order[currentclass] !== "End") {
+            alert(
+                `https://schoology.shschools.org/course/${courseIds[currentclass]}`
+            );
+            window.location.replace(
+                `https://schoology.shschools.org/course/${courseIds[currentclass]}`
+            );
+        } else {
+        }
+    }, 200);
+}
 coursesChange();
+document
+
+    .getElementsByClassName(
+        "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
+    )[0]
+    .addEventListener("click", redirect);
 
 function next(amount: number) {
     distancefromtoday += amount;
@@ -568,7 +568,7 @@ function next(amount: number) {
         elem.parentNode.removeChild(elem);
     }
     if (allowedURL.includes(window.location.href)) {
-        // createSchedule();
+        createSchedule();
     }
 }
 function hovered(arrownum: number) {
@@ -601,7 +601,7 @@ if (allowedURL.includes(window.location.href)) {
 
                 checkBoxmaker();
 
-                // createSchedule();
+                createSchedule();
                 let p = document.createElement("p");
                 p.innerHTML = "";
                 p.id = "progress";
@@ -851,7 +851,11 @@ async function createSchedule() {
     }
 }
 // }
-
+function crash() {
+    for (let i = 0; i < 5; i++) {
+        window.location.reload();
+    }
+}
 function changeAmount() {
     let bar = document.getElementById("progress");
     if (bar) {
@@ -1247,86 +1251,86 @@ function checkBoxmaker() {
     );
 }
 
-// function gradeUpdate() {
-//     if (
-//         window.location.href == "https://schoology.shschools.org/grades/grades"
-//     ) {
-//         let gradebookElms = document.getElementsByClassName(
-//             "gradebook-course-grades"
-//         );
-//         for (let i = 0; i < gradebookElms.length; i++) {
-//             let elm = gradebookElms[i] as HTMLElement;
-//             elm.style.display = "block";
-//             let parent = document.getElementsByClassName("course-grade-value")[
-//                 i
-//             ] as HTMLSpanElement;
-//             let gradeElm = parent.firstChild?.firstChild as HTMLElement;
-//             let grade = gradeElm.innerHTML;
-//             let title = document.getElementsByClassName(
-//                 "gradebook-course-title"
-//             )[i];
+function gradeUpdate() {
+    if (
+        window.location.href == "https://schoology.shschools.org/grades/grades"
+    ) {
+        let gradebookElms = document.getElementsByClassName(
+            "gradebook-course-grades"
+        );
+        for (let i = 0; i < gradebookElms.length; i++) {
+            let elm = gradebookElms[i] as HTMLElement;
+            elm.style.display = "block";
+            let parent = document.getElementsByClassName("course-grade-value")[
+                i
+            ] as HTMLSpanElement;
+            let gradeElm = parent.firstChild?.firstChild as HTMLElement;
+            let grade = gradeElm.innerHTML;
+            let title = document.getElementsByClassName(
+                "gradebook-course-title"
+            )[i];
 
-//             title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
-//             let gradeDivs = document.getElementsByClassName(
-//                 " gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed"
-//             )[i] as HTMLElement;
-//             gradeDivs.style.borderRadius = "10px";
-//             // gradeDivs.style.borderWidth = "10px";
-//             // gradeDivs.style.backgroundColor = "#474747";
-//             //     gradeDivs.addEventListener("onmouseover", function () {
-//             //         alert();
-//             //         gradeDivs.style.backgroundColor = "#474747";
-//             //     });
-//             //     gradeDivs.addEventListener("onmouseleave", function () {
-//             //         gradeDivs.style.backgroundColor = "blue";
-//             //     });
-//         }
+            title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
+            let gradeDivs = document.getElementsByClassName(
+                " gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed"
+            )[i] as HTMLElement;
+            gradeDivs.style.borderRadius = "10px";
+            // gradeDivs.style.borderWidth = "10px";
+            // gradeDivs.style.backgroundColor = "#474747";
+            //     gradeDivs.addEventListener("onmouseover", function () {
+            //         alert();
+            //         gradeDivs.style.backgroundColor = "#474747";
+            //     });
+            //     gradeDivs.addEventListener("onmouseleave", function () {
+            //         gradeDivs.style.backgroundColor = "blue";
+            //     });
+        }
 
-//         for (let i = 0; i < gradebookElms.length; i++) {
-//             let elm = gradebookElms[i] as HTMLElement;
-//             elm.style.display = "none";
-//         }
-//     }
-// }
-// gradeUpdate();
-// notePage();
-// function notePage() {
-//     if (window.location.href == "https://schoology.shschools.org/notes") {
-//         let title = document.getElementsByTagName(
-//             "title"
-//         )[0] as HTMLTitleElement;
-//         title.innerText = "Notes | Schoology";
+        for (let i = 0; i < gradebookElms.length; i++) {
+            let elm = gradebookElms[i] as HTMLElement;
+            elm.style.display = "none";
+        }
+    }
+}
+gradeUpdate();
+notePage();
+function notePage() {
+    if (window.location.href == "https://schoology.shschools.org/notes") {
+        let title = document.getElementsByTagName(
+            "title"
+        )[0] as HTMLTitleElement;
+        title.innerText = "Notes | Schoology";
 
-//         let text = localStorage.getItem("textSave");
+        let text = localStorage.getItem("textSave");
 
-//         document.getElementById("content-wrapper")?.remove();
+        document.getElementById("content-wrapper")?.remove();
 
-//         const div = document.createElement("textarea");
-//         const divstyle = div.style;
-//         divstyle.width = "1200px";
-//         divstyle.height = "600px";
-//         divstyle.borderRadius = "10px";
-//         div.id = "textarea";
-//         divstyle.position = "absolute";
-//         divstyle.top = "10%";
-//         divstyle.left = "10%";
-//         divstyle.padding = "15px";
-//         if (text) {
-//             div.value = text;
-//         }
-//         divstyle.fontSize = "30px";
-//         divstyle.zIndex = "100";
-//         // divstyle.fontSize = "12px";
-//         divstyle.fontFamily = "Roboto";
-//         document.getElementById("body")?.appendChild(div);
-//         div.addEventListener("change", function () {
-//             if (div) {
-//                 localStorage.setItem("textSave", div.value);
-//                 // alert(div.value);
-//             }
-//         });
-//     }
-// }
+        const div = document.createElement("textarea");
+        const divstyle = div.style;
+        divstyle.width = "1200px";
+        divstyle.height = "600px";
+        divstyle.borderRadius = "10px";
+        div.id = "textarea";
+        divstyle.position = "absolute";
+        divstyle.top = "10%";
+        divstyle.left = "10%";
+        divstyle.padding = "15px";
+        if (text) {
+            div.value = text;
+        }
+        divstyle.fontSize = "30px";
+        divstyle.zIndex = "100";
+        // divstyle.fontSize = "12px";
+        divstyle.fontFamily = "Roboto";
+        document.getElementById("body")?.appendChild(div);
+        div.addEventListener("change", function () {
+            if (div) {
+                localStorage.setItem("textSave", div.value);
+                // alert(div.value);
+            }
+        });
+    }
+}
 
 // notePage();
 
@@ -1408,13 +1412,13 @@ function checkBoxmaker() {
 //         alert("submited");
 //     }
 // });
-// let recentlyCompleted = document.getElementsByClassName(
-//     "refresh-button"
-// )[0] as HTMLButtonElement;
+let recentlyCompleted = document.getElementsByClassName(
+    "refresh-button"
+)[0] as HTMLButtonElement;
 
-// if (recentlyCompleted) {
-//     recentlyCompleted.click();
-// }
+if (recentlyCompleted) {
+    recentlyCompleted.click();
+}
 
 setTimeout(() => {
     // let RecentCompletelist = document.getElementsByClassName(

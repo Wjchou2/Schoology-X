@@ -1,6 +1,6 @@
 {
   "name":"Schoology Pro",
-  "description":"Cool Stuff",
+  "description":"Schedule, Calender, Checklist and more",
   "version":"1.01",
   "manifest_version":3,
   "permissions": ["storage", "activeTab","tabs"],
@@ -15,10 +15,13 @@
   "48": "School.png",
   "128": "School.png"
 },
+
 "web_accessible_resources": [
+
   {
-    "resources": ["injected.js"],
+    "resources": ["injected.js","pdf.js","text.js","images/*"],
     "matches": ["<all_urls>"]
+    
   }
 ],
   "content_scripts": [
@@ -27,7 +30,7 @@
         "js": ["script.js","pdf.js"],
         "css": ["Injectedstyles.css"],
 
-        "run_at": "document_idle"
+        "run_at": "document_end"
 
       }
 

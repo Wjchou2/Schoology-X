@@ -10,17 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 console.log("injected :)");
 let ready = 0;
-// document.head.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-// `;
+// Create the script element
+// Append the script to the head
 let allowedURL = [
     "https://schoology.shschools.org/home",
     "https://schoology.shschools.org/home/",
     "https://schoology.shschools.org/",
     "https://schoology.shschools.org",
     "https://schoology.shschools.org/home/recent-activity",
+    "https://schoology.shschools.org/home/course-dashboard/*",
 ];
 let readMessage = [];
 let temp = localStorage.getItem("readMessage");
+let displayedAll = false;
 if (temp) {
     readMessage = JSON.parse(temp);
 }
@@ -283,11 +285,21 @@ function changeHeaderColor() {
         }
     }
     const IMG = IMGParent.firstElementChild;
-    // IMG.src = "https://i.ibb.co/v3Cc2mX/shs-removebg-preview.png"; // Replace this with the direct URL of the image
     IMG.src = "https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
     for (let i = 0; i < anchors.length; i++) {
         if (hasHeaderAncestor(anchors[i])) {
-            if (anchors[i].title !== "Home") {
+            if (anchors[i].title !== "Home" &&
+                anchors[i].innerHTML !== "My Courses" &&
+                anchors[i].role !== "menuitem") {
+                // alert(anchors[i].href);
+                if (anchors[i] !== null) {
+                    if (isBackgroundDark(originalColor)) {
+                        anchors[i].style.color = "#ffffff";
+                    }
+                    else {
+                        anchors[i].style.color = "#333333";
+                    }
+                }
                 anchors[i].style.backgroundColor = originalColor;
                 anchors[i].style.borderRadius = "10px";
                 anchors[i].addEventListener("mouseover", function () {
@@ -303,15 +315,20 @@ function changeHeaderColor() {
         if (hasHeaderAncestor(btns[i])) {
             btns[i].style.backgroundColor = originalColor;
             // if (originalColor !== "#ffffff") {
-            if (btns[i].firstElementChild !== null &&
-                btns[i].firstElementChild.role !== "menuitem") {
+            if (btns[i].firstElementChild !== null) {
                 if (isBackgroundDark(originalColor)) {
                     btns[i].firstElementChild.style.color =
                         "#ffffff";
+                    btns[i].style.color = "#ffffff";
+                    let gradebtn = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[2];
+                    gradebtn.style.color = "#ffffff";
                 }
                 else {
                     btns[i].firstElementChild.style.color =
                         "#333333";
+                    btns[i].style.color = "#333333";
+                    let gradebtn = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[2];
+                    gradebtn.style.color = "#333333";
                 }
             }
             btns[i].style.borderRadius = "10px";
@@ -323,32 +340,36 @@ function changeHeaderColor() {
             });
         }
     }
-    // Check for <li> elements
-    for (let i = 0; i < listItems.length; i++) {
-        if (hasHeaderAncestor(listItems[i])) {
-            const item = listItems[i].firstElementChild;
-            if (item) {
-                if (item.className !==
-                    "_2JX1Q _1tpub _3EZZc _1FFms nOK4_ sExtlink-processed") {
-                    listItems[i].style.borderRadius = "10px";
-                    listItems[i].style.backgroundColor = originalColor;
-                    if (isBackgroundDark(originalColor)) {
-                        listItems[i].firstElementChild.style.color = "#ffffff";
-                    }
-                    else {
-                        listItems[i].firstElementChild.style.color = "#333333";
-                    }
-                    listItems[i].addEventListener("mouseover", function () {
-                        listItems[i].style.backgroundColor = hoverColor;
-                    });
-                    listItems[i].addEventListener("mouseleave", function () {
-                        listItems[i].style.backgroundColor = originalColor;
-                    });
-                }
-                // Example: listItems[i].style.color = "red";
-            }
-        }
-    }
+    // for (let i = 0; i < listItems.length; i++) {
+    //     if (hasHeaderAncestor(listItems[i])) {
+    //         const item = listItems[i].firstElementChild as HTMLElement;
+    //         if (item) {
+    //             if (
+    //                 item.className !==
+    //                     "_2JX1Q _1tpub _3EZZc _1FFms nOK4_ sExtlink-processed" &&
+    //                 listItems[i].firstElementChild?.role !== "menuitem"
+    //             ) {
+    //                 listItems[i].style.borderRadius = "10px";
+    //                 listItems[i].style.backgroundColor = originalColor;
+    //                 if (isBackgroundDark(originalColor)) {
+    //                     // (
+    //                     //     listItems[i].firstElementChild as HTMLElement
+    //                     // ).style.color = "#ffffff";
+    //                 } else {
+    //                     (
+    //                         listItems[i].firstElementChild as HTMLElement
+    //                     ).style.color = "#333333";
+    //                 }
+    //                 listItems[i].addEventListener("mouseover", function () {
+    //                     listItems[i].style.backgroundColor = hoverColor;
+    //                 });
+    //                 listItems[i].addEventListener("mouseleave", function () {
+    //                     listItems[i].style.backgroundColor = originalColor;
+    //                 });
+    //             }
+    //         }
+    //     }
+    // }
 }
 function getClass() {
     const now = new Date();
@@ -385,78 +406,65 @@ function waitForElement(className, callback) {
     observer.observe(document.body, { childList: true, subtree: true });
 }
 changeHeaderColor();
+let debounce = true;
 function coursesChange() {
     setInterval(function () {
-        waitForElement(".Card-card-data-17m6S", function () {
-            const courses = document.getElementsByClassName("Card-card-data-17m6S");
-            const imgs = document.getElementsByClassName(" _2q19q Card-card-image-uV6Bu");
-            let ongoingClass = getClass();
-            // const coursediv = document.getElementsByClassName(
-            //     "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-            // )[0] as HTMLElement;
-            // const span = coursediv.firstElementChild as HTMLElement;
-            for (let i = 0; i < Math.min(courses.length, 7); i++) {
-                const courseDiv = courses[i];
-                let firstChild = courseDiv.firstElementChild;
-                let secondChild = firstChild === null || firstChild === void 0 ? void 0 : firstChild.firstElementChild;
-                let className = secondChild === null || secondChild === void 0 ? void 0 : secondChild.innerHTML;
-                if (className) {
-                    order[i] = className;
-                }
-                // ongoingClass = "Geometry Honors";
-                if (order.indexOf(ongoingClass) == i) {
-                    if (ongoingClass !== null) {
-                        courseDiv.style.backgroundColor = "#000000";
+        if (debounce) {
+            debounce = false;
+            waitForElement(".Card-card-data-17m6S", function () {
+                console.log("going");
+                const courses = document.getElementsByClassName("Card-card-data-17m6S");
+                const imgs = document.getElementsByClassName(" _2q19q Card-card-image-uV6Bu");
+                let ongoingClass = getClass();
+                // const coursediv = document.getElementsByClassName(
+                //     "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
+                // )[0] as HTMLElement;
+                // const span = coursediv.firstElementChild as HTMLElement;
+                for (let i = 0; i < Math.max(courses.length, 7); i++) {
+                    const courseDiv = courses[i];
+                    let firstChild = courseDiv.firstElementChild;
+                    let secondChild = firstChild === null || firstChild === void 0 ? void 0 : firstChild.firstElementChild;
+                    let className = secondChild === null || secondChild === void 0 ? void 0 : secondChild.innerHTML;
+                    if (className) {
+                        order[i] = className;
+                    }
+                    // ongoingClass = "Geometry Honors";
+                    if (order.indexOf(ongoingClass) == i) {
+                        if (ongoingClass !== null) {
+                            courseDiv.style.backgroundColor = "#000000";
+                        }
+                    }
+                    else {
+                        courseDiv.style.backgroundColor = "#ffffff";
+                    }
+                    courseDiv.style.borderRadius = "0  0 15px 15px";
+                    let imgelm = imgs[i];
+                    imgelm.style.borderRadius = " 15px 15px 0 0";
+                    const div = courseDiv.parentElement;
+                    div.parentElement.style.borderRadius =
+                        "15px";
+                    const div2 = courseDiv.parentElement;
+                    // const div3 = div2.parentElement as HTMLElement;
+                    if (div2) {
+                        imgelm.style.borderColor = "blue";
+                        courseDiv.style.borderColor = "blue";
+                        // ongoingClass = "Geometry Honors";
+                        // if (order.indexOf(ongoingClass) == i) {
+                        //     if (ongoingClass !== null) {
+                        //         div2.style.borderColor = "blue";
+                        //     }
+                        // }
+                        div2.style.borderRadius = "15px";
                     }
                 }
-                else {
-                    courseDiv.style.backgroundColor = "#ffffff";
-                }
-                courseDiv.style.borderRadius = "0  0 15px 15px";
-                let imgelm = imgs[i];
-                imgelm.style.borderRadius = " 15px 15px 0 0";
-                const div = courseDiv.parentElement;
-                div.parentElement.style.borderRadius = "15px";
-                const div2 = courseDiv.parentElement;
-                // const div3 = div2.parentElement as HTMLElement;
-                if (div2) {
-                    imgelm.style.borderColor = "blue";
-                    courseDiv.style.borderColor = "blue";
-                    // ongoingClass = "Geometry Honors";
-                    // if (order.indexOf(ongoingClass) == i) {
-                    //     if (ongoingClass !== null) {
-                    //         div2.style.borderColor = "blue";
-                    //     }
-                    // }
-                    div2.style.borderRadius = "15px";
-                }
-            }
-            localStorage.setItem("schedule", JSON.stringify(order));
-            createSchedule();
-        });
+                localStorage.setItem("schedule", JSON.stringify(order));
+                // createSchedule();
+                debounce = true;
+            });
+        }
     }, 100);
 }
-function redirect() {
-    // let repeated = 0;
-    // let interval = setInterval(function () {
-    //     repeated += 1;
-    //     if (repeated >= 10) {
-    //         clearInterval(interval);
-    //     }
-    // }, 20);
-    setTimeout(function () {
-        if (currentclass !== null && order[currentclass] !== "End") {
-            alert(`https://schoology.shschools.org/course/${courseIds[currentclass]}`);
-            window.location.replace(`https://schoology.shschools.org/course/${courseIds[currentclass]}`);
-        }
-        else {
-        }
-    }, 200);
-}
 coursesChange();
-document
-    .getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[0]
-    .addEventListener("click", redirect);
 function next(amount) {
     distancefromtoday += amount;
     // if (distancefromtoday == 6) {
@@ -466,7 +474,7 @@ function next(amount) {
         elem.parentNode.removeChild(elem);
     }
     if (allowedURL.includes(window.location.href)) {
-        createSchedule();
+        // createSchedule();
     }
 }
 function hovered(arrownum) {
@@ -495,7 +503,7 @@ if (allowedURL.includes(window.location.href)) {
                 var _a, _b, _c;
                 ready = 1;
                 checkBoxmaker();
-                createSchedule();
+                // createSchedule();
                 let p = document.createElement("p");
                 p.innerHTML = "";
                 p.id = "progress";
@@ -554,11 +562,12 @@ function createSchedule() {
             const divstyle = div.style;
             divstyle.width = "100px";
             div.id = "calender";
+            divstyle.zIndex = "0";
             divstyle.height = "350px";
             divstyle.backgroundColor = "#ffffff";
             divstyle.position = "absolute";
             div.className = "todo todo-wrapper";
-            divstyle.top = "6.1%";
+            divstyle.top = "12.5rem";
             divstyle.left = "2%";
             divstyle.padding = "15px";
             divstyle.textAlign = "";
@@ -622,27 +631,6 @@ function createSchedule() {
                         if (period.day === day) {
                             if (period.name !== "End") {
                                 periodCount += 1;
-                                // if (save2) {
-                                //     print;
-                                //     if (save2.find(period.name)) {
-                                //     }
-                                // }
-                                // let input = document.createElement("select");
-                                // // input.type = "select";
-                                // input.style.width = "40px";
-                                // for (let i = 0; i < 5; i++) {
-                                //     let option = document.createElement("option");
-                                //     option.innerHTML = String(i);
-                                //     input.appendChild(option);
-                                // }
-                                // input.style.height = "22px";
-                                // input.style.borderRadius = "10px";
-                                // input.style.left = "80px";
-                                // input.style.top = periodCount * 50 - periodCount + 40 + "px";
-                                // input.style.position = "absolute";
-                                // input.style.fontSize = "10px";
-                                // input.className = "progressCheck2";
-                                // div.appendChild(input);
                                 let startTime = "";
                                 if (period.time.hour > 12) {
                                     startTime =
@@ -733,7 +721,7 @@ function createSchedule() {
             //     .replace(/â€/g, '"') // Replace the closing quotation marks
             //     .replace(/â€™/g, "'"); // Replace the apostrophe
             // div.innerHTML += `<br/><span style="font-size:10px">${todayQuote}</span>`;
-            const container = document.getElementById("container");
+            const container = document.getElementById("body");
             if (container) {
                 container.appendChild(div);
                 // container.appendChild(btn);
@@ -744,11 +732,6 @@ function createSchedule() {
     });
 }
 // }
-function crash() {
-    for (let i = 0; i < 5; i++) {
-        window.location.reload();
-    }
-}
 function changeAmount() {
     let bar = document.getElementById("progress");
     if (bar) {
@@ -799,23 +782,97 @@ function changeAmount() {
         bar.innerHTML = `${checks}/${progressCheck.length}`;
     }
 }
+let div = document.getElementById("upcoming-events");
+if (div) {
+    div.style.display = "none";
+}
+// waitForElement(".like-btn.clickable", function () {
+//     let arr = document.getElementsByClassName("like-btn clickable");
+//     console.log(arr.length);
+//     for (let i = 0; i < arr.length; i++) {
+//         setTimeout(function () {
+//             let element = arr[i];
+//             if (element.firstElementChild?.innerHTML !== "Unlike") {
+//                 (element as HTMLButtonElement).click();
+//                 console.log(element.firstElementChild);
+//             }
+//         }, i * 500);
+//     }
+// });
+document.getElementsByClassName("typography-button-primary-loader-button-3107419752")[0];
 function checkBoxmaker() {
     waitForElement(".upcoming-event.upcoming-event-block.course-event", function () {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-        let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
-        console.log("hi");
-        for (let j = 0; j < upcoming.length; j++) {
-            console.log(upcoming[j].getElementsByTagName("span")[0]
-                .firstElementChild);
-            if (upcoming[j].className.includes("hidden-important")) {
-                if (upcoming[j].getElementsByTagName("span")[0]
-                    .firstElementChild.src ==
-                    "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/error_outline.png") {
-                    let newClass = upcoming[j].className;
-                    newClass = newClass.replace("hidden-important", "");
-                    upcoming[j].className = newClass;
-                }
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        let progressCheck = document.getElementsByClassName("progressCheck");
+        // Convert the HTMLCollection to an array and iterate over it
+        Array.from(progressCheck).forEach((element) => {
+            element.remove();
+        });
+        let progressCheckLabel = document.getElementsByClassName("progressCheckLabel");
+        // Convert the HTMLCollection to an array and iterate over it
+        Array.from(progressCheckLabel).forEach((element) => {
+            element.remove();
+        });
+        document.getElementsByClassName("submissions-title")[1].innerHTML =
+            "Due TODAY";
+        if (document.getElementById("todo") !== undefined) {
+            let todo = document.getElementById("todo");
+            if (displayedAll == false) {
+                todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
+                displayedAll = true;
             }
+            else {
+                todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a  s
+                   " class="active sExtlink-processed sEdgeMore-processed">Less</a></li>`;
+                displayedAll = false;
+            }
+            //dropdownthing
+            (_a = document
+                .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+                var _a;
+                if (document.getElementById("dropdownMore")) {
+                    (_a = document.getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.remove();
+                }
+                const img = document.createElement("img");
+                img.id = "ajaxloader";
+                img.className = "dropdowndiv2";
+                img.src =
+                    "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/ajax-loader.gif";
+                todo.appendChild(img);
+                setTimeout(() => {
+                    var _a, _b;
+                    (_a = document.getElementById("ajaxloader")) === null || _a === void 0 ? void 0 : _a.remove();
+                    let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
+                    if (document.getElementById("dropdown")) {
+                        (_b = document.getElementById("dropdown")) === null || _b === void 0 ? void 0 : _b.remove();
+                    }
+                    for (let j = 0; j < upcoming.length; j++) {
+                        if (upcoming[j].className.includes("hidden-important")) {
+                            let elm = upcoming[j].getElementsByTagName("img")[0];
+                            if (elm == undefined) {
+                                let newClass = upcoming[j].className;
+                                newClass = newClass.replace(" hidden-important", "");
+                                upcoming[j].className = newClass;
+                            }
+                        }
+                    }
+                    checkBoxmaker();
+                    changeAmount();
+                }, 500);
+            });
+        }
+        let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
+        for (let j = 0; j < upcoming.length; j++) {
+            // if (upcoming[j].className.includes("hidden-important")) {
+            //     let elm = upcoming[j].getElementsByTagName(
+            //         "img"
+            //     )[0] as HTMLImageElement;
+            //     if (elm == undefined) {
+            //         let newClass = upcoming[j].className;
+            //         newClass = newClass.replace(" hidden-important", "");
+            //         upcoming[j].className = newClass;
+            //     }
+            // }
             if (upcoming[j].className.includes("hidden-important") == false) {
                 let input = document.createElement("input");
                 input.type = "checkbox";
@@ -824,45 +881,39 @@ function checkBoxmaker() {
                 input.style.borderRadius = "20px";
                 input.style.left = "1120px";
                 input.style.position = "absolute";
-                input.className = "form-check";
                 input.className = "progressCheck";
-                //                     upcoming[j].innerHTML += `
-                // <div class="cntr">
-                //   <input id="cbx" class="hidden-xs-up" type="checkbox" />
-                //   <label class="cbx" for="cbx"></label>
-                //   <label class="lbl" for="cbx">Make Magic</label>
-                // </div>
-                // `;
                 let save = localStorage.getItem("saveState");
                 upcoming[j].appendChild(input);
-                let children = (_b = (_a = input.parentElement) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.children;
+                let children = (_c = (_b = input.parentElement) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.children;
                 let childrenchild = children[0].children[1].children;
                 if (childrenchild) {
                     for (let i = 0; i < childrenchild.length; i++) {
                         if (childrenchild[i].className ==
                             "sExtlink-processed") {
-                            let original = childrenchild[i].innerHTML;
+                            let elm = childrenchild[i];
+                            let original = elm.innerText;
                             let lower = original.toLowerCase();
                             if ((lower.includes("quiz") ||
-                                lower.includes("test") ||
+                                lower.includes(" test") ||
                                 lower.includes("minor") ||
                                 lower.includes("c4u") ||
                                 lower.includes("cfu") ||
                                 lower.includes("major")) &&
                                 lower.includes("hw") == false) {
                                 input.style.accentColor = "green";
-                                let elm = childrenchild[i];
                                 elm.style.color = "red";
                             }
-                            // let child = children[i].firstElementChild;
-                            // if (child) {
+                            // if (lower.includes("read")) {
+                            //     input.style.accentColor = "green";
+                            //     elm.style.color = "green";
+                            // }
                             if (save !== null) {
+                                let elm = childrenchild[i];
                                 saveState = JSON.parse(save);
-                                if (saveState[childrenchild[i].innerHTML] ==
-                                    true) {
+                                if (saveState[elm.innerText] == true) {
                                     input.checked = true;
-                                    childrenchild[i].innerHTML = `<s>${childrenchild[i].innerHTML}</s>`;
-                                    let child = (_e = (_d = (_c = childrenchild[i].parentElement) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.parentElement;
+                                    childrenchild[i].innerHTML = `<s>${elm.innerText}</s>`;
+                                    let child = (_f = (_e = (_d = childrenchild[i].parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.parentElement) === null || _f === void 0 ? void 0 : _f.parentElement;
                                     child.style.opacity = "0.8";
                                     let timout = setInterval(() => {
                                         if (deleteAsign == false) {
@@ -877,36 +928,41 @@ function checkBoxmaker() {
                                 }
                                 else {
                                     input.checked = false;
-                                    let child = (_h = (_g = (_f = childrenchild[i].parentElement) === null || _f === void 0 ? void 0 : _f.parentElement) === null || _g === void 0 ? void 0 : _g.parentElement) === null || _h === void 0 ? void 0 : _h.parentElement;
+                                    let child = (_j = (_h = (_g = childrenchild[i].parentElement) === null || _g === void 0 ? void 0 : _g.parentElement) === null || _h === void 0 ? void 0 : _h.parentElement) === null || _j === void 0 ? void 0 : _j.parentElement;
                                     child.style.opacity = "1";
                                     childrenchild[i].innerHTML = `${childrenchild[i].innerHTML.replace(/<\/?s>/g, "")}`;
                                 }
                             }
                         }
                         else if (childrenchild[i].tagName == "SPAN") {
-                            let duedate = (_j = childrenchild[i]) === null || _j === void 0 ? void 0 : _j.firstElementChild;
+                            let duedate = (_k = childrenchild[i]) === null || _k === void 0 ? void 0 : _k.firstElementChild;
                             let dateStr = duedate.innerText;
-                            let parsedDate = dateStr.replace(/\sat\s\d{1,2}:\d{2}\s[ap]m$/, "");
-                            let duedate2 = (_k = upcoming[j + 1].firstElementChild) === null || _k === void 0 ? void 0 : _k.children[0].children[1].children[1].firstElementChild;
-                            let parsedDate2 = "";
-                            if (duedate2) {
-                                let dateStr2 = duedate2.innerText;
-                                parsedDate2 = dateStr2.replace(/\sat\s\d{1,2}:\d{2}\s[ap]m$/, "");
-                            }
-                            if (parsedDate2 !== parsedDate &&
-                                parsedDate.includes("overdue") == false) {
-                                let newbreak = document.createElement("h4");
-                                // newbreak.className = "submissions-title";
-                                newbreak.id = "hiofhd";
-                                newbreak.innerHTML = parsedDate2;
-                                newbreak.style.position = "relative";
-                                newbreak.style.width = "350px";
-                                newbreak.style.borderBottom =
-                                    "2px solid #eaeaea";
-                                // newbreak.style.top += 50 + "px";
-                                // newbreak.className = "upcoming-event-block";
-                                // upcoming[j].appendChild(newbreak);
-                                upcoming[j].after(newbreak);
+                            let parsedDate = dateStr.replace(/at.*/, "");
+                            if (upcoming[j + 1] !== undefined &&
+                                !upcoming[j + 1].classList.contains("hidden-important")) {
+                                let duedate2 = (_l = upcoming[j + 1]
+                                    .firstElementChild) === null || _l === void 0 ? void 0 : _l.children[0].children[1].children[1].firstElementChild;
+                                let parsedDate2 = parsedDate;
+                                if (duedate2) {
+                                    let dateStr2 = duedate2.innerText;
+                                    parsedDate2 = dateStr2.replace(/at.*/, "");
+                                }
+                                if (parsedDate2 !== parsedDate &&
+                                    parsedDate.includes("overdue") == false) {
+                                    let newbreak = document.createElement("h4");
+                                    // newbreak.className = "submissions-title";
+                                    newbreak.className =
+                                        "progressCheckLabel";
+                                    newbreak.innerHTML = parsedDate2;
+                                    newbreak.style.position = "relative";
+                                    newbreak.style.width = "350px";
+                                    newbreak.style.borderBottom =
+                                        "2px solid #eaeaea";
+                                    // newbreak.style.top += 50 + "px";
+                                    // newbreak.className = "upcoming-event-block";
+                                    // upcoming[j].appendChild(newbreak);
+                                    upcoming[j].after(newbreak);
+                                }
                             }
                         }
                     }
@@ -920,14 +976,14 @@ function checkBoxmaker() {
                         for (let i = 0; i < childrenchild.length; i++) {
                             if (childrenchild[i].className ==
                                 "sExtlink-processed") {
-                                let original = childrenchild[i].innerHTML;
+                                // let original = childrenchild[i].innerHTML;
                                 // let child = children[i].firstElementChild;
                                 // if (child) {
+                                let elmchild = childrenchild[i];
                                 if (input.checked) {
-                                    saveState[childrenchild[i].innerHTML] =
-                                        true;
+                                    saveState[elmchild.innerText] = true;
                                     localStorage.setItem("saveState", JSON.stringify(saveState));
-                                    childrenchild[i].innerHTML = `<s>${childrenchild[i].innerHTML}</s>`;
+                                    childrenchild[i].innerHTML = `<s>${elmchild.innerText}</s>`;
                                     let child = (_e = (_d = (_c = childrenchild[i].parentElement) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.parentElement;
                                     child.style.opacity = "0.8";
                                     if (deleteAsign !== null &&
@@ -939,8 +995,7 @@ function checkBoxmaker() {
                                     let child = (_h = (_g = (_f = childrenchild[i].parentElement) === null || _f === void 0 ? void 0 : _f.parentElement) === null || _g === void 0 ? void 0 : _g.parentElement) === null || _h === void 0 ? void 0 : _h.parentElement;
                                     child.style.opacity = "1";
                                     childrenchild[i].innerHTML = `${childrenchild[i].innerHTML.replace(/<\/?s>/g, "")}`;
-                                    saveState[childrenchild[i].innerHTML] =
-                                        false;
+                                    saveState[elmchild.innerText] = false;
                                     localStorage.setItem("saveState", JSON.stringify(saveState));
                                 }
                             }
@@ -951,69 +1006,81 @@ function checkBoxmaker() {
         }
     });
 }
-function gradeUpdate() {
-    var _a;
-    if (window.location.href == "https://schoology.shschools.org/grades/grades") {
-        let gradebookElms = document.getElementsByClassName("gradebook-course-grades");
-        for (let i = 0; i < gradebookElms.length; i++) {
-            let elm = gradebookElms[i];
-            elm.style.display = "block";
-            let parent = document.getElementsByClassName("course-grade-value")[i];
-            let gradeElm = (_a = parent.firstChild) === null || _a === void 0 ? void 0 : _a.firstChild;
-            let grade = gradeElm.innerHTML;
-            let title = document.getElementsByClassName("gradebook-course-title")[i];
-            title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
-            let gradeDivs = document.getElementsByClassName(" gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed")[i];
-            gradeDivs.style.borderRadius = "10px";
-            // gradeDivs.style.borderWidth = "10px";
-            // gradeDivs.style.backgroundColor = "#474747";
-            //     gradeDivs.addEventListener("onmouseover", function () {
-            //         alert();
-            //         gradeDivs.style.backgroundColor = "#474747";
-            //     });
-            //     gradeDivs.addEventListener("onmouseleave", function () {
-            //         gradeDivs.style.backgroundColor = "blue";
-            //     });
-        }
-        for (let i = 0; i < gradebookElms.length; i++) {
-            let elm = gradebookElms[i];
-            elm.style.display = "none";
-        }
-    }
-}
-gradeUpdate();
-notePage();
-function notePage() {
-    var _a, _b;
-    if (window.location.href == "https://schoology.shschools.org/notes") {
-        let text = localStorage.getItem("textSave");
-        (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
-        const div = document.createElement("textarea");
-        const divstyle = div.style;
-        divstyle.width = "1200px";
-        divstyle.height = "600px";
-        divstyle.borderRadius = "10px";
-        div.id = "textarea";
-        divstyle.position = "absolute";
-        divstyle.top = "10%";
-        divstyle.left = "10%";
-        divstyle.padding = "15px";
-        if (text) {
-            div.value = text;
-        }
-        divstyle.fontSize = "30px";
-        divstyle.zIndex = "100";
-        // divstyle.fontSize = "12px";
-        divstyle.fontFamily = "Roboto";
-        (_b = document.getElementById("body")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
-        div.addEventListener("change", function () {
-            if (div) {
-                localStorage.setItem("textSave", div.value);
-                // alert(div.value);
-            }
-        });
-    }
-}
+// function gradeUpdate() {
+//     if (
+//         window.location.href == "https://schoology.shschools.org/grades/grades"
+//     ) {
+//         let gradebookElms = document.getElementsByClassName(
+//             "gradebook-course-grades"
+//         );
+//         for (let i = 0; i < gradebookElms.length; i++) {
+//             let elm = gradebookElms[i] as HTMLElement;
+//             elm.style.display = "block";
+//             let parent = document.getElementsByClassName("course-grade-value")[
+//                 i
+//             ] as HTMLSpanElement;
+//             let gradeElm = parent.firstChild?.firstChild as HTMLElement;
+//             let grade = gradeElm.innerHTML;
+//             let title = document.getElementsByClassName(
+//                 "gradebook-course-title"
+//             )[i];
+//             title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
+//             let gradeDivs = document.getElementsByClassName(
+//                 " gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed"
+//             )[i] as HTMLElement;
+//             gradeDivs.style.borderRadius = "10px";
+//             // gradeDivs.style.borderWidth = "10px";
+//             // gradeDivs.style.backgroundColor = "#474747";
+//             //     gradeDivs.addEventListener("onmouseover", function () {
+//             //         alert();
+//             //         gradeDivs.style.backgroundColor = "#474747";
+//             //     });
+//             //     gradeDivs.addEventListener("onmouseleave", function () {
+//             //         gradeDivs.style.backgroundColor = "blue";
+//             //     });
+//         }
+//         for (let i = 0; i < gradebookElms.length; i++) {
+//             let elm = gradebookElms[i] as HTMLElement;
+//             elm.style.display = "none";
+//         }
+//     }
+// }
+// gradeUpdate();
+// notePage();
+// function notePage() {
+//     if (window.location.href == "https://schoology.shschools.org/notes") {
+//         let title = document.getElementsByTagName(
+//             "title"
+//         )[0] as HTMLTitleElement;
+//         title.innerText = "Notes | Schoology";
+//         let text = localStorage.getItem("textSave");
+//         document.getElementById("content-wrapper")?.remove();
+//         const div = document.createElement("textarea");
+//         const divstyle = div.style;
+//         divstyle.width = "1200px";
+//         divstyle.height = "600px";
+//         divstyle.borderRadius = "10px";
+//         div.id = "textarea";
+//         divstyle.position = "absolute";
+//         divstyle.top = "10%";
+//         divstyle.left = "10%";
+//         divstyle.padding = "15px";
+//         if (text) {
+//             div.value = text;
+//         }
+//         divstyle.fontSize = "30px";
+//         divstyle.zIndex = "100";
+//         // divstyle.fontSize = "12px";
+//         divstyle.fontFamily = "Roboto";
+//         document.getElementById("body")?.appendChild(div);
+//         div.addEventListener("change", function () {
+//             if (div) {
+//                 localStorage.setItem("textSave", div.value);
+//                 // alert(div.value);
+//             }
+//         });
+//     }
+// }
 // notePage();
 // let url: any;
 // function loadFrame() {
@@ -1083,16 +1150,19 @@ function notePage() {
 //         alert("submited");
 //     }
 // });
-let recentlyCompleted = document.getElementsByClassName("refresh-button")[0];
-if (recentlyCompleted) {
-    recentlyCompleted.click();
-}
+// let recentlyCompleted = document.getElementsByClassName(
+//     "refresh-button"
+// )[0] as HTMLButtonElement;
+// if (recentlyCompleted) {
+//     recentlyCompleted.click();
+// }
 setTimeout(() => {
+    var _a, _b;
     // let RecentCompletelist = document.getElementsByClassName(
     //     "recently-completed-event"
     // );
-    var _a;
     let RecentCompletelist = document.getElementsByClassName("recently-completed-event");
+    let used = 0;
     for (let i = 0; i < RecentCompletelist.length; i++) {
         let elm = RecentCompletelist[i];
         let stored = localStorage.getItem("oldGrade");
@@ -1103,132 +1173,80 @@ setTimeout(() => {
         else {
             old = [];
         }
-        if (old.includes(elm.innerText) == false) {
-            let link = (_a = RecentCompletelist[i].firstElementChild) === null || _a === void 0 ? void 0 : _a.getElementsByTagName("span")[1].getElementsByTagName("a")[0];
+        let gradeBad = (_a = RecentCompletelist[i].getElementsByTagName("span")[5]
+            .firstElementChild) === null || _a === void 0 ? void 0 : _a.innerHTML;
+        if (old.includes(elm.innerText) == false && gradeBad !== "—") {
+            let link = (_b = RecentCompletelist[i].firstElementChild) === null || _b === void 0 ? void 0 : _b.getElementsByTagName("span")[1].getElementsByTagName("a")[0];
             link = link;
             old.push(elm.innerText);
             localStorage.setItem("oldGrade", JSON.stringify(old));
-            // let grade =
-            //     RecentCompletelist[i].getElementsByTagName("span")[5].innerHTML;
-            let grade = "";
+            let grade = null;
             let iframe = document.createElement("iframe");
             document.body.appendChild(iframe);
             // iframe.src = a[j].href;
             iframe.src = link.href;
             iframe.onload = () => {
                 if (iframe.contentDocument) {
-                    grade = iframe.contentDocument.getElementsByClassName("grading-grade")[0].innerText;
-                    iframe.remove();
-                    grade = grade.replace("Grade:", "").trim();
-                    let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${link.href}>${link.innerText}</a>`;
-                    let popupBanner = document.createElement("div");
-                    popupBanner.id = "popupBanner";
-                    popupBanner.innerHTML = message;
-                    popupBanner.style.top = `${20 + i * 100}px`;
-                    document.body.appendChild(popupBanner);
-                    setTimeout(() => {
-                        popupBanner.style.right = "20px";
-                    }, 100);
-                    setTimeout(() => {
-                        popupBanner.style.right = "-300px";
-                    }, 6000);
+                    grade = iframe.contentDocument.getElementsByClassName("grading-grade")[0];
+                    console.log(grade);
+                    if (grade !== undefined) {
+                        grade = grade.innerText;
+                        iframe.remove();
+                        grade = grade.replace("Grade:", "").trim();
+                        let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${link.href}>${link.innerText}</a>`;
+                        let popupBanner = document.createElement("div");
+                        popupBanner.id = "popupBanner";
+                        popupBanner.innerHTML = message;
+                        popupBanner.style.top = `${20 + used * 100}px`;
+                        used += 1;
+                        document.body.appendChild(popupBanner);
+                        setTimeout(() => {
+                            popupBanner.style.right = "20px";
+                        }, 100);
+                        setTimeout(() => {
+                            popupBanner.style.right = "-300px";
+                        }, 7000);
+                    }
+                    else {
+                        let src = iframe.src.replace("assignment", "assignments");
+                        iframe.src = src + "/mydocument";
+                        iframe.onload = () => {
+                            let content = iframe.contentDocument;
+                            if (content) {
+                                setTimeout(() => {
+                                    grade = content.getElementsByClassName("document-header-aside-graded-grade-3903705135")[0];
+                                    if (grade !== null) {
+                                        grade = grade.innerText;
+                                        iframe.remove();
+                                        grade = grade
+                                            .replace("Grade:", "")
+                                            .trim();
+                                        let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${link.href}>${link.innerText}</a>`;
+                                        let popupBanner = document.createElement("div");
+                                        popupBanner.id = "popupBanner";
+                                        popupBanner.innerHTML = message;
+                                        popupBanner.style.top = `${20 + used * 100}px`;
+                                        used += 1;
+                                        document.body.appendChild(popupBanner);
+                                        setTimeout(() => {
+                                            popupBanner.style.right = "20px";
+                                        }, 100);
+                                        setTimeout(() => {
+                                            popupBanner.style.right = "-300px";
+                                        }, 7000);
+                                    }
+                                }, 2000);
+                            }
+                        };
+                    }
                 }
             };
         }
     }
 }, 1000);
-// let bell = document.getElementsByClassName(
-//     "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-// )[6] as HTMLButtonElement;
-// bell.click();
-// let bellopup = document.getElementsByClassName(
-//     "_3Xw3k _2trRU j17AQ S42JQ _1Z0RM util-width-thirty-nine-1B-gb _1Z0RM D4hfr HeaderDropMenu-menu-border-3vo5S HeaderDropMenu-menu-position-top-1iEEN VSOiH _3RmDr fjQuT uQOmx"
-// )[0] as HTMLDivElement;
-// bellopup.style.opacity = "0";
-// const elements = document.getElementsByClassName(
-//     "_2qcpH _3ghFm _22tOa drGks xjR5v _1wP6w"
-// );
-// setTimeout(() => {
-//     for (let i = 0; i < elements.length; i++) {
-//         let elm = document.getElementsByClassName(
-//             "_2qcpH _3ghFm _22tOa drGks xjR5v _1wP6w"
-//         )[i] as HTMLSpanElement;
-//         // let elm = elements[i] as HTMLDivElement;
-//         if (elm.classList.contains("_2sW1K") == false) {
-//             let a = elm.getElementsByTagName("a");
-//             for (let j = 0; j < a.length; j++) {
-//                 setTimeout(() => {
-//                     if (
-//                         readMessage.includes(a[j].href) == false &&
-//                         elm.innerHTML.includes("A new grade was posted")
-//                     ) {
-//                         let iframe = document.createElement("iframe");
-//                         document.body.appendChild(iframe);
-//                         // iframe.src = a[j].href;
-//                         iframe.src = a[j].href;
-//                         readMessage.push(a[j].href);
-//                         localStorage.setItem(
-//                             "readMessage",
-//                             JSON.stringify(readMessage)
-//                         );
-//                         iframe.onload = () => {
-//                             if (iframe.contentDocument) {
-//                                 let grade = (
-//                                     iframe.contentDocument.getElementsByClassName(
-//                                         "grading-grade"
-//                                     )[0] as HTMLDivElement
-//                                 ).innerText;
-//                                 iframe.remove();
-//                                 grade = grade.replace("Grade:", "").trim();
-//                                 let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${
-//                                     elm.getElementsByTagName("a")[j].href
-//                                 }>${
-//                                     elm.getElementsByTagName("a")[j].innerText
-//                                 }</a>`;
-//                                 let popupBanner = document.createElement("div");
-//                                 popupBanner.id = "popupBanner";
-//                                 popupBanner.innerHTML = message;
-//                                 popupBanner.style.top = `${20 + j * 100}px`;
-//                                 document.body.appendChild(popupBanner);
-//                                 setTimeout(() => {
-//                                     popupBanner.style.right = "20px";
-//                                 }, 100);
-//                                 setTimeout(() => {
-//                                     popupBanner.style.right = "-300px";
-//                                 }, 6000);
-//                             }
-//                         };
-//                     }
-//                 }, j * 2000);
-//             }
-//         }
+// function logKey(e: any) {
+//     if (e.keyCode == "32") {
+//         alert();
 //     }
-//     bellopup.style.opacity = "1";
-//     bell.click();
-// }, 500);
-function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-// setCookie(
-//     "SESSc27f95b74fa0402376b3244aa389e9ac",
-//     getCookie("SESSc27f95b74fa0402376b3244aa389e9ac"),
-//     10
-// );
+// }
+// document.body.addEventListener("keyup", logKey);
