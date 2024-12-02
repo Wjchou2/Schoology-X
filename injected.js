@@ -10,8 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 console.log("injected :)");
 let ready = 0;
-// Create the script element
-// Append the script to the head
 let allowedURL = [
     "https://schoology.shschools.org/home",
     "https://schoology.shschools.org/home/",
@@ -36,7 +34,6 @@ function isBackgroundDark(hexColor) {
     // Return true if the background is dark (luminance < 128)
     return luminance < 128;
 }
-// Usage example
 let currentclass = null;
 let distancefromtoday = 0;
 let distancefromtodayWeeks = 0;
@@ -49,15 +46,6 @@ let order = [
     "", // 6
     "", // 7
     "End",
-];
-const courseIds = [
-    "7356990861",
-    "7356990931",
-    "7356990703",
-    "7356991016",
-    "7356990663",
-    "7356990984",
-    "7356990769",
 ];
 const Weekdays = [
     "Sunday",
@@ -172,7 +160,7 @@ volunteer_activism
     });
     clone.before(btn);
 }
-creatVolunteerBtn();
+// creatVolunteerBtn();
 function adjustBrightness(hexColor, percent) {
     // Ensure percent is between -100 and 100
     percent = Math.max(-100, Math.min(100, percent));
@@ -458,7 +446,7 @@ function coursesChange() {
                     }
                 }
                 localStorage.setItem("schedule", JSON.stringify(order));
-                // createSchedule();
+                createSchedule();
                 debounce = true;
             });
         }
@@ -474,7 +462,7 @@ function next(amount) {
         elem.parentNode.removeChild(elem);
     }
     if (allowedURL.includes(window.location.href)) {
-        // createSchedule();
+        createSchedule();
     }
 }
 function hovered(arrownum) {
@@ -503,7 +491,7 @@ if (allowedURL.includes(window.location.href)) {
                 var _a, _b, _c;
                 ready = 1;
                 checkBoxmaker();
-                // createSchedule();
+                createSchedule();
                 let p = document.createElement("p");
                 p.innerHTML = "";
                 p.id = "progress";
@@ -547,188 +535,181 @@ if (allowedURL.includes(window.location.href)) {
 }
 function createSchedule() {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        if (allowedURL.includes(window.location.href)) {
-            // let quote_list: any = [];
-            // await fetch("http://cs.shschools.org/kmo/quotes.txt")
-            //     .then((response) => response.text())
-            //     .then((data) => {
-            //         quote_list = data.split("\n");
-            //     });
-            const dateNow = new Date();
-            let dayNow = dateNow.getDate();
-            refresh();
-            const div = document.createElement("div");
-            const divstyle = div.style;
-            divstyle.width = "100px";
-            div.id = "calender";
-            divstyle.zIndex = "0";
-            divstyle.height = "350px";
-            divstyle.backgroundColor = "#ffffff";
-            divstyle.position = "absolute";
-            div.className = "todo todo-wrapper";
-            divstyle.top = "12.5rem";
-            divstyle.left = "2%";
-            divstyle.padding = "15px";
-            divstyle.textAlign = "";
-            divstyle.fontSize = "12px";
-            divstyle.fontFamily = "Roboto";
-            // const btn = document.createElement("button");
-            // const btnStyle = btn.style;
-            // btnStyle.width = "100px";
-            // btn.id = "notes";
-            // btn.innerHTML = "Notes";
-            // btnStyle.height = "30px";
-            // // btnStyle.backgroundColor = "#ffffff";
-            // btnStyle.position = "absolute";
-            // // btn.className = "todo todo-wrapper";
-            // btnStyle.top = "40%";
-            // btnStyle.left = "3%";
-            // btnStyle.padding = "15px";
-            // // btnStyle.textAlign = "";
-            // btnStyle.zIndex = "100";
-            // btnStyle.fontSize = "12px";
-            // btnStyle.fontFamily = "Roboto";
-            // btn.addEventListener("click", function () {
-            //     location.replace(`/${btn.id}`);
-            // });
-            let now = new Date();
-            now.setDate(now.getDate() + distancefromtoday);
-            const day = now.getDay();
-            const date = now.getDate();
-            const month = now.getMonth();
-            div.innerHTML = `<svg style="position:Relative; left:40px" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg><h2 style="position:Relative; left:10px">Schedule</h2>${Weekdays[day]} ${month + 1}/${date}`;
-            div.innerHTML +=
-                '<div style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:105px" onclick="next(1)" onmouseover="hovered(1)" onmouseleave="unhovered(1)"><svg  id="arrow1" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg></div>';
-            div.innerHTML +=
-                '<div   style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:5px" onclick="next(-1)" onmouseover="hovered(2)" onmouseleave="unhovered(2)"><svg id="arrow2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg></div>';
-            div.innerHTML += `<hr style="border-top: 1px solid #bbb;" class="solid"></br>`;
-            //working
-            let periodCount = 0;
-            // let save2 = {};
-            let save2 = localStorage.getItem("saveState2");
-            if (save2 !== null) {
-                if (JSON.parse(save2)) {
-                    save2 = JSON.parse(save2);
-                    localStorage.setItem("saveState2", JSON.stringify(save2));
-                }
-            }
-            // if (document.getElementById("calender") == null && order[0] !== "") {
-            let save3 = localStorage.getItem("schedule");
-            if (save3 !== null) {
-                order = JSON.parse(save3);
-                refresh();
-            }
-            if (order[0] !== "" || order == null) {
-                if (now.getDay() == 6 || now.getDay() == 0) {
-                    div.innerHTML +=
-                        " <h3 style='text-align:left'>Weekend! No Classes.<h3>";
-                }
-                else {
-                    let element = document.getElementById("calender");
-                    (_a = element === null || element === void 0 ? void 0 : element.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(element);
-                    for (const period of courses) {
-                        if (period.day === day) {
-                            if (period.name !== "End") {
-                                periodCount += 1;
-                                let startTime = "";
-                                if (period.time.hour > 12) {
-                                    startTime =
-                                        period.time.hour -
-                                            12 +
-                                            ":" +
-                                            period.time.min;
-                                    if (period.time.min == 0) {
-                                        startTime =
-                                            period.time.hour -
-                                                12 +
-                                                ":" +
-                                                period.time.min +
-                                                "0";
-                                    }
-                                }
-                                else {
-                                    startTime =
-                                        period.time.hour + ":" + period.time.min;
-                                    if (period.time.min == 0) {
-                                        startTime =
-                                            period.time.hour +
-                                                ":" +
-                                                period.time.min +
-                                                "0";
-                                    }
-                                }
-                                let endTime = "";
-                                if (period.time.hour + 1 > 12) {
-                                    endTime =
-                                        period.time.hour +
-                                            1 -
-                                            12 +
-                                            ":" +
-                                            period.time.min;
-                                    if (period.time.min == 0) {
-                                        endTime =
-                                            period.time.hour +
-                                                1 -
-                                                12 +
-                                                ":" +
-                                                period.time.min +
-                                                "0";
-                                    }
-                                }
-                                else {
-                                    endTime =
-                                        period.time.hour +
-                                            1 +
-                                            ":" +
-                                            period.time.min;
-                                    if (period.time.min == 0) {
-                                        endTime =
-                                            period.time.hour +
-                                                1 +
-                                                ":" +
-                                                period.time.min +
-                                                "0";
-                                    }
-                                }
-                                if (order[currentclass] == period.name) {
-                                    div.innerHTML += `
-    
-                    
-                        <span style='text-align:right'>${period.name}</span><br>(${startTime} - ${endTime})<br><br>
-                      `;
-                                }
-                                else {
-                                    div.innerHTML += `
-                    
-                        <b>${period.name} </b><br>(${startTime} - ${endTime})<br><br>
-                  `;
-                                }
-                            }
-                        }
-                    }
-                    divstyle.boxShadow = "0 1px 3px 0 rgba(0,0,0,.15)";
-                }
-            }
-            else {
-                div.innerHTML +=
-                    " <h3 style='text-align:left'>Schedule not saved, open course menu to load. Make sure your courses are ordered in the order you have them!<h3>";
-            }
-            // let quotesArr = quotes.split("\n");
-            // let todayQuote = quotesArr[dayNow];
-            // todayQuote = todayQuote
-            //     .replace(/â€œ/g, '"') // Replace the opening quotation marks
-            //     .replace(/â€/g, '"') // Replace the closing quotation marks
-            //     .replace(/â€™/g, "'"); // Replace the apostrophe
-            // div.innerHTML += `<br/><span style="font-size:10px">${todayQuote}</span>`;
-            const container = document.getElementById("body");
-            if (container) {
-                container.appendChild(div);
-                // container.appendChild(btn);
-            }
-            // div.innerHTML +=
-            //     "<button onclick='crash()' style=`width=50px;height=50px;`>hi</button>";
-        }
+        // if (allowedURL.includes(window.location.href)) {
+        //     // let quote_list: any = [];
+        //     // await fetch("http://cs.shschools.org/kmo/quotes.txt")
+        //     //     .then((response) => response.text())
+        //     //     .then((data) => {
+        //     //         quote_list = data.split("\n");
+        //     //     });
+        //     const dateNow = new Date();
+        //     let dayNow = dateNow.getDate();
+        //     refresh();
+        //     const div = document.createElement("div");
+        //     const divstyle = div.style;
+        //     divstyle.width = "100px";
+        //     div.id = "calender";
+        //     divstyle.zIndex = "0";
+        //     divstyle.height = "350px";
+        //     divstyle.backgroundColor = "#ffffff";
+        //     divstyle.position = "absolute";
+        //     div.className = "todo todo-wrapper";
+        //     divstyle.top = "12.5rem";
+        //     divstyle.left = "2%";
+        //     divstyle.padding = "15px";
+        //     divstyle.textAlign = "";
+        //     divstyle.fontSize = "12px";
+        //     divstyle.fontFamily = "Roboto";
+        //     // const btn = document.createElement("button");
+        //     // const btnStyle = btn.style;
+        //     // btnStyle.width = "100px";
+        //     // btn.id = "notes";
+        //     // btn.innerHTML = "Notes";
+        //     // btnStyle.height = "30px";
+        //     // // btnStyle.backgroundColor = "#ffffff";
+        //     // btnStyle.position = "absolute";
+        //     // // btn.className = "todo todo-wrapper";
+        //     // btnStyle.top = "40%";
+        //     // btnStyle.left = "3%";
+        //     // btnStyle.padding = "15px";
+        //     // // btnStyle.textAlign = "";
+        //     // btnStyle.zIndex = "100";
+        //     // btnStyle.fontSize = "12px";
+        //     // btnStyle.fontFamily = "Roboto";
+        //     // btn.addEventListener("click", function () {
+        //     //     location.replace(`/${btn.id}`);
+        //     // });
+        //     let now = new Date();
+        //     now.setDate(now.getDate() + distancefromtoday);
+        //     const day = now.getDay();
+        //     const date = now.getDate();
+        //     const month = now.getMonth();
+        //     div.innerHTML = `<svg style="position:Relative; left:40px" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg><h2 style="position:Relative; left:10px">Schedule</h2>${
+        //         Weekdays[day]
+        //     } ${month + 1}/${date}`;
+        //     div.innerHTML +=
+        //         '<div style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:105px" onclick="next(1)" onmouseover="hovered(1)" onmouseleave="unhovered(1)"><svg  id="arrow1" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg></div>';
+        //     div.innerHTML +=
+        //         '<div   style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:5px" onclick="next(-1)" onmouseover="hovered(2)" onmouseleave="unhovered(2)"><svg id="arrow2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg></div>';
+        //     div.innerHTML += `<hr style="border-top: 1px solid #bbb;" class="solid"></br>`;
+        //     //working
+        //     let periodCount = 0;
+        //     // let save2 = {};
+        //     let save2 = localStorage.getItem("saveState2");
+        //     if (save2 !== null) {
+        //         if (JSON.parse(save2)) {
+        //             save2 = JSON.parse(save2);
+        //             localStorage.setItem("saveState2", JSON.stringify(save2));
+        //         }
+        //     }
+        //     // if (document.getElementById("calender") == null && order[0] !== "") {
+        //     let save3 = localStorage.getItem("schedule");
+        //     if (save3 !== null) {
+        //         order = JSON.parse(save3);
+        //         refresh();
+        //     }
+        //     if (order[0] !== "" || order == null) {
+        //         if (now.getDay() == 6 || now.getDay() == 0) {
+        //             div.innerHTML +=
+        //                 " <h3 style='text-align:left'>Weekend! No Classes.<h3>";
+        //         } else {
+        //             let element = document.getElementById("calender");
+        //             element?.parentNode?.removeChild(element);
+        //             for (const period of courses) {
+        //                 if (period.day === day) {
+        //                     if (period.name !== "End") {
+        //                         periodCount += 1;
+        //                         let startTime = "";
+        //                         if (period.time.hour > 12) {
+        //                             startTime =
+        //                                 period.time.hour -
+        //                                 12 +
+        //                                 ":" +
+        //                                 period.time.min;
+        //                             if (period.time.min == 0) {
+        //                                 startTime =
+        //                                     period.time.hour -
+        //                                     12 +
+        //                                     ":" +
+        //                                     period.time.min +
+        //                                     "0";
+        //                             }
+        //                         } else {
+        //                             startTime =
+        //                                 period.time.hour + ":" + period.time.min;
+        //                             if (period.time.min == 0) {
+        //                                 startTime =
+        //                                     period.time.hour +
+        //                                     ":" +
+        //                                     period.time.min +
+        //                                     "0";
+        //                             }
+        //                         }
+        //                         let endTime = "";
+        //                         if (period.time.hour + 1 > 12) {
+        //                             endTime =
+        //                                 period.time.hour +
+        //                                 1 -
+        //                                 12 +
+        //                                 ":" +
+        //                                 period.time.min;
+        //                             if (period.time.min == 0) {
+        //                                 endTime =
+        //                                     period.time.hour +
+        //                                     1 -
+        //                                     12 +
+        //                                     ":" +
+        //                                     period.time.min +
+        //                                     "0";
+        //                             }
+        //                         } else {
+        //                             endTime =
+        //                                 period.time.hour +
+        //                                 1 +
+        //                                 ":" +
+        //                                 period.time.min;
+        //                             if (period.time.min == 0) {
+        //                                 endTime =
+        //                                     period.time.hour +
+        //                                     1 +
+        //                                     ":" +
+        //                                     period.time.min +
+        //                                     "0";
+        //                             }
+        //                         }
+        //                         if (order[currentclass] == period.name) {
+        //                             div.innerHTML += `
+        //                     <span style='text-align:right'>${period.name}</span><br>(${startTime} - ${endTime})<br><br>
+        //                   `;
+        //                         } else {
+        //                             div.innerHTML += `
+        //                     <b>${period.name} </b><br>(${startTime} - ${endTime})<br><br>
+        //               `;
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //             divstyle.boxShadow = "0 1px 3px 0 rgba(0,0,0,.15)";
+        //         }
+        //     } else {
+        //         div.innerHTML +=
+        //             " <h3 style='text-align:left'>Schedule not saved, open course menu to load. Make sure your courses are ordered in the order you have them!<h3>";
+        //     }
+        //     // let quotesArr = quotes.split("\n");
+        //     // let todayQuote = quotesArr[dayNow];
+        //     // todayQuote = todayQuote
+        //     //     .replace(/â€œ/g, '"') // Replace the opening quotation marks
+        //     //     .replace(/â€/g, '"') // Replace the closing quotation marks
+        //     //     .replace(/â€™/g, "'"); // Replace the apostrophe
+        //     // div.innerHTML += `<br/><span style="font-size:10px">${todayQuote}</span>`;
+        //     const container = document.getElementById("body");
+        //     if (container) {
+        //         container.appendChild(div);
+        //         // container.appendChild(btn);
+        //     }
+        //     // div.innerHTML +=
+        //     //     "<button onclick='crash()' style=`width=50px;height=50px;`>hi</button>";
+        // }
     });
 }
 // }
@@ -863,16 +844,6 @@ function checkBoxmaker() {
         }
         let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
         for (let j = 0; j < upcoming.length; j++) {
-            // if (upcoming[j].className.includes("hidden-important")) {
-            //     let elm = upcoming[j].getElementsByTagName(
-            //         "img"
-            //     )[0] as HTMLImageElement;
-            //     if (elm == undefined) {
-            //         let newClass = upcoming[j].className;
-            //         newClass = newClass.replace(" hidden-important", "");
-            //         upcoming[j].className = newClass;
-            //     }
-            // }
             if (upcoming[j].className.includes("hidden-important") == false) {
                 let input = document.createElement("input");
                 input.type = "checkbox";
@@ -1006,82 +977,70 @@ function checkBoxmaker() {
         }
     });
 }
-// function gradeUpdate() {
-//     if (
-//         window.location.href == "https://schoology.shschools.org/grades/grades"
-//     ) {
-//         let gradebookElms = document.getElementsByClassName(
-//             "gradebook-course-grades"
-//         );
-//         for (let i = 0; i < gradebookElms.length; i++) {
-//             let elm = gradebookElms[i] as HTMLElement;
-//             elm.style.display = "block";
-//             let parent = document.getElementsByClassName("course-grade-value")[
-//                 i
-//             ] as HTMLSpanElement;
-//             let gradeElm = parent.firstChild?.firstChild as HTMLElement;
-//             let grade = gradeElm.innerHTML;
-//             let title = document.getElementsByClassName(
-//                 "gradebook-course-title"
-//             )[i];
-//             title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
-//             let gradeDivs = document.getElementsByClassName(
-//                 " gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed"
-//             )[i] as HTMLElement;
-//             gradeDivs.style.borderRadius = "10px";
-//             // gradeDivs.style.borderWidth = "10px";
-//             // gradeDivs.style.backgroundColor = "#474747";
-//             //     gradeDivs.addEventListener("onmouseover", function () {
-//             //         alert();
-//             //         gradeDivs.style.backgroundColor = "#474747";
-//             //     });
-//             //     gradeDivs.addEventListener("onmouseleave", function () {
-//             //         gradeDivs.style.backgroundColor = "blue";
-//             //     });
-//         }
-//         for (let i = 0; i < gradebookElms.length; i++) {
-//             let elm = gradebookElms[i] as HTMLElement;
-//             elm.style.display = "none";
-//         }
-//     }
-// }
-// gradeUpdate();
-// notePage();
-// function notePage() {
-//     if (window.location.href == "https://schoology.shschools.org/notes") {
-//         let title = document.getElementsByTagName(
-//             "title"
-//         )[0] as HTMLTitleElement;
-//         title.innerText = "Notes | Schoology";
-//         let text = localStorage.getItem("textSave");
-//         document.getElementById("content-wrapper")?.remove();
-//         const div = document.createElement("textarea");
-//         const divstyle = div.style;
-//         divstyle.width = "1200px";
-//         divstyle.height = "600px";
-//         divstyle.borderRadius = "10px";
-//         div.id = "textarea";
-//         divstyle.position = "absolute";
-//         divstyle.top = "10%";
-//         divstyle.left = "10%";
-//         divstyle.padding = "15px";
-//         if (text) {
-//             div.value = text;
-//         }
-//         divstyle.fontSize = "30px";
-//         divstyle.zIndex = "100";
-//         // divstyle.fontSize = "12px";
-//         divstyle.fontFamily = "Roboto";
-//         document.getElementById("body")?.appendChild(div);
-//         div.addEventListener("change", function () {
-//             if (div) {
-//                 localStorage.setItem("textSave", div.value);
-//                 // alert(div.value);
-//             }
-//         });
-//     }
-// }
-// notePage();
+function gradeUpdate() {
+    var _a;
+    if (window.location.href == "https://schoology.shschools.org/grades/grades") {
+        let gradebookElms = document.getElementsByClassName("gradebook-course-grades");
+        for (let i = 0; i < gradebookElms.length; i++) {
+            let elm = gradebookElms[i];
+            elm.style.display = "block";
+            let parent = document.getElementsByClassName("course-grade-value")[i];
+            let gradeElm = (_a = parent.firstChild) === null || _a === void 0 ? void 0 : _a.firstChild;
+            let grade = gradeElm.innerHTML;
+            let title = document.getElementsByClassName("gradebook-course-title")[i];
+            title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
+            let gradeDivs = document.getElementsByClassName(" gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed")[i];
+            gradeDivs.style.borderRadius = "10px";
+            // gradeDivs.style.borderWidth = "10px";
+            // gradeDivs.style.backgroundColor = "#474747";
+            //     gradeDivs.addEventListener("onmouseover", function () {
+            //         alert();
+            //         gradeDivs.style.backgroundColor = "#474747";
+            //     });
+            //     gradeDivs.addEventListener("onmouseleave", function () {
+            //         gradeDivs.style.backgroundColor = "blue";
+            //     });
+        }
+        for (let i = 0; i < gradebookElms.length; i++) {
+            let elm = gradebookElms[i];
+            elm.style.display = "none";
+        }
+    }
+}
+gradeUpdate();
+function notePage() {
+    var _a, _b;
+    if (window.location.href == "https://schoology.shschools.org/notes") {
+        let title = document.getElementsByTagName("title")[0];
+        title.innerText = "Notes | Schoology";
+        let text = localStorage.getItem("textSave");
+        (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
+        const div = document.createElement("textarea");
+        const divstyle = div.style;
+        divstyle.width = "1200px";
+        divstyle.height = "600px";
+        divstyle.borderRadius = "10px";
+        div.id = "textarea";
+        divstyle.position = "absolute";
+        divstyle.top = "10%";
+        divstyle.left = "10%";
+        divstyle.padding = "15px";
+        if (text) {
+            div.value = text;
+        }
+        divstyle.fontSize = "30px";
+        divstyle.zIndex = "100";
+        // divstyle.fontSize = "12px";
+        divstyle.fontFamily = "Roboto";
+        (_b = document.getElementById("body")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
+        div.addEventListener("change", function () {
+            if (div) {
+                localStorage.setItem("textSave", div.value);
+            }
+        });
+    }
+}
+notePage();
 // let url: any;
 // function loadFrame() {
 //     let link = (
@@ -1150,17 +1109,12 @@ function checkBoxmaker() {
 //         alert("submited");
 //     }
 // });
-// let recentlyCompleted = document.getElementsByClassName(
-//     "refresh-button"
-// )[0] as HTMLButtonElement;
-// if (recentlyCompleted) {
-//     recentlyCompleted.click();
-// }
+let recentlyCompleted = document.getElementsByClassName("refresh-button")[0];
+if (recentlyCompleted) {
+    recentlyCompleted.click();
+}
 setTimeout(() => {
     var _a, _b;
-    // let RecentCompletelist = document.getElementsByClassName(
-    //     "recently-completed-event"
-    // );
     let RecentCompletelist = document.getElementsByClassName("recently-completed-event");
     let used = 0;
     for (let i = 0; i < RecentCompletelist.length; i++) {
