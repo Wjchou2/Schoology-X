@@ -328,43 +328,10 @@ function changeHeaderColor() {
             });
         }
     }
-    // for (let i = 0; i < listItems.length; i++) {
-    //     if (hasHeaderAncestor(listItems[i])) {
-    //         const item = listItems[i].firstElementChild as HTMLElement;
-    //         if (item) {
-    //             if (
-    //                 item.className !==
-    //                     "_2JX1Q _1tpub _3EZZc _1FFms nOK4_ sExtlink-processed" &&
-    //                 listItems[i].firstElementChild?.role !== "menuitem"
-    //             ) {
-    //                 listItems[i].style.borderRadius = "10px";
-    //                 listItems[i].style.backgroundColor = originalColor;
-    //                 if (isBackgroundDark(originalColor)) {
-    //                     // (
-    //                     //     listItems[i].firstElementChild as HTMLElement
-    //                     // ).style.color = "#ffffff";
-    //                 } else {
-    //                     (
-    //                         listItems[i].firstElementChild as HTMLElement
-    //                     ).style.color = "#333333";
-    //                 }
-    //                 listItems[i].addEventListener("mouseover", function () {
-    //                     listItems[i].style.backgroundColor = hoverColor;
-    //                 });
-    //                 listItems[i].addEventListener("mouseleave", function () {
-    //                     listItems[i].style.backgroundColor = originalColor;
-    //                 });
-    //             }
-    //         }
-    //     }
-    // }
 }
 function getClass() {
     const now = new Date();
-    // let now = new Date(2024, 10, 28, 9, 30, 10, 10);
-    // const currentDays: Day =
-    //     now.getDay() === 0 ? 5 : (now.getDay() as Day); // Adjust Sunday to be day 7
-    const currentDays = now.getDay(); // Adjust Sunday to be day 7
+    const currentDays = now.getDay();
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     let ongoingClass = getCurrentClass(currentDays, currentHour, currentMinute);
@@ -384,13 +351,12 @@ function waitForElement(className, callback) {
                 let element = document.querySelector(className);
                 if (element) {
                     callback(element);
-                    observer.disconnect(); // Stop observing once the element is found
+                    observer.disconnect();
                     break;
                 }
             }
         }
     });
-    // Start observing the document for changesschedule
     observer.observe(document.body, { childList: true, subtree: true });
 }
 changeHeaderColor();
@@ -404,10 +370,6 @@ function coursesChange() {
                 const courses = document.getElementsByClassName("Card-card-data-17m6S");
                 const imgs = document.getElementsByClassName(" _2q19q Card-card-image-uV6Bu");
                 let ongoingClass = getClass();
-                // const coursediv = document.getElementsByClassName(
-                //     "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-                // )[0] as HTMLElement;
-                // const span = coursediv.firstElementChild as HTMLElement;
                 for (let i = 0; i < Math.max(courses.length, 7); i++) {
                     const courseDiv = courses[i];
                     let firstChild = courseDiv.firstElementChild;
@@ -415,15 +377,6 @@ function coursesChange() {
                     let className = secondChild === null || secondChild === void 0 ? void 0 : secondChild.innerHTML;
                     if (className) {
                         order[i] = className;
-                    }
-                    // ongoingClass = "Geometry Honors";
-                    if (order.indexOf(ongoingClass) == i) {
-                        if (ongoingClass !== null) {
-                            courseDiv.style.backgroundColor = "#000000";
-                        }
-                    }
-                    else {
-                        courseDiv.style.backgroundColor = "#ffffff";
                     }
                     courseDiv.style.borderRadius = "0  0 15px 15px";
                     let imgelm = imgs[i];
@@ -436,12 +389,6 @@ function coursesChange() {
                     if (div2) {
                         imgelm.style.borderColor = "blue";
                         courseDiv.style.borderColor = "blue";
-                        // ongoingClass = "Geometry Honors";
-                        // if (order.indexOf(ongoingClass) == i) {
-                        //     if (ongoingClass !== null) {
-                        //         div2.style.borderColor = "blue";
-                        //     }
-                        // }
                         div2.style.borderRadius = "15px";
                     }
                 }
@@ -767,19 +714,6 @@ let div = document.getElementById("upcoming-events");
 if (div) {
     div.style.display = "none";
 }
-// waitForElement(".like-btn.clickable", function () {
-//     let arr = document.getElementsByClassName("like-btn clickable");
-//     console.log(arr.length);
-//     for (let i = 0; i < arr.length; i++) {
-//         setTimeout(function () {
-//             let element = arr[i];
-//             if (element.firstElementChild?.innerHTML !== "Unlike") {
-//                 (element as HTMLButtonElement).click();
-//                 console.log(element.firstElementChild);
-//             }
-//         }, i * 500);
-//     }
-// });
 document.getElementsByClassName("typography-button-primary-loader-button-3107419752")[0];
 function checkBoxmaker() {
     waitForElement(".upcoming-event.upcoming-event-block.course-event", function () {
@@ -947,9 +881,6 @@ function checkBoxmaker() {
                         for (let i = 0; i < childrenchild.length; i++) {
                             if (childrenchild[i].className ==
                                 "sExtlink-processed") {
-                                // let original = childrenchild[i].innerHTML;
-                                // let child = children[i].firstElementChild;
-                                // if (child) {
                                 let elmchild = childrenchild[i];
                                 if (input.checked) {
                                     saveState[elmchild.innerText] = true;
@@ -991,15 +922,6 @@ function gradeUpdate() {
             title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
             let gradeDivs = document.getElementsByClassName(" gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed")[i];
             gradeDivs.style.borderRadius = "10px";
-            // gradeDivs.style.borderWidth = "10px";
-            // gradeDivs.style.backgroundColor = "#474747";
-            //     gradeDivs.addEventListener("onmouseover", function () {
-            //         alert();
-            //         gradeDivs.style.backgroundColor = "#474747";
-            //     });
-            //     gradeDivs.addEventListener("onmouseleave", function () {
-            //         gradeDivs.style.backgroundColor = "blue";
-            //     });
         }
         for (let i = 0; i < gradebookElms.length; i++) {
             let elm = gradebookElms[i];
@@ -1009,30 +931,65 @@ function gradeUpdate() {
 }
 gradeUpdate();
 function notePage() {
-    var _a, _b;
+    var _a, _b, _c;
     if (window.location.href == "https://schoology.shschools.org/notes") {
         let title = document.getElementsByTagName("title")[0];
         title.innerText = "Notes | Schoology";
         let text = localStorage.getItem("textSave");
         (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
-        const div = document.createElement("textarea");
-        const divstyle = div.style;
-        divstyle.width = "1200px";
-        divstyle.height = "600px";
-        divstyle.borderRadius = "10px";
+        let div = document.createElement("textarea");
+        div.className = "textAreaNote";
         div.id = "textarea";
-        divstyle.position = "absolute";
-        divstyle.top = "10%";
-        divstyle.left = "10%";
-        divstyle.padding = "15px";
+        let isDragging = false;
+        let divheader = document.createElement("div");
+        function outputsize() {
+            divheader.style.width = div.offsetWidth - 30 + "px";
+        }
+        outputsize();
+        new ResizeObserver(outputsize).observe(div);
+        divheader.className = "divheader";
+        divheader.id = "divheader1";
+        divheader.addEventListener("mousedown", () => {
+            isDragging = true;
+        });
+        document.body.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+        let styles = localStorage.getItem("boxStyles");
+        if (styles) {
+            divheader.style.top = JSON.parse(styles)[0];
+            divheader.style.left = JSON.parse(styles)[1];
+            div.style.top = JSON.parse(styles)[2];
+            div.style.left = JSON.parse(styles)[3];
+            div.cols = JSON.parse(styles)[4];
+            div.rows = JSON.parse(styles)[5];
+        }
+        document.body.addEventListener("mousemove", function (e) {
+            var _a;
+            let width = (_a = document.getElementById("divheader1")) === null || _a === void 0 ? void 0 : _a.offsetWidth;
+            document.getElementById("divheader1");
+            console.log(div.cols);
+            localStorage.setItem("boxStyles", JSON.stringify([
+                divheader.style.top,
+                divheader.style.left,
+                div.style.top,
+                div.style.left,
+                div.cols,
+                div.rows,
+            ]));
+            // console.log(width.slice(width.length - 2, width.length));
+            if (isDragging) {
+                div.style.left = `${e.pageX - Number(div.offsetWidth) / 2}px`;
+                div.style.top = `${e.pageY + 40}px`;
+                divheader.style.left = `${e.pageX - Number(divheader.offsetWidth) / 2}px`;
+                divheader.style.top = `${e.pageY - Number(divheader.offsetHeight) / 2}px`;
+            }
+        });
         if (text) {
             div.value = text;
         }
-        divstyle.fontSize = "30px";
-        divstyle.zIndex = "100";
-        // divstyle.fontSize = "12px";
-        divstyle.fontFamily = "Roboto";
         (_b = document.getElementById("body")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
+        (_c = document.getElementById("body")) === null || _c === void 0 ? void 0 : _c.appendChild(divheader);
         div.addEventListener("change", function () {
             if (div) {
                 localStorage.setItem("textSave", div.value);
@@ -1199,8 +1156,10 @@ setTimeout(() => {
     }
 }, 1000);
 // function logKey(e: any) {
-//     if (e.keyCode == "32") {
+//     if (e.keyCode == "91") {
+//         if (e.keyCode == "91") {
 //         alert();
+//         }
 //     }
 // }
-// document.body.addEventListener("keyup", logKey);
+// document.body.addEventListener("down", logKey);

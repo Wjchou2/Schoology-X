@@ -1,5 +1,5 @@
 let url;
-
+let link;
 function loadFrame() {
     let link = document.getElementsByClassName("attachments-file-name")[0]
         .firstElementChild.href;
@@ -17,7 +17,7 @@ function loadFrame() {
 }
 let docx = document.getElementsByClassName("attachments-file-name")[0];
 if (docx) {
-    let link = docx.firstElementChild.href;
+    link = docx.firstElementChild.href;
 }
 
 if (window.location.href.includes("materials/gp") && !link.includes(".docx")) {

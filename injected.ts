@@ -388,46 +388,10 @@ function changeHeaderColor() {
             });
         }
     }
-
-    // for (let i = 0; i < listItems.length; i++) {
-    //     if (hasHeaderAncestor(listItems[i])) {
-    //         const item = listItems[i].firstElementChild as HTMLElement;
-    //         if (item) {
-    //             if (
-    //                 item.className !==
-    //                     "_2JX1Q _1tpub _3EZZc _1FFms nOK4_ sExtlink-processed" &&
-    //                 listItems[i].firstElementChild?.role !== "menuitem"
-    //             ) {
-    //                 listItems[i].style.borderRadius = "10px";
-    //                 listItems[i].style.backgroundColor = originalColor;
-    //                 if (isBackgroundDark(originalColor)) {
-    //                     // (
-    //                     //     listItems[i].firstElementChild as HTMLElement
-    //                     // ).style.color = "#ffffff";
-    //                 } else {
-    //                     (
-    //                         listItems[i].firstElementChild as HTMLElement
-    //                     ).style.color = "#333333";
-    //                 }
-    //                 listItems[i].addEventListener("mouseover", function () {
-    //                     listItems[i].style.backgroundColor = hoverColor;
-    //                 });
-    //                 listItems[i].addEventListener("mouseleave", function () {
-    //                     listItems[i].style.backgroundColor = originalColor;
-    //                 });
-    //             }
-    //         }
-    //     }
-    // }
 }
 function getClass() {
     const now = new Date();
-    // let now = new Date(2024, 10, 28, 9, 30, 10, 10);
-
-    // const currentDays: Day =
-    //     now.getDay() === 0 ? 5 : (now.getDay() as Day); // Adjust Sunday to be day 7
-
-    const currentDays: Day = now.getDay() as Day; // Adjust Sunday to be day 7
+    const currentDays: Day = now.getDay() as Day;
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     let ongoingClass: any = getCurrentClass(
@@ -435,7 +399,6 @@ function getClass() {
         currentHour,
         currentMinute
     );
-
     return ongoingClass;
 }
 function waitForElement(className: string, callback: Function) {
@@ -453,14 +416,13 @@ function waitForElement(className: string, callback: Function) {
                 let element = document.querySelector(className);
                 if (element) {
                     callback(element);
-                    observer.disconnect(); // Stop observing once the element is found
+                    observer.disconnect();
                     break;
                 }
             }
         }
     });
 
-    // Start observing the document for changesschedule
     observer.observe(document.body, { childList: true, subtree: true });
 }
 changeHeaderColor();
@@ -481,11 +443,6 @@ function coursesChange() {
                 );
 
                 let ongoingClass = getClass();
-                // const coursediv = document.getElementsByClassName(
-                //     "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-                // )[0] as HTMLElement;
-
-                // const span = coursediv.firstElementChild as HTMLElement;
 
                 for (let i = 0; i < Math.max(courses.length, 7); i++) {
                     const courseDiv = courses[i] as HTMLElement;
@@ -494,14 +451,6 @@ function coursesChange() {
                     let className = secondChild?.innerHTML;
                     if (className) {
                         order[i] = className;
-                    }
-                    // ongoingClass = "Geometry Honors";
-                    if (order.indexOf(ongoingClass) == i) {
-                        if (ongoingClass !== null) {
-                            courseDiv.style.backgroundColor = "#000000";
-                        }
-                    } else {
-                        courseDiv.style.backgroundColor = "#ffffff";
                     }
 
                     courseDiv.style.borderRadius = "0  0 15px 15px";
@@ -519,12 +468,6 @@ function coursesChange() {
                         imgelm.style.borderColor = "blue";
 
                         courseDiv.style.borderColor = "blue";
-                        // ongoingClass = "Geometry Honors";
-                        // if (order.indexOf(ongoingClass) == i) {
-                        //     if (ongoingClass !== null) {
-                        //         div2.style.borderColor = "blue";
-                        //     }
-                        // }
 
                         div2.style.borderRadius = "15px";
                     }
@@ -580,9 +523,7 @@ if (allowedURL.includes(window.location.href)) {
             clearInterval(interval);
             setTimeout(function () {
                 ready = 1;
-
                 checkBoxmaker();
-
                 createSchedule();
                 let p = document.createElement("p");
                 p.innerHTML = "";
@@ -880,20 +821,7 @@ let div = document.getElementById("upcoming-events") as HTMLDivElement;
 if (div) {
     div.style.display = "none";
 }
-// waitForElement(".like-btn.clickable", function () {
-//     let arr = document.getElementsByClassName("like-btn clickable");
-//     console.log(arr.length);
 
-//     for (let i = 0; i < arr.length; i++) {
-//         setTimeout(function () {
-//             let element = arr[i];
-//             if (element.firstElementChild?.innerHTML !== "Unlike") {
-//                 (element as HTMLButtonElement).click();
-//                 console.log(element.firstElementChild);
-//             }
-//         }, i * 500);
-//     }
-// });
 document.getElementsByClassName(
     "typography-button-primary-loader-button-3107419752"
 )[0];
@@ -1134,11 +1062,6 @@ function checkBoxmaker() {
                                     childrenchild[i].className ==
                                     "sExtlink-processed"
                                 ) {
-                                    // let original = childrenchild[i].innerHTML;
-
-                                    // let child = children[i].firstElementChild;
-
-                                    // if (child) {
                                     let elmchild = childrenchild[
                                         i
                                     ] as HTMLParagraphElement;
@@ -1217,15 +1140,6 @@ function gradeUpdate() {
                 " gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed"
             )[i] as HTMLElement;
             gradeDivs.style.borderRadius = "10px";
-            // gradeDivs.style.borderWidth = "10px";
-            // gradeDivs.style.backgroundColor = "#474747";
-            //     gradeDivs.addEventListener("onmouseover", function () {
-            //         alert();
-            //         gradeDivs.style.backgroundColor = "#474747";
-            //     });
-            //     gradeDivs.addEventListener("onmouseleave", function () {
-            //         gradeDivs.style.backgroundColor = "blue";
-            //     });
         }
 
         for (let i = 0; i < gradebookElms.length; i++) {
@@ -1243,27 +1157,73 @@ function notePage() {
         title.innerText = "Notes | Schoology";
 
         let text = localStorage.getItem("textSave");
-
         document.getElementById("content-wrapper")?.remove();
-
-        const div = document.createElement("textarea");
-        const divstyle = div.style;
-        divstyle.width = "1200px";
-        divstyle.height = "600px";
-        divstyle.borderRadius = "10px";
+        let div = document.createElement("textarea");
+        div.className = "textAreaNote";
         div.id = "textarea";
-        divstyle.position = "absolute";
-        divstyle.top = "10%";
-        divstyle.left = "10%";
-        divstyle.padding = "15px";
+        let isDragging = false;
+
+        let divheader = document.createElement("div");
+        function outputsize() {
+            divheader.style.width = div.offsetWidth - 30 + "px";
+        }
+        outputsize();
+
+        new ResizeObserver(outputsize).observe(div);
+        divheader.className = "divheader";
+        divheader.id = "divheader1";
+        divheader.addEventListener("mousedown", () => {
+            isDragging = true;
+        });
+        document.body.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+        let styles = localStorage.getItem("boxStyles");
+        if (styles) {
+            divheader.style.top = JSON.parse(styles)[0];
+
+            divheader.style.left = JSON.parse(styles)[1];
+            div.style.top = JSON.parse(styles)[2];
+            div.style.left = JSON.parse(styles)[3];
+            div.cols = JSON.parse(styles)[4];
+            div.rows = JSON.parse(styles)[5];
+        }
+        document.body.addEventListener("mousemove", function (e) {
+            let width = document.getElementById("divheader1")?.offsetWidth;
+            document.getElementById("divheader1");
+
+            console.log(div.cols);
+            localStorage.setItem(
+                "boxStyles",
+                JSON.stringify([
+                    divheader.style.top,
+                    divheader.style.left,
+                    div.style.top,
+                    div.style.left,
+                    div.cols,
+                    div.rows,
+                ])
+            );
+
+            // console.log(width.slice(width.length - 2, width.length));
+            if (isDragging) {
+                div.style.left = `${e.pageX - Number(div.offsetWidth) / 2}px`;
+                div.style.top = `${e.pageY + 40}px`;
+                divheader.style.left = `${
+                    e.pageX - Number(divheader.offsetWidth) / 2
+                }px`;
+                divheader.style.top = `${
+                    e.pageY - Number(divheader.offsetHeight) / 2
+                }px`;
+            }
+        });
         if (text) {
             div.value = text;
         }
-        divstyle.fontSize = "30px";
-        divstyle.zIndex = "100";
-        // divstyle.fontSize = "12px";
-        divstyle.fontFamily = "Roboto";
+
         document.getElementById("body")?.appendChild(div);
+        document.getElementById("body")?.appendChild(divheader);
+
         div.addEventListener("change", function () {
             if (div) {
                 localStorage.setItem("textSave", div.value);
@@ -1471,8 +1431,11 @@ setTimeout(() => {
 }, 1000);
 
 // function logKey(e: any) {
-//     if (e.keyCode == "32") {
+//     if (e.keyCode == "91") {
+//         if (e.keyCode == "91") {
+
 //         alert();
+//         }
 //     }
 // }
-// document.body.addEventListener("keyup", logKey);
+// document.body.addEventListener("down", logKey);
