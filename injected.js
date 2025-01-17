@@ -9,6 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 console.log("injected :)");
+document.head.innerHTML += `<html manifest="offline_book.manifest">
+`;
 let ready = 0;
 let allowedURL = [
     "https://schoology.shschools.org/home",
@@ -16,7 +18,6 @@ let allowedURL = [
     "https://schoology.shschools.org/",
     "https://schoology.shschools.org",
     "https://schoology.shschools.org/home/recent-activity",
-    "https://schoology.shschools.org/home/course-dashboard/*",
 ];
 let readMessage = [];
 let temp = localStorage.getItem("readMessage");
@@ -151,16 +152,15 @@ function creatVolunteerBtn() {
     let clone = document.getElementsByClassName("_24avl _3Rh90 _349XD")[1];
     let btn = document.createElement("button");
     btn.className = "volunteerBtn";
-    document.head.innerHTML += `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=volunteer_activism" />`;
+    document.head.innerHTML += `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check_circle" />`;
     btn.innerHTML = `<span class="material-symbols-outlined">
-volunteer_activism
-</span>`;
+check_circle</span>`;
     btn.addEventListener("click", function () {
-        window.open("https://app.mobileserve.com/app/#/");
+        window.open("https://gunn.one/grades");
     });
     clone.before(btn);
 }
-// creatVolunteerBtn();
+creatVolunteerBtn();
 function adjustBrightness(hexColor, percent) {
     // Ensure percent is between -100 and 100
     percent = Math.max(-100, Math.min(100, percent));
@@ -366,7 +366,6 @@ function coursesChange() {
         if (debounce) {
             debounce = false;
             waitForElement(".Card-card-data-17m6S", function () {
-                console.log("going");
                 const courses = document.getElementsByClassName("Card-card-data-17m6S");
                 const imgs = document.getElementsByClassName(" _2q19q Card-card-image-uV6Bu");
                 let ongoingClass = getClass();
@@ -443,38 +442,12 @@ if (allowedURL.includes(window.location.href)) {
                 p.innerHTML = "";
                 p.id = "progress";
                 (_a = document.getElementById("todo")) === null || _a === void 0 ? void 0 : _a.appendChild(p);
-                p.style.position = "absolute";
-                p.style.top = "80px";
-                p.style.left = "95%";
-                p.style.fontSize = "16px";
                 let div = document.createElement("div");
                 div.id = "myProgress";
                 (_b = document.getElementById("todo")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
-                div.style.position = "absolute";
-                div.style.top = "75px";
-                div.style.left = "75%";
-                div.style.width = "0%";
-                div.style.height = "22px";
-                div.style.borderRadius = "10px";
-                div.style.backgroundColor = "#0677bb";
-                div.style.textAlign = "center";
-                div.style.margin = "auto";
-                div.style.color = "white";
-                // div.style.fontSize = "16px";
-                div.style.fontSizeAdjust = "0.6";
-                div.style.padding = "2px";
                 let div2 = document.createElement("div");
                 div2.id = "myProgressFrame";
                 (_c = document.getElementById("todo")) === null || _c === void 0 ? void 0 : _c.appendChild(div2);
-                div2.style.position = "absolute";
-                div2.style.top = "75px";
-                div2.style.left = "75%";
-                div2.style.width = "200px";
-                div2.style.height = "22px";
-                div2.style.borderRadius = "10px";
-                div2.style.borderWidth = "2px";
-                div2.style.borderStyle = "solid";
-                // div2.style.backgroundColor = "#0677bb";
                 changeAmount();
             }, 0);
         }
@@ -717,7 +690,7 @@ if (div) {
 document.getElementsByClassName("typography-button-primary-loader-button-3107419752")[0];
 function checkBoxmaker() {
     waitForElement(".upcoming-event.upcoming-event-block.course-event", function () {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         let progressCheck = document.getElementsByClassName("progressCheck");
         // Convert the HTMLCollection to an array and iterate over it
         Array.from(progressCheck).forEach((element) => {
@@ -728,65 +701,74 @@ function checkBoxmaker() {
         Array.from(progressCheckLabel).forEach((element) => {
             element.remove();
         });
-        document.getElementsByClassName("submissions-title")[1].innerHTML =
-            "Due TODAY";
-        if (document.getElementById("todo") !== undefined) {
-            let todo = document.getElementById("todo");
-            if (displayedAll == false) {
-                todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
-                displayedAll = true;
-            }
-            else {
-                todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a  s
-                   " class="active sExtlink-processed sEdgeMore-processed">Less</a></li>`;
-                displayedAll = false;
-            }
-            //dropdownthing
-            (_a = document
-                .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
-                var _a;
-                if (document.getElementById("dropdownMore")) {
-                    (_a = document.getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.remove();
+        let buttonShow = false;
+        // document.getElementsByClassName("submissions-title")[1].innerHTML =
+        //     "Due TODAY";
+        let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
+        for (let j = 0; j < upcoming.length; j++) {
+            if (upcoming[j].className.includes("hidden-important")) {
+                let elm = upcoming[j].getElementsByTagName("img")[0];
+                if (elm == undefined) {
+                    buttonShow = true;
                 }
-                const img = document.createElement("img");
-                img.id = "ajaxloader";
-                img.className = "dropdowndiv2";
-                img.src =
-                    "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/ajax-loader.gif";
-                todo.appendChild(img);
-                setTimeout(() => {
-                    var _a, _b;
-                    (_a = document.getElementById("ajaxloader")) === null || _a === void 0 ? void 0 : _a.remove();
-                    let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
-                    if (document.getElementById("dropdown")) {
-                        (_b = document.getElementById("dropdown")) === null || _b === void 0 ? void 0 : _b.remove();
+            }
+        }
+        if (buttonShow) {
+            if (document.getElementById("todo") !== undefined) {
+                let todo = document.getElementById("todo");
+                if (displayedAll == false) {
+                    todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
+                    displayedAll = true;
+                }
+                else {
+                    todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
+                 class="active sExtlink-processed sEdgeMore-processed">Less</a></li>`;
+                    displayedAll = false;
+                }
+                //dropdownthing
+                (_a = document
+                    .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+                    var _a;
+                    if (document.getElementById("dropdownMore")) {
+                        (_a = document
+                            .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.remove();
                     }
-                    for (let j = 0; j < upcoming.length; j++) {
-                        if (upcoming[j].className.includes("hidden-important")) {
-                            let elm = upcoming[j].getElementsByTagName("img")[0];
-                            if (elm == undefined) {
-                                let newClass = upcoming[j].className;
-                                newClass = newClass.replace(" hidden-important", "");
-                                upcoming[j].className = newClass;
+                    const img = document.createElement("img");
+                    img.id = "ajaxloader";
+                    img.className = "dropdowndiv2";
+                    img.src =
+                        "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/ajax-loader.gif";
+                    todo.appendChild(img);
+                    setTimeout(() => {
+                        var _a, _b, _c;
+                        (_a = document.getElementById("ajaxloader")) === null || _a === void 0 ? void 0 : _a.remove();
+                        let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
+                        if (document.getElementById("dropdown")) {
+                            (_b = document
+                                .getElementById("dropdown")) === null || _b === void 0 ? void 0 : _b.remove();
+                        }
+                        for (let j = 0; j < upcoming.length; j++) {
+                            if (upcoming[j].className.includes("hidden-important")) {
+                                let elm = upcoming[j].getElementsByTagName("img")[0];
+                                if (elm == undefined) {
+                                    let newClass = upcoming[j].className.replace("hidden-important", "");
+                                    (_c = upcoming[j].previousElementSibling) === null || _c === void 0 ? void 0 : _c.className.replace("hidden", "");
+                                    upcoming[j].className = newClass;
+                                }
                             }
                         }
-                    }
-                    checkBoxmaker();
-                    changeAmount();
-                }, 500);
-            });
+                        checkBoxmaker();
+                        changeAmount();
+                    }, 300);
+                });
+            }
         }
-        let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
+        upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
         for (let j = 0; j < upcoming.length; j++) {
             if (upcoming[j].className.includes("hidden-important") == false) {
                 let input = document.createElement("input");
-                input.type = "checkbox";
-                input.style.width = "30px";
-                input.style.height = "30px";
-                input.style.borderRadius = "20px";
-                input.style.left = "1120px";
-                input.style.position = "absolute";
                 input.className = "progressCheck";
+                input.type = "checkbox";
                 let save = localStorage.getItem("saveState");
                 upcoming[j].appendChild(input);
                 let children = (_c = (_b = input.parentElement) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.children;
@@ -808,10 +790,6 @@ function checkBoxmaker() {
                                 input.style.accentColor = "green";
                                 elm.style.color = "red";
                             }
-                            // if (lower.includes("read")) {
-                            //     input.style.accentColor = "green";
-                            //     elm.style.color = "green";
-                            // }
                             if (save !== null) {
                                 let elm = childrenchild[i];
                                 saveState = JSON.parse(save);
@@ -839,39 +817,31 @@ function checkBoxmaker() {
                                 }
                             }
                         }
-                        else if (childrenchild[i].tagName == "SPAN") {
-                            let duedate = (_k = childrenchild[i]) === null || _k === void 0 ? void 0 : _k.firstElementChild;
-                            let dateStr = duedate.innerText;
-                            let parsedDate = dateStr.replace(/at.*/, "");
-                            if (upcoming[j + 1] !== undefined &&
-                                !upcoming[j + 1].classList.contains("hidden-important")) {
-                                let duedate2 = (_l = upcoming[j + 1]
-                                    .firstElementChild) === null || _l === void 0 ? void 0 : _l.children[0].children[1].children[1].firstElementChild;
-                                let parsedDate2 = parsedDate;
-                                if (duedate2) {
-                                    let dateStr2 = duedate2.innerText;
-                                    parsedDate2 = dateStr2.replace(/at.*/, "");
-                                }
-                                if (parsedDate2 !== parsedDate &&
-                                    parsedDate.includes("overdue") == false) {
-                                    let newbreak = document.createElement("h4");
-                                    // newbreak.className = "submissions-title";
-                                    newbreak.className =
-                                        "progressCheckLabel";
-                                    newbreak.innerHTML = parsedDate2;
-                                    newbreak.style.position = "relative";
-                                    newbreak.style.width = "350px";
-                                    newbreak.style.borderBottom =
-                                        "2px solid #eaeaea";
-                                    // newbreak.style.top += 50 + "px";
-                                    // newbreak.className = "upcoming-event-block";
-                                    // upcoming[j].appendChild(newbreak);
-                                    upcoming[j].after(newbreak);
-                                }
-                            }
-                        }
                     }
                 }
+                let dateHeaders = document.getElementsByClassName("date-header");
+                Array.from(dateHeaders).forEach((element) => {
+                    var _a;
+                    if (((_a = element.nextElementSibling) === null || _a === void 0 ? void 0 : _a.classList.contains("hidden-important")) == false) {
+                        element.className = element.className.replace("hidden", "");
+                    }
+                    let child = element.firstElementChild;
+                    function titleCase(str) {
+                        var splitStr = str.toLowerCase().split(" ");
+                        for (var i = 0; i < splitStr.length; i++) {
+                            splitStr[i] =
+                                splitStr[i].charAt(0).toUpperCase() +
+                                    splitStr[i].substring(1);
+                        }
+                        return splitStr.join(" ");
+                    }
+                    let innertext = element.innerText;
+                    innertext = titleCase(innertext);
+                    element.innerHTML =
+                        `<p>` + innertext + `</p>`;
+                    child = element.firstElementChild;
+                    child.className = "h4s";
+                });
                 input.addEventListener("click", function () {
                     var _a, _b, _c, _d, _e, _f, _g, _h;
                     let children = (_b = (_a = input.parentElement) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.children;
@@ -931,66 +901,49 @@ function gradeUpdate() {
 }
 gradeUpdate();
 function notePage() {
-    var _a, _b, _c;
-    if (window.location.href == "https://schoology.shschools.org/notes") {
+    var _a, _b;
+    if (window.location.href == "https://schoology.shschools.org/study") {
         let title = document.getElementsByTagName("title")[0];
         title.innerText = "Notes | Schoology";
         let text = localStorage.getItem("textSave");
         (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
         let div = document.createElement("textarea");
+        let notecontainer = document.createElement("div");
+        notecontainer.id = "notecontainer";
         div.className = "textAreaNote";
         div.id = "textarea";
-        let isDragging = false;
         let divheader = document.createElement("div");
-        function outputsize() {
-            divheader.style.width = div.offsetWidth - 30 + "px";
-        }
-        outputsize();
-        new ResizeObserver(outputsize).observe(div);
         divheader.className = "divheader";
         divheader.id = "divheader1";
-        divheader.addEventListener("mousedown", () => {
-            isDragging = true;
-        });
-        document.body.addEventListener("mouseup", () => {
-            isDragging = false;
-        });
-        let styles = localStorage.getItem("boxStyles");
-        if (styles) {
-            divheader.style.top = JSON.parse(styles)[0];
-            divheader.style.left = JSON.parse(styles)[1];
-            div.style.top = JSON.parse(styles)[2];
-            div.style.left = JSON.parse(styles)[3];
-            div.cols = JSON.parse(styles)[4];
-            div.rows = JSON.parse(styles)[5];
-        }
-        document.body.addEventListener("mousemove", function (e) {
-            var _a;
-            let width = (_a = document.getElementById("divheader1")) === null || _a === void 0 ? void 0 : _a.offsetWidth;
-            document.getElementById("divheader1");
-            console.log(div.cols);
-            localStorage.setItem("boxStyles", JSON.stringify([
-                divheader.style.top,
-                divheader.style.left,
-                div.style.top,
-                div.style.left,
-                div.cols,
-                div.rows,
-            ]));
-            // console.log(width.slice(width.length - 2, width.length));
-            if (isDragging) {
-                div.style.left = `${e.pageX - Number(div.offsetWidth) / 2}px`;
-                div.style.top = `${e.pageY + 40}px`;
-                divheader.style.left = `${e.pageX - Number(divheader.offsetWidth) / 2}px`;
-                divheader.style.top = `${e.pageY - Number(divheader.offsetHeight) / 2}px`;
-            }
-        });
         if (text) {
             div.value = text;
         }
-        (_b = document.getElementById("body")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
-        (_c = document.getElementById("body")) === null || _c === void 0 ? void 0 : _c.appendChild(divheader);
-        div.addEventListener("change", function () {
+        divheader.innerHTML = "Notes";
+        notecontainer.appendChild(divheader);
+        notecontainer.appendChild(div);
+        let shown = true;
+        divheader.addEventListener("click", function () {
+            if (shown) {
+                shown = false;
+                div.style.transition = "all 0.2s";
+                div.style.borderStyle = "none";
+                setTimeout(() => {
+                    div.style.opacity = "0";
+                    div.style.padding = "0px";
+                }, 200);
+                div.style.height = "0px";
+            }
+            else {
+                shown = true;
+                div.style.opacity = "1";
+                div.style.transition = "all 0.2s";
+                div.style.borderStyle = "solid";
+                div.style.padding = "15px";
+                div.style.height = "500px";
+            }
+        });
+        (_b = document.getElementById("body")) === null || _b === void 0 ? void 0 : _b.appendChild(notecontainer);
+        div.addEventListener("input", function () {
             if (div) {
                 localStorage.setItem("textSave", div.value);
             }
@@ -998,6 +951,325 @@ function notePage() {
     }
 }
 notePage();
+function studyPage() {
+    var _a, _b, _c, _d;
+    if (window.location.href == "https://schoology.shschools.org/study") {
+        let seconds = 0;
+        let lastBlurTime = 0; // To store the timestamp when the window is blurred
+        let todoList = [];
+        todoList = localStorage.getItem("todo");
+        todoList = JSON.parse(todoList);
+        if (todoList == null) {
+            todoList = [];
+        }
+        window.addEventListener("blur", leave);
+        window.addEventListener("focus", returned);
+        window.addEventListener("beforeunload", leave);
+        window.addEventListener("load", returned);
+        let awaytimeout;
+        function leave() {
+            // Save the current time in seconds when the window is blurred
+            lastBlurTime = Math.round(new Date().getTime() / 1000);
+            localStorage.setItem("lastBlurTime", JSON.stringify(lastBlurTime));
+            clearInterval(countdown);
+            awaytimeout = setInterval(() => {
+                let title = document.getElementsByTagName("title")[0];
+                title.innerText = `(${h1.innerHTML}) Study Session | Schoology`;
+            }, 1000);
+        }
+        function returned() {
+            if (awaytimeout) {
+                clearInterval(awaytimeout);
+            }
+            let test = localStorage.getItem("lastBlurTime");
+            if (test) {
+                lastBlurTime = JSON.parse(test);
+                if (lastBlurTime > 0 && timerStart) {
+                    const currentTime = Math.round(new Date().getTime() / 1000);
+                    const secondsElapsed = currentTime - lastBlurTime;
+                    timeleft -= secondsElapsed;
+                    lastBlurTime = 0;
+                    if (timeleft >= 0) {
+                        toggle();
+                    }
+                    else {
+                        timeleft = 0;
+                        localStorage.setItem("timeLeft", "0");
+                        SetTextLabel();
+                    }
+                }
+            }
+        }
+        let asignmentcontainer = document.createElement("div");
+        let options = [];
+        let optionTags = [];
+        const tags = [
+            ["religion"],
+            ["math", "geo"],
+            ["history"],
+            ["health"],
+            ["biology"],
+            ["spanish"],
+            ["english"],
+        ];
+        asignmentcontainer.id = "asignmentcontainer";
+        document.body.appendChild(asignmentcontainer);
+        function getCurrentAsignments() {
+            fetch("https://schoology.shschools.org/home/upcoming_submissions_ajax")
+                .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json(); // Assuming the response is JSON
+            })
+                .then((data) => {
+                let asignmentContainer = document.getElementById("asignmentcontainer");
+                asignmentContainer.innerHTML += data.html;
+                let asignments = document.getElementsByClassName("event-title");
+                Array.from(asignments).forEach((element) => {
+                    var _a;
+                    let elementInner = element.firstElementChild;
+                    let elementInnerdate = (_a = element.lastElementChild) === null || _a === void 0 ? void 0 : _a.lastElementChild;
+                    // let elementInner =
+                    //     element.firstElementChild as HTMLParagraphElement;
+                    // options.push(
+                    //     `(${elementInnerdate.innerText}) ${elementInner.innerText}`
+                    options.push(elementInner.innerText);
+                    optionTags.push(elementInnerdate.innerText);
+                });
+                asignmentcontainer.remove();
+            })
+                .catch((error) => {
+                console.error("Error fetching data:", error);
+                return error;
+            });
+        }
+        getCurrentAsignments();
+        // let data=getCurrentAsignments();
+        // var regex = /le/gi,
+        //     result,
+        //     indices = [];
+        // while ((result = regex.exec(data))) {
+        //     indices.push(result.index);
+        // }
+        let title = document.getElementsByTagName("title")[0];
+        title.innerText = "Study Session | Schoology";
+        (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
+        (_b = document.getElementById("site-navigation-footer")) === null || _b === void 0 ? void 0 : _b.remove();
+        (_c = document.getElementById("main-content-wrapper")) === null || _c === void 0 ? void 0 : _c.remove();
+        let wrapper = document.getElementById("wrapper");
+        let container = document.createElement("div");
+        // container.style.background = "blue";
+        (_d = document.getElementById("wrapper")) === null || _d === void 0 ? void 0 : _d.before(container);
+        if (wrapper) {
+            wrapper.className = "";
+        }
+        let TODOlabel = document.createElement("p");
+        TODOlabel.className = "todolabel";
+        TODOlabel.innerHTML = "Todo List:";
+        container.appendChild(TODOlabel);
+        let startbtn = document.createElement("button");
+        startbtn.className = "hugeBtn";
+        startbtn.innerHTML = "Study";
+        container.appendChild(startbtn);
+        let h1 = document.createElement("h1");
+        h1.className = "timerText";
+        h1.innerHTML = "0:00";
+        container.appendChild(h1);
+        function updateList() {
+            let containerTest = document.getElementsByClassName("containerDiv")[0];
+            if (containerTest) {
+                containerTest.remove();
+            }
+            let container = document.createElement("div");
+            container.className = "containerDiv";
+            let count = -1;
+            startbtn.before(container);
+            container.appendChild(createNewBtn);
+            todoList.forEach((item) => {
+                count++;
+                const [itemName, values] = item;
+                let newElm = document.createElement("div");
+                newElm.className = "listDiv";
+                let textLabel = document.createElement("p");
+                textLabel.className = "textLabel";
+                textLabel.innerHTML = itemName;
+                textLabel.contentEditable = "true";
+                textLabel.id = "txtlabel" + String(count);
+                let checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = values;
+                checkbox.className = "checkboxItem";
+                checkbox.id = "checkbox" + String(count);
+                let button = document.createElement("button");
+                button.className = "deletebn";
+                button.id = "deletebn" + String(count);
+                button.innerHTML = "X";
+                newElm.style.marginTop = "0px";
+                checkbox.style.marginTop = "0px";
+                createNewBtn.before(newElm);
+                newElm.appendChild(textLabel);
+                newElm.appendChild(checkbox);
+                newElm.appendChild(button);
+                //begin
+                let dropdown = document.createElement("section");
+                dropdown.classList.add("hi2d");
+                // Show and filter dropdown
+                textLabel.addEventListener("input", () => {
+                    const query = textLabel.innerText.toLowerCase();
+                    dropdown.innerHTML = ""; // Clear previous options
+                    let filteredOptions = [];
+                    for (let i = 0; i < options.length; i++) {
+                        let option = options[i].toLowerCase() +
+                            optionTags[i].toLowerCase();
+                        if (option.includes(query)) {
+                            filteredOptions.push(options[i]);
+                        }
+                        //addtags
+                    }
+                    if (filteredOptions.length > 0) {
+                        dropdown.classList.remove("hidden");
+                        filteredOptions.forEach((option) => {
+                            const div = document.createElement("div");
+                            div.classList.add("selectoptions");
+                            div.textContent = option;
+                            dropdown.appendChild(div);
+                            div.addEventListener("click", () => {
+                                var _a;
+                                textLabel.innerText = option;
+                                dropdown.classList.add("hidden");
+                                let countnum = textLabel.id;
+                                countnum = String(countnum).slice(8, countnum.length);
+                                let inner = document.getElementById("txtlabel" + countnum);
+                                todoList[Number(countnum)] = [
+                                    (_a = document.getElementById("txtlabel" + countnum)) === null || _a === void 0 ? void 0 : _a.innerText,
+                                    document.getElementById("checkbox" + countnum).checked,
+                                ];
+                                localStorage.setItem("todo", JSON.stringify(todoList));
+                            });
+                        });
+                    }
+                    else {
+                        dropdown.classList.add("hidden"); // Hide dropdown if no matches
+                    }
+                });
+                newElm.after(dropdown);
+                // Hide dropdow if clicked outside
+                // document.addEventListener("click", (e) => {
+                //     let target=e.target
+                //     if (target !==null){
+                //     if (!target.closest(".input-container")) {
+                //         dropdown.classList.add("hidden");
+                //     }
+                // }
+                // });
+                //end
+                button.addEventListener("click", function () {
+                    let countnum = this.id;
+                    countnum = String(countnum).slice(8, countnum.length);
+                    todoList.splice(Number(countnum), 1); // 2nd parameter means remove one item only
+                    localStorage.setItem("todo", JSON.stringify(todoList));
+                    let parent = this.parentElement;
+                    parent.style.transition = "all 0.5s";
+                    parent.style.left = "500px";
+                    parent.style.opacity = "0";
+                    setTimeout(() => {
+                        updateList();
+                    }, 500);
+                });
+                function changed() {
+                    var _a;
+                    let countnum = this.id;
+                    countnum = String(countnum).slice(8, countnum.length);
+                    let inner = document.getElementById("txtlabel" + countnum);
+                    todoList[Number(countnum)] = [
+                        (_a = document.getElementById("txtlabel" + countnum)) === null || _a === void 0 ? void 0 : _a.innerText,
+                        document.getElementById("checkbox" + countnum).checked,
+                    ];
+                    localStorage.setItem("todo", JSON.stringify(todoList));
+                }
+                textLabel.addEventListener("input", changed);
+                checkbox.addEventListener("input", changed);
+            });
+        }
+        let createNewBtn = document.createElement("button");
+        createNewBtn.className = "createNewBtn";
+        createNewBtn.innerHTML = `<span id="plusIcon" class="material-symbols-outlined">
+add
+</span><span> Create new Item</span>`;
+        container.appendChild(createNewBtn);
+        createNewBtn.addEventListener("click", function () {
+            todoList.push(["New Item", false]);
+            localStorage.setItem("todo", JSON.stringify(todoList));
+            updateList();
+        });
+        let timerStart = false;
+        let timeleft = 1200;
+        let countdown = null;
+        let isOnStorage = localStorage.getItem("timerIsOn");
+        let timeLeftStorage = localStorage.getItem("timeLeft");
+        if (isOnStorage && timeLeftStorage) {
+            timerStart = JSON.parse(isOnStorage);
+            timeleft = JSON.parse(timeLeftStorage);
+            toggle();
+        }
+        SetTextLabel();
+        function SetTextLabel() {
+            if (String(Math.floor(timeleft % 60)).length == 1) {
+                h1.innerHTML = `${Math.floor(timeleft / 60)}:0${Math.floor(timeleft % 60)} `;
+            }
+            else {
+                h1.innerHTML = `${Math.floor(timeleft / 60)}:${Math.floor(timeleft % 60)} `;
+            }
+            let title = document.getElementsByTagName("title")[0];
+            title.innerText = `(${h1.innerHTML}) Study Session | Schoology`;
+        }
+        function toggle() {
+            if (timerStart) {
+                startbtn.innerHTML = "Pause";
+            }
+            else {
+                startbtn.innerHTML = "Study";
+            }
+            localStorage.setItem("timerIsOn", JSON.stringify(timerStart));
+            if (countdown !== null) {
+                clearInterval(countdown);
+            }
+            if (timerStart) {
+                countdown = setInterval(() => {
+                    timeleft -= 0.1;
+                    localStorage.setItem("timeLeft", JSON.stringify(timeleft));
+                    SetTextLabel();
+                    if (timeleft <= 0) {
+                        h1.innerHTML = "0:00";
+                        timerStart = false;
+                        timeleft = 1200;
+                        toggle();
+                        return;
+                    }
+                }, 100);
+            }
+            else {
+                if (countdown !== null) {
+                    clearInterval(countdown);
+                }
+            }
+        }
+        updateList();
+        startbtn.addEventListener("click", function () {
+            if (timerStart) {
+                timerStart = false;
+                startbtn.innerHTML = "Study";
+            }
+            else {
+                timerStart = true;
+                startbtn.innerHTML = "Pause";
+            }
+            toggle();
+        });
+    }
+}
+studyPage();
 // let url: any;
 // function loadFrame() {
 //     let link = (
@@ -1099,7 +1371,6 @@ setTimeout(() => {
             iframe.onload = () => {
                 if (iframe.contentDocument) {
                     grade = iframe.contentDocument.getElementsByClassName("grading-grade")[0];
-                    console.log(grade);
                     if (grade !== undefined) {
                         grade = grade.innerText;
                         iframe.remove();
@@ -1154,7 +1425,21 @@ setTimeout(() => {
             };
         }
     }
-}, 1000);
+}, 2000);
+let waiting = setInterval(function () {
+    let update = document.getElementsByClassName("update-body s-rte")[0];
+    if (update) {
+        clearInterval(waiting);
+        if (localStorage.getItem("oldUpdate") !== update.innerText) {
+            localStorage.setItem("oldUpdate", update.innerText);
+            let div = document.getElementsByClassName("s-edge-type-update-post sUpdate-processed")[0];
+            div.style.borderColor = "#42c5f9";
+            div.style.borderWidth = "5px";
+            div.style.borderStyle = "solid";
+            div.style.borderRadius = "10px";
+        }
+    }
+}, 10);
 // function logKey(e: any) {
 //     if (e.keyCode == "91") {
 //         if (e.keyCode == "91") {
@@ -1163,3 +1448,4 @@ setTimeout(() => {
 //     }
 // }
 // document.body.addEventListener("down", logKey);
+// ©2024 William Chou. All rights reserved.
