@@ -426,7 +426,8 @@ function unhovered(arrownum) {
     }
 }
 let saveState = {};
-if (allowedURL.includes(window.location.href)) {
+if (allowedURL.includes(window.location.href) ||
+    window.location.href.includes("course-dashboard")) {
     let interval = setInterval(function () {
         if (document.getElementsByClassName("submissions-title")[0] !==
             undefined &&

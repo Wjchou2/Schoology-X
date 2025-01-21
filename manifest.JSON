@@ -10,10 +10,10 @@
 },
 
 "icons": {
-  "16": "School.png",
-  "32": "School.png",
-  "48": "School.png",
-  "128": "School.png"
+  "16": "logo.png",
+  "32": "logo.png",
+  "48": "logo.png",
+  "128": "logo.png"
 },
 
 "web_accessible_resources": [
