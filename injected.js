@@ -156,7 +156,7 @@ function creatVolunteerBtn() {
     btn.innerHTML = `<span class="material-symbols-outlined">
 check_circle</span>`;
     btn.addEventListener("click", function () {
-        window.open("https://gunn.one/grades");
+        window.open("https://bessy.io");
     });
     clone.before(btn);
 }
