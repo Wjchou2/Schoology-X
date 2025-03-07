@@ -1,37 +1,3 @@
-let el = document.createElement("script");
-let el4 = document.createElement("script");
-
-let el2 = document.createElement("link");
-let el3 = document.createElement("style");
-let el5 = document.createElement("link");
-
-// let el2 = document.createElement("script");
-// let el3 = document.createElement("script");
-el.src = chrome.runtime.getURL("injected.js");
-el4.src = chrome.runtime.getURL("pdf.js");
-
-el2.rel = "stylesheet";
-el5.rel = "stylesheet";
-
-el3.style = `.material-symbols-outlined{
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
-}`;
-
-el2.href =
-    "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
-// el3.src = chrome.runtime.getURL("tsdeliver2.js");
-el.type = "text/javascript";
-el4.type = "text/javascript";
-el5.src = chrome.runtime.getURL("Injectedstyles.css");
-document.head.appendChild(el);
-document.head.appendChild(el4);
-document.head.appendChild(el2);
-document.head.appendChild(el3);
-
 // document.head.appendChild(el2);
 // document.head.appendChild(el3);
 
@@ -92,5 +58,53 @@ function get() {
         }
     });
 }
-get();
-setTimeout(get, 10);
+
+function logOnCommitted(details) {
+    //     let el = document.createElement("script");
+    //     let el4 = document.createElement("script");
+    //     let el2 = document.createElement("link");
+    //     let el3 = document.createElement("style");
+    //     let el5 = document.createElement("link");
+    //     el.src = chrome.runtime.getURL("injected.js");
+    //     el4.src = chrome.runtime.getURL("pdf.js");
+    //     el2.rel = "stylesheet";
+    //     el5.rel = "stylesheet";
+    //     el3.style = `.material-symbols-outlined{
+    //   font-variation-settings:
+    //   'FILL' 0,
+    //   'wght' 400,
+    //   'GRAD' 0,
+    //   'opsz' 24
+    // }`;
+    //     el2.href =
+    //         "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
+    //     // el3.src = chrome.runtime.getURL("tsdeliver2.js");
+    //     el.type = "text/javascript";
+    //     el4.type = "text/javascript";
+    //     el5.src = chrome.runtime.getURL("Injectedstyles.css");
+    //     document.head.appendChild(el);
+    //     document.head.appendChild(el4);
+    //     document.head.appendChild(el2);
+    //     document.head.appendChild(el3);
+    //     //
+}
+
+if (chrome.webNavigation) {
+    chrome.webNavigation.onDOMContentLoaded.addListener((details) => {
+        if (details.frameId === 0) {
+            console.log("DOMContentLoaded Event Fired:", details);
+            chrome.scripting
+                .executeScript({
+                    target: { tabId: details.tabId },
+                    files: ["injected.js", "pdf.js"],
+                })
+                .catch((error) =>
+                    console.error("Script Injection Error:", error)
+                );
+        }
+    });
+} else {
+    console.error(
+        "❌ chrome.webNavigation is undefined. Check permissions and manifest version."
+    );
+}

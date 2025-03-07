@@ -1,42 +1,42 @@
 {
-  "name":"Schoology Pro",
-  "description":"Schedule, Calender, Checklist and more",
-  "version":"1.01",
-  "manifest_version":3,
-  "permissions": ["storage", "activeTab","tabs"],
-  "action":{
+  "name": "Schoology Pro",
+  "description": "Schedule, Calendar, Checklist, and more",
+  "version": "1.01",
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "https://schoology.shschools.org/*"
+  ],
+  "action": {
     "default_popup": "index.html"
-
-},
-
-"icons": {
-  "16": "logo.png",
-  "32": "logo.png",
-  "48": "logo.png",
-  "128": "logo.png"
-},
-
-"web_accessible_resources": [
-
-  {
-    "resources": ["injected.js","pdf.js","text.js","images/*"],
-    "matches": ["<all_urls>"]
-    
-  }
-],
+  },
+  
+  "icons": {
+    "16": "logo.png",
+    "32": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js", "pdf.js", "text.js", "images/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
-      {
-        "matches": ["https://schoology.shschools.org/*"],
-        "js": ["script.js","pdf.js"],
-        "css": ["Injectedstyles.css"],
-        "run_at": "document_end"
-      }
-
-      
-    ]
-
-    
-  }
-
-
-
+    {
+      "matches": ["https://schoology.shschools.org/*"],
+      "css": ["Injectedstyles.css"],
+      "run_at": "document_end"
+    }
+  ]
+}

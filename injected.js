@@ -1,16 +1,50 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
+var __awaiter =
+    (this && this.__awaiter) ||
+    function (thisArg, _arguments, P, generator) {
+        function adopt(value) {
+            return value instanceof P
+                ? value
+                : new P(function (resolve) {
+                      resolve(value);
+                  });
+        }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) {
+                try {
+                    step(generator.next(value));
+                } catch (e) {
+                    reject(e);
+                }
+            }
+            function rejected(value) {
+                try {
+                    step(generator["throw"](value));
+                } catch (e) {
+                    reject(e);
+                }
+            }
+            function step(result) {
+                result.done
+                    ? resolve(result.value)
+                    : adopt(result.value).then(fulfilled, rejected);
+            }
+            step(
+                (generator = generator.apply(thisArg, _arguments || [])).next()
+            );
+        });
+    };
 console.log("injected :)");
 document.head.innerHTML += `<html manifest="offline_book.manifest">
 `;
+document.head.innerHTML += `<link src="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"></link>`;
+document.head.innerHTML += `<style>.material-symbols-outlined{
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}</style>`;
 let ready = 0;
 let allowedURL = [
     "https://schoology.shschools.org/home",
@@ -137,14 +171,12 @@ window.addEventListener("deleteAsign", function (e) {
         if (initial) {
             initial = false; // Do something with the event
             old = deleteAsign;
-        }
-        else {
+        } else {
             if (old !== deleteAsign) {
                 location.reload();
             }
         }
-    }
-    else {
+    } else {
         console.error("No value found in event detail");
     }
 });
@@ -175,7 +207,8 @@ function adjustBrightness(hexColor, percent) {
     g = Math.min(255, Math.max(0, g + adjustmentFactor));
     b = Math.min(255, Math.max(0, b + adjustmentFactor));
     // Convert RGB back to hex
-    let newHex = "#" +
+    let newHex =
+        "#" +
         ("0" + r.toString(16)).slice(-2) +
         ("0" + g.toString(16)).slice(-2) +
         ("0" + b.toString(16)).slice(-2);
@@ -187,9 +220,11 @@ function getCurrentClass(day, currentHour, currentMinute) {
     for (const period of courses) {
         if (period.day === day) {
             // Compare the period's time with the current time
-            if (period.time.hour < currentHour ||
+            if (
+                period.time.hour < currentHour ||
                 (period.time.hour === currentHour &&
-                    period.time.min - 5 <= currentMinute)) {
+                    period.time.min - 5 <= currentMinute)
+            ) {
                 currentClass = period;
             }
         }
@@ -210,14 +245,12 @@ window.addEventListener("colorChange", function (e) {
         localStorage.setItem("color", originalColor);
         if (isBackgroundDark(originalColor)) {
             hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
-        }
-        else {
+        } else {
             hoverColor = adjustBrightness(originalColor, -10); // Lighten by 20%
         }
         //lightenhere
         changeHeaderColor();
-    }
-    else {
+    } else {
         console.error("No value found in event detail");
     }
 });
@@ -225,8 +258,7 @@ if (localStorage.getItem("color")) {
     originalColor = localStorage.getItem("color");
     if (isBackgroundDark(originalColor)) {
         hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
-    }
-    else {
+    } else {
         hoverColor = adjustBrightness(originalColor, -10); // Lighten by 20%
     }
 }
@@ -248,11 +280,19 @@ function changeHeaderColor() {
     let anchors = document.getElementsByTagName("a");
     let listItems = document.getElementsByTagName("li");
     let btns = document.getElementsByTagName("button");
-    const header = document.getElementsByClassName("_1tpub _3mp5E _24W2g util-justify-content-space-between-3euFK")[0];
+    const header = document.getElementsByClassName(
+        "_1tpub _3mp5E _24W2g util-justify-content-space-between-3euFK"
+    )[0];
     header.style.backgroundColor = originalColor;
-    document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0].style.backgroundColor = originalColor;
-    document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0].style.borderTop = `3px solid ${originalColor}`;
-    let IMGParent = document.getElementsByClassName("util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q")[0];
+    document.getElementsByClassName(
+        "_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD"
+    )[0].style.backgroundColor = originalColor;
+    document.getElementsByClassName(
+        "_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD"
+    )[0].style.borderTop = `3px solid ${originalColor}`;
+    let IMGParent = document.getElementsByClassName(
+        "util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q"
+    )[0];
     //thishere
     let ids = [
         "icon-search-v2-3US0j",
@@ -267,8 +307,7 @@ function changeHeaderColor() {
         // elm.firstElementChild.id = "hi";
         if (isBackgroundDark(originalColor)) {
             path.setAttribute("fill", "#ffffff");
-        }
-        else {
+        } else {
             path.setAttribute("fill", "#333333");
         }
     }
@@ -276,15 +315,16 @@ function changeHeaderColor() {
     IMG.src = "https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
     for (let i = 0; i < anchors.length; i++) {
         if (hasHeaderAncestor(anchors[i])) {
-            if (anchors[i].title !== "Home" &&
+            if (
+                anchors[i].title !== "Home" &&
                 anchors[i].innerHTML !== "My Courses" &&
-                anchors[i].role !== "menuitem") {
+                anchors[i].role !== "menuitem"
+            ) {
                 // alert(anchors[i].href);
                 if (anchors[i] !== null) {
                     if (isBackgroundDark(originalColor)) {
                         anchors[i].style.color = "#ffffff";
-                    }
-                    else {
+                    } else {
                         anchors[i].style.color = "#333333";
                     }
                 }
@@ -305,17 +345,18 @@ function changeHeaderColor() {
             // if (originalColor !== "#ffffff") {
             if (btns[i].firstElementChild !== null) {
                 if (isBackgroundDark(originalColor)) {
-                    btns[i].firstElementChild.style.color =
-                        "#ffffff";
+                    btns[i].firstElementChild.style.color = "#ffffff";
                     btns[i].style.color = "#ffffff";
-                    let gradebtn = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[2];
+                    let gradebtn = document.getElementsByClassName(
+                        "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
+                    )[2];
                     gradebtn.style.color = "#ffffff";
-                }
-                else {
-                    btns[i].firstElementChild.style.color =
-                        "#333333";
+                } else {
+                    btns[i].firstElementChild.style.color = "#333333";
                     btns[i].style.color = "#333333";
-                    let gradebtn = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[2];
+                    let gradebtn = document.getElementsByClassName(
+                        "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
+                    )[2];
                     gradebtn.style.color = "#333333";
                 }
             }
@@ -366,14 +407,24 @@ function coursesChange() {
         if (debounce) {
             debounce = false;
             waitForElement(".Card-card-data-17m6S", function () {
-                const courses = document.getElementsByClassName("Card-card-data-17m6S");
-                const imgs = document.getElementsByClassName(" _2q19q Card-card-image-uV6Bu");
+                const courses = document.getElementsByClassName(
+                    "Card-card-data-17m6S"
+                );
+                const imgs = document.getElementsByClassName(
+                    " _2q19q Card-card-image-uV6Bu"
+                );
                 let ongoingClass = getClass();
                 for (let i = 0; i < Math.max(courses.length, 7); i++) {
                     const courseDiv = courses[i];
                     let firstChild = courseDiv.firstElementChild;
-                    let secondChild = firstChild === null || firstChild === void 0 ? void 0 : firstChild.firstElementChild;
-                    let className = secondChild === null || secondChild === void 0 ? void 0 : secondChild.innerHTML;
+                    let secondChild =
+                        firstChild === null || firstChild === void 0
+                            ? void 0
+                            : firstChild.firstElementChild;
+                    let className =
+                        secondChild === null || secondChild === void 0
+                            ? void 0
+                            : secondChild.innerHTML;
                     if (className) {
                         order[i] = className;
                     }
@@ -381,8 +432,7 @@ function coursesChange() {
                     let imgelm = imgs[i];
                     imgelm.style.borderRadius = " 15px 15px 0 0";
                     const div = courseDiv.parentElement;
-                    div.parentElement.style.borderRadius =
-                        "15px";
+                    div.parentElement.style.borderRadius = "15px";
                     const div2 = courseDiv.parentElement;
                     // const div3 = div2.parentElement as HTMLElement;
                     if (div2) {
@@ -426,13 +476,17 @@ function unhovered(arrownum) {
     }
 }
 let saveState = {};
-if (allowedURL.includes(window.location.href) ||
-    window.location.href.includes("course-dashboard")) {
+if (
+    allowedURL.includes(window.location.href) ||
+    window.location.href.includes("course-dashboard")
+) {
     let interval = setInterval(function () {
-        if (document.getElementsByClassName("submissions-title")[0] !==
-            undefined &&
+        if (
+            document.getElementsByClassName("submissions-title")[0] !==
+                undefined &&
             document.getElementsByClassName("submissions-title")[1] !==
-                undefined) {
+                undefined
+        ) {
             clearInterval(interval);
             setTimeout(function () {
                 var _a, _b, _c;
@@ -442,13 +496,20 @@ if (allowedURL.includes(window.location.href) ||
                 let p = document.createElement("p");
                 p.innerHTML = "";
                 p.id = "progress";
-                (_a = document.getElementById("todo")) === null || _a === void 0 ? void 0 : _a.appendChild(p);
+                (_a = document.getElementById("todo")) === null || _a === void 0
+                    ? void 0
+                    : _a.appendChild(p);
                 let div = document.createElement("div");
                 div.id = "myProgress";
-                (_b = document.getElementById("todo")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
+                div.innerHTML = "0%";
+                (_b = document.getElementById("todo")) === null || _b === void 0
+                    ? void 0
+                    : _b.appendChild(div);
                 let div2 = document.createElement("div");
                 div2.id = "myProgressFrame";
-                (_c = document.getElementById("todo")) === null || _c === void 0 ? void 0 : _c.appendChild(div2);
+                (_c = document.getElementById("todo")) === null || _c === void 0
+                    ? void 0
+                    : _c.appendChild(div2);
                 changeAmount();
             }, 0);
         }
@@ -648,12 +709,19 @@ function changeAmount() {
         let myProgress = document.getElementById("myProgress");
         if (myProgress) {
             let targetWidth = (checks / progressCheck.length) * 200;
-            let width = Number(myProgress.style.width.slice(0, myProgress.style.width.length - 2));
+            if (targetWidth == 0) {
+                targetWidth = 0.01;
+            }
+            let width = Number(
+                myProgress.style.width.slice(
+                    0,
+                    myProgress.style.width.length - 2
+                )
+            );
             let increase = true;
             if (width < targetWidth) {
                 increase = true;
-            }
-            else {
+            } else {
                 increase = false;
             }
             let id = setInterval(frame, 8);
@@ -661,22 +729,30 @@ function changeAmount() {
                 if (increase && width >= targetWidth) {
                     width = 0;
                     clearInterval(id);
-                }
-                else if (increase == false && width <= targetWidth) {
+                } else if (increase == false && width <= targetWidth) {
                     width = 0;
                     clearInterval(id);
-                }
-                else {
+                } else {
                     if (increase) {
                         width++;
-                    }
-                    else {
+                    } else {
                         width--;
                     }
                     if (myProgress) {
                         myProgress.style.width = width + "px";
-                        myProgress.innerHTML = `${String(Math.round(width / 2))}%`;
-                        myProgress.style.backgroundColor = `rgb(${255 / 2 - (Math.round(width / 2) * 2.25) / 1.5}, ${Math.round(width / 2) * 2.25},${(Math.round(width / 2) * 2.25) / 1.5} )`;
+                        if (targetWidth == 0.01) {
+                            targetWidth = 20;
+                            myProgress.innerHTML = "0%";
+                        } else {
+                            myProgress.innerHTML = `${String(
+                                Math.round(width / 2)
+                            )}%`;
+                        }
+                        myProgress.style.backgroundColor = `rgb(${
+                            255 / 2 - (Math.round(width / 2) * 2.25) / 1.5
+                        }, ${Math.round(width / 2) * 2.25},${
+                            (Math.round(width / 2) * 2.25) / 1.5
+                        } )`;
                     }
                 }
             }
@@ -688,210 +764,376 @@ let div = document.getElementById("upcoming-events");
 if (div) {
     div.style.display = "none";
 }
-document.getElementsByClassName("typography-button-primary-loader-button-3107419752")[0];
+document.getElementsByClassName(
+    "typography-button-primary-loader-button-3107419752"
+)[0];
 function checkBoxmaker() {
-    waitForElement(".upcoming-event.upcoming-event-block.course-event", function () {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-        let progressCheck = document.getElementsByClassName("progressCheck");
-        // Convert the HTMLCollection to an array and iterate over it
-        Array.from(progressCheck).forEach((element) => {
-            element.remove();
-        });
-        let progressCheckLabel = document.getElementsByClassName("progressCheckLabel");
-        // Convert the HTMLCollection to an array and iterate over it
-        Array.from(progressCheckLabel).forEach((element) => {
-            element.remove();
-        });
-        let buttonShow = false;
-        // document.getElementsByClassName("submissions-title")[1].innerHTML =
-        //     "Due TODAY";
-        let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
-        for (let j = 0; j < upcoming.length; j++) {
-            if (upcoming[j].className.includes("hidden-important")) {
-                let elm = upcoming[j].getElementsByTagName("img")[0];
-                if (elm == undefined) {
-                    buttonShow = true;
+    waitForElement(
+        ".upcoming-event.upcoming-event-block.course-event",
+        function () {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+            let progressCheck =
+                document.getElementsByClassName("progressCheck");
+            // Convert the HTMLCollection to an array and iterate over it
+            Array.from(progressCheck).forEach((element) => {
+                element.remove();
+            });
+            let progressCheckLabel =
+                document.getElementsByClassName("progressCheckLabel");
+            // Convert the HTMLCollection to an array and iterate over it
+            Array.from(progressCheckLabel).forEach((element) => {
+                element.remove();
+            });
+            let buttonShow = false;
+            // document.getElementsByClassName("submissions-title")[1].innerHTML =
+            //     "Due TODAY";
+            let upcoming = document.getElementsByClassName(
+                "upcoming-event upcoming-event-block course-event"
+            );
+            for (let j = 0; j < upcoming.length; j++) {
+                if (upcoming[j].className.includes("hidden-important")) {
+                    let elm = upcoming[j].getElementsByTagName("img")[0];
+                    if (elm == undefined) {
+                        buttonShow = true;
+                    }
                 }
             }
-        }
-        if (buttonShow) {
-            if (document.getElementById("todo") !== undefined) {
-                let todo = document.getElementById("todo");
-                if (displayedAll == false) {
-                    todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
-                    displayedAll = true;
-                }
-                else {
-                    todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
+            if (buttonShow) {
+                if (document.getElementById("todo") !== undefined) {
+                    let todo = document.getElementById("todo");
+                    if (displayedAll == false) {
+                        todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
+                        displayedAll = true;
+                    } else {
+                        todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
                  class="active sExtlink-processed sEdgeMore-processed">Less</a></li>`;
-                    displayedAll = false;
-                }
-                //dropdownthing
-                (_a = document
-                    .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
-                    var _a;
-                    if (document.getElementById("dropdownMore")) {
-                        (_a = document
-                            .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.remove();
+                        displayedAll = false;
                     }
-                    const img = document.createElement("img");
-                    img.id = "ajaxloader";
-                    img.className = "dropdowndiv2";
-                    img.src =
-                        "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/ajax-loader.gif";
-                    todo.appendChild(img);
-                    setTimeout(() => {
-                        var _a, _b, _c;
-                        (_a = document.getElementById("ajaxloader")) === null || _a === void 0 ? void 0 : _a.remove();
-                        let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
-                        if (document.getElementById("dropdown")) {
-                            (_b = document
-                                .getElementById("dropdown")) === null || _b === void 0 ? void 0 : _b.remove();
-                        }
-                        for (let j = 0; j < upcoming.length; j++) {
-                            if (upcoming[j].className.includes("hidden-important")) {
-                                let elm = upcoming[j].getElementsByTagName("img")[0];
-                                if (elm == undefined) {
-                                    let newClass = upcoming[j].className.replace("hidden-important", "");
-                                    (_c = upcoming[j].previousElementSibling) === null || _c === void 0 ? void 0 : _c.className.replace("hidden", "");
-                                    upcoming[j].className = newClass;
-                                }
-                            }
-                        }
-                        checkBoxmaker();
-                        changeAmount();
-                    }, 300);
-                });
+                    //dropdownthing
+                    (_a = document.getElementById("dropdownMore")) === null ||
+                    _a === void 0
+                        ? void 0
+                        : _a.addEventListener("click", function () {
+                              var _a;
+                              if (document.getElementById("dropdownMore")) {
+                                  (_a =
+                                      document.getElementById(
+                                          "dropdownMore"
+                                      )) === null || _a === void 0
+                                      ? void 0
+                                      : _a.remove();
+                              }
+                              const img = document.createElement("img");
+                              img.id = "ajaxloader";
+                              img.className = "dropdowndiv2";
+                              img.src =
+                                  "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/ajax-loader.gif";
+                              todo.appendChild(img);
+                              setTimeout(() => {
+                                  var _a, _b, _c;
+                                  (_a =
+                                      document.getElementById("ajaxloader")) ===
+                                      null || _a === void 0
+                                      ? void 0
+                                      : _a.remove();
+                                  let upcoming =
+                                      document.getElementsByClassName(
+                                          "upcoming-event upcoming-event-block course-event"
+                                      );
+                                  if (document.getElementById("dropdown")) {
+                                      (_b =
+                                          document.getElementById(
+                                              "dropdown"
+                                          )) === null || _b === void 0
+                                          ? void 0
+                                          : _b.remove();
+                                  }
+                                  for (let j = 0; j < upcoming.length; j++) {
+                                      if (
+                                          upcoming[j].className.includes(
+                                              "hidden-important"
+                                          )
+                                      ) {
+                                          let elm =
+                                              upcoming[j].getElementsByTagName(
+                                                  "img"
+                                              )[0];
+                                          if (elm == undefined) {
+                                              let newClass = upcoming[
+                                                  j
+                                              ].className.replace(
+                                                  "hidden-important",
+                                                  ""
+                                              );
+                                              (_c =
+                                                  upcoming[j]
+                                                      .previousElementSibling) ===
+                                                  null || _c === void 0
+                                                  ? void 0
+                                                  : _c.className.replace(
+                                                        "hidden",
+                                                        ""
+                                                    );
+                                              upcoming[j].className = newClass;
+                                          }
+                                      }
+                                  }
+                                  checkBoxmaker();
+                                  changeAmount();
+                              }, 300);
+                          });
+                }
             }
-        }
-        upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
-        for (let j = 0; j < upcoming.length; j++) {
-            if (upcoming[j].className.includes("hidden-important") == false) {
-                let input = document.createElement("input");
-                input.className = "progressCheck";
-                input.type = "checkbox";
-                let save = localStorage.getItem("saveState");
-                upcoming[j].appendChild(input);
-                let children = (_c = (_b = input.parentElement) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.children;
-                let childrenchild = children[0].children[1].children;
-                if (childrenchild) {
-                    for (let i = 0; i < childrenchild.length; i++) {
-                        if (childrenchild[i].className ==
-                            "sExtlink-processed") {
-                            let elm = childrenchild[i];
-                            let original = elm.innerText;
-                            let lower = original.toLowerCase();
-                            if ((lower.includes("quiz") ||
-                                lower.includes(" test") ||
-                                lower.includes("minor") ||
-                                lower.includes("c4u") ||
-                                lower.includes("cfu") ||
-                                lower.includes("major")) &&
-                                lower.includes("hw") == false) {
-                                input.style.accentColor = "green";
-                                elm.style.color = "red";
-                            }
-                            if (save !== null) {
-                                let elm = childrenchild[i];
-                                saveState = JSON.parse(save);
-                                if (saveState[elm.innerText] == true) {
-                                    input.checked = true;
-                                    childrenchild[i].innerHTML = `<s>${elm.innerText}</s>`;
-                                    let child = (_f = (_e = (_d = childrenchild[i].parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.parentElement) === null || _f === void 0 ? void 0 : _f.parentElement;
-                                    child.style.opacity = "0.8";
-                                    let timout = setInterval(() => {
-                                        if (deleteAsign == false) {
-                                            clearInterval(timout);
-                                        }
-                                        else if (deleteAsign !== null &&
-                                            deleteAsign == true) {
-                                            child.remove();
-                                            clearInterval(timout);
-                                        }
-                                    }, 1);
-                                }
-                                else {
-                                    input.checked = false;
-                                    let child = (_j = (_h = (_g = childrenchild[i].parentElement) === null || _g === void 0 ? void 0 : _g.parentElement) === null || _h === void 0 ? void 0 : _h.parentElement) === null || _j === void 0 ? void 0 : _j.parentElement;
-                                    child.style.opacity = "1";
-                                    childrenchild[i].innerHTML = `${childrenchild[i].innerHTML.replace(/<\/?s>/g, "")}`;
-                                }
-                            }
-                        }
-                    }
-                }
-                let dateHeaders = document.getElementsByClassName("date-header");
-                Array.from(dateHeaders).forEach((element) => {
-                    var _a;
-                    if (((_a = element.nextElementSibling) === null || _a === void 0 ? void 0 : _a.classList.contains("hidden-important")) == false) {
-                        element.className = element.className.replace("hidden", "");
-                    }
-                    let child = element.firstElementChild;
-                    function titleCase(str) {
-                        var splitStr = str.toLowerCase().split(" ");
-                        for (var i = 0; i < splitStr.length; i++) {
-                            splitStr[i] =
-                                splitStr[i].charAt(0).toUpperCase() +
-                                    splitStr[i].substring(1);
-                        }
-                        return splitStr.join(" ");
-                    }
-                    let innertext = element.innerText;
-                    innertext = titleCase(innertext);
-                    element.innerHTML =
-                        `<p>` + innertext + `</p>`;
-                    child = element.firstElementChild;
-                    child.className = "h4s";
-                });
-                input.addEventListener("click", function () {
-                    var _a, _b, _c, _d, _e, _f, _g, _h;
-                    let children = (_b = (_a = input.parentElement) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.children;
+            upcoming = document.getElementsByClassName(
+                "upcoming-event upcoming-event-block course-event"
+            );
+            for (let j = 0; j < upcoming.length; j++) {
+                if (
+                    upcoming[j].className.includes("hidden-important") == false
+                ) {
+                    let input = document.createElement("input");
+                    input.className = "progressCheck";
+                    input.type = "checkbox";
+                    let save = localStorage.getItem("saveState");
+                    upcoming[j].appendChild(input);
+                    let children =
+                        (_c =
+                            (_b = input.parentElement) === null || _b === void 0
+                                ? void 0
+                                : _b.firstElementChild) === null ||
+                        _c === void 0
+                            ? void 0
+                            : _c.children;
                     let childrenchild = children[0].children[1].children;
                     if (childrenchild) {
-                        changeAmount();
                         for (let i = 0; i < childrenchild.length; i++) {
-                            if (childrenchild[i].className ==
-                                "sExtlink-processed") {
-                                let elmchild = childrenchild[i];
-                                if (input.checked) {
-                                    saveState[elmchild.innerText] = true;
-                                    localStorage.setItem("saveState", JSON.stringify(saveState));
-                                    childrenchild[i].innerHTML = `<s>${elmchild.innerText}</s>`;
-                                    let child = (_e = (_d = (_c = childrenchild[i].parentElement) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.parentElement;
-                                    child.style.opacity = "0.8";
-                                    if (deleteAsign !== null &&
-                                        deleteAsign) {
-                                        child.remove();
-                                    }
+                            if (
+                                childrenchild[i].className ==
+                                "sExtlink-processed"
+                            ) {
+                                let elm = childrenchild[i];
+                                let original = elm.innerText;
+                                let lower = original.toLowerCase();
+                                if (
+                                    (lower.includes("quiz") ||
+                                        lower.includes(" test") ||
+                                        lower.includes("minor") ||
+                                        lower.includes("c4u") ||
+                                        lower.includes("cfu") ||
+                                        lower.includes("major")) &&
+                                    lower.includes("hw") == false
+                                ) {
+                                    input.style.accentColor = "green";
+                                    elm.style.color = "red";
                                 }
-                                else {
-                                    let child = (_h = (_g = (_f = childrenchild[i].parentElement) === null || _f === void 0 ? void 0 : _f.parentElement) === null || _g === void 0 ? void 0 : _g.parentElement) === null || _h === void 0 ? void 0 : _h.parentElement;
-                                    child.style.opacity = "1";
-                                    childrenchild[i].innerHTML = `${childrenchild[i].innerHTML.replace(/<\/?s>/g, "")}`;
-                                    saveState[elmchild.innerText] = false;
-                                    localStorage.setItem("saveState", JSON.stringify(saveState));
+                                if (save !== null) {
+                                    let elm = childrenchild[i];
+                                    saveState = JSON.parse(save);
+                                    if (saveState[elm.innerText] == true) {
+                                        input.checked = true;
+                                        childrenchild[
+                                            i
+                                        ].innerHTML = `<s>${elm.innerText}</s>`;
+                                        let child =
+                                            (_f =
+                                                (_e =
+                                                    (_d =
+                                                        childrenchild[i]
+                                                            .parentElement) ===
+                                                        null || _d === void 0
+                                                        ? void 0
+                                                        : _d.parentElement) ===
+                                                    null || _e === void 0
+                                                    ? void 0
+                                                    : _e.parentElement) ===
+                                                null || _f === void 0
+                                                ? void 0
+                                                : _f.parentElement;
+                                        child.style.opacity = "0.8";
+                                        let timout = setInterval(() => {
+                                            if (deleteAsign == false) {
+                                                clearInterval(timout);
+                                            } else if (
+                                                deleteAsign !== null &&
+                                                deleteAsign == true
+                                            ) {
+                                                child.remove();
+                                                clearInterval(timout);
+                                            }
+                                        }, 1);
+                                    } else {
+                                        input.checked = false;
+                                        let child =
+                                            (_j =
+                                                (_h =
+                                                    (_g =
+                                                        childrenchild[i]
+                                                            .parentElement) ===
+                                                        null || _g === void 0
+                                                        ? void 0
+                                                        : _g.parentElement) ===
+                                                    null || _h === void 0
+                                                    ? void 0
+                                                    : _h.parentElement) ===
+                                                null || _j === void 0
+                                                ? void 0
+                                                : _j.parentElement;
+                                        child.style.opacity = "1";
+                                        childrenchild[
+                                            i
+                                        ].innerHTML = `${childrenchild[
+                                            i
+                                        ].innerHTML.replace(/<\/?s>/g, "")}`;
+                                    }
                                 }
                             }
                         }
                     }
-                });
+                    let dateHeaders =
+                        document.getElementsByClassName("date-header");
+                    Array.from(dateHeaders).forEach((element) => {
+                        var _a;
+                        if (
+                            ((_a = element.nextElementSibling) === null ||
+                            _a === void 0
+                                ? void 0
+                                : _a.classList.contains("hidden-important")) ==
+                            false
+                        ) {
+                            element.className = element.className.replace(
+                                "hidden",
+                                ""
+                            );
+                        }
+                        let child = element.firstElementChild;
+                        function titleCase(str) {
+                            var splitStr = str.toLowerCase().split(" ");
+                            for (var i = 0; i < splitStr.length; i++) {
+                                splitStr[i] =
+                                    splitStr[i].charAt(0).toUpperCase() +
+                                    splitStr[i].substring(1);
+                            }
+                            return splitStr.join(" ");
+                        }
+                        let innertext = element.innerText;
+                        innertext = titleCase(innertext);
+                        element.innerHTML = `<p>` + innertext + `</p>`;
+                        child = element.firstElementChild;
+                        child.className = "h4s";
+                    });
+                    input.addEventListener("click", function () {
+                        var _a, _b, _c, _d, _e, _f, _g, _h;
+                        let children =
+                            (_b =
+                                (_a = input.parentElement) === null ||
+                                _a === void 0
+                                    ? void 0
+                                    : _a.firstElementChild) === null ||
+                            _b === void 0
+                                ? void 0
+                                : _b.children;
+                        let childrenchild = children[0].children[1].children;
+                        if (childrenchild) {
+                            changeAmount();
+                            for (let i = 0; i < childrenchild.length; i++) {
+                                if (
+                                    childrenchild[i].className ==
+                                    "sExtlink-processed"
+                                ) {
+                                    let elmchild = childrenchild[i];
+                                    if (input.checked) {
+                                        saveState[elmchild.innerText] = true;
+                                        localStorage.setItem(
+                                            "saveState",
+                                            JSON.stringify(saveState)
+                                        );
+                                        childrenchild[
+                                            i
+                                        ].innerHTML = `<s>${elmchild.innerText}</s>`;
+                                        let child =
+                                            (_e =
+                                                (_d =
+                                                    (_c =
+                                                        childrenchild[i]
+                                                            .parentElement) ===
+                                                        null || _c === void 0
+                                                        ? void 0
+                                                        : _c.parentElement) ===
+                                                    null || _d === void 0
+                                                    ? void 0
+                                                    : _d.parentElement) ===
+                                                null || _e === void 0
+                                                ? void 0
+                                                : _e.parentElement;
+                                        child.style.opacity = "0.8";
+                                        if (
+                                            deleteAsign !== null &&
+                                            deleteAsign
+                                        ) {
+                                            child.remove();
+                                        }
+                                    } else {
+                                        let child =
+                                            (_h =
+                                                (_g =
+                                                    (_f =
+                                                        childrenchild[i]
+                                                            .parentElement) ===
+                                                        null || _f === void 0
+                                                        ? void 0
+                                                        : _f.parentElement) ===
+                                                    null || _g === void 0
+                                                    ? void 0
+                                                    : _g.parentElement) ===
+                                                null || _h === void 0
+                                                ? void 0
+                                                : _h.parentElement;
+                                        child.style.opacity = "1";
+                                        childrenchild[
+                                            i
+                                        ].innerHTML = `${childrenchild[
+                                            i
+                                        ].innerHTML.replace(/<\/?s>/g, "")}`;
+                                        saveState[elmchild.innerText] = false;
+                                        localStorage.setItem(
+                                            "saveState",
+                                            JSON.stringify(saveState)
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
             }
         }
-    });
+    );
 }
 function gradeUpdate() {
     var _a;
-    if (window.location.href == "https://schoology.shschools.org/grades/grades") {
-        let gradebookElms = document.getElementsByClassName("gradebook-course-grades");
+    if (
+        window.location.href == "https://schoology.shschools.org/grades/grades"
+    ) {
+        let gradebookElms = document.getElementsByClassName(
+            "gradebook-course-grades"
+        );
         for (let i = 0; i < gradebookElms.length; i++) {
             let elm = gradebookElms[i];
             elm.style.display = "block";
-            let parent = document.getElementsByClassName("course-grade-value")[i];
-            let gradeElm = (_a = parent.firstChild) === null || _a === void 0 ? void 0 : _a.firstChild;
+            let parent =
+                document.getElementsByClassName("course-grade-value")[i];
+            let gradeElm =
+                (_a = parent.firstChild) === null || _a === void 0
+                    ? void 0
+                    : _a.firstChild;
             let grade = gradeElm.innerHTML;
-            let title = document.getElementsByClassName("gradebook-course-title")[i];
+            let title = document.getElementsByClassName(
+                "gradebook-course-title"
+            )[i];
             title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
-            let gradeDivs = document.getElementsByClassName(" gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed")[i];
+            let gradeDivs = document.getElementsByClassName(
+                " gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed"
+            )[i];
             gradeDivs.style.borderRadius = "10px";
         }
         for (let i = 0; i < gradebookElms.length; i++) {
@@ -907,7 +1149,10 @@ function notePage() {
         let title = document.getElementsByTagName("title")[0];
         title.innerText = "Notes | Schoology";
         let text = localStorage.getItem("textSave");
-        (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
+        (_a = document.getElementById("content-wrapper")) === null ||
+        _a === void 0
+            ? void 0
+            : _a.remove();
         let div = document.createElement("textarea");
         let notecontainer = document.createElement("div");
         notecontainer.id = "notecontainer";
@@ -933,8 +1178,7 @@ function notePage() {
                     div.style.padding = "0px";
                 }, 200);
                 div.style.height = "0px";
-            }
-            else {
+            } else {
                 shown = true;
                 div.style.opacity = "1";
                 div.style.transition = "all 0.2s";
@@ -943,7 +1187,9 @@ function notePage() {
                 div.style.height = "500px";
             }
         });
-        (_b = document.getElementById("body")) === null || _b === void 0 ? void 0 : _b.appendChild(notecontainer);
+        (_b = document.getElementById("body")) === null || _b === void 0
+            ? void 0
+            : _b.appendChild(notecontainer);
         div.addEventListener("input", function () {
             if (div) {
                 localStorage.setItem("textSave", div.value);
@@ -992,8 +1238,7 @@ function studyPage() {
                     lastBlurTime = 0;
                     if (timeleft >= 0) {
                         toggle();
-                    }
-                    else {
+                    } else {
                         timeleft = 0;
                         localStorage.setItem("timeLeft", "0");
                         SetTextLabel();
@@ -1016,34 +1261,44 @@ function studyPage() {
         asignmentcontainer.id = "asignmentcontainer";
         document.body.appendChild(asignmentcontainer);
         function getCurrentAsignments() {
-            fetch("https://schoology.shschools.org/home/upcoming_submissions_ajax")
+            fetch(
+                "https://schoology.shschools.org/home/upcoming_submissions_ajax"
+            )
                 .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json(); // Assuming the response is JSON
-            })
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error! Status: ${response.status}`
+                        );
+                    }
+                    return response.json(); // Assuming the response is JSON
+                })
                 .then((data) => {
-                let asignmentContainer = document.getElementById("asignmentcontainer");
-                asignmentContainer.innerHTML += data.html;
-                let asignments = document.getElementsByClassName("event-title");
-                Array.from(asignments).forEach((element) => {
-                    var _a;
-                    let elementInner = element.firstElementChild;
-                    let elementInnerdate = (_a = element.lastElementChild) === null || _a === void 0 ? void 0 : _a.lastElementChild;
-                    // let elementInner =
-                    //     element.firstElementChild as HTMLParagraphElement;
-                    // options.push(
-                    //     `(${elementInnerdate.innerText}) ${elementInner.innerText}`
-                    options.push(elementInner.innerText);
-                    optionTags.push(elementInnerdate.innerText);
-                });
-                asignmentcontainer.remove();
-            })
+                    let asignmentContainer =
+                        document.getElementById("asignmentcontainer");
+                    asignmentContainer.innerHTML += data.html;
+                    let asignments =
+                        document.getElementsByClassName("event-title");
+                    Array.from(asignments).forEach((element) => {
+                        var _a;
+                        let elementInner = element.firstElementChild;
+                        let elementInnerdate =
+                            (_a = element.lastElementChild) === null ||
+                            _a === void 0
+                                ? void 0
+                                : _a.lastElementChild;
+                        // let elementInner =
+                        //     element.firstElementChild as HTMLParagraphElement;
+                        // options.push(
+                        //     `(${elementInnerdate.innerText}) ${elementInner.innerText}`
+                        options.push(elementInner.innerText);
+                        optionTags.push(elementInnerdate.innerText);
+                    });
+                    asignmentcontainer.remove();
+                })
                 .catch((error) => {
-                console.error("Error fetching data:", error);
-                return error;
-            });
+                    console.error("Error fetching data:", error);
+                    return error;
+                });
         }
         getCurrentAsignments();
         // let data=getCurrentAsignments();
@@ -1055,13 +1310,24 @@ function studyPage() {
         // }
         let title = document.getElementsByTagName("title")[0];
         title.innerText = "Study Session | Schoology";
-        (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
-        (_b = document.getElementById("site-navigation-footer")) === null || _b === void 0 ? void 0 : _b.remove();
-        (_c = document.getElementById("main-content-wrapper")) === null || _c === void 0 ? void 0 : _c.remove();
+        (_a = document.getElementById("content-wrapper")) === null ||
+        _a === void 0
+            ? void 0
+            : _a.remove();
+        (_b = document.getElementById("site-navigation-footer")) === null ||
+        _b === void 0
+            ? void 0
+            : _b.remove();
+        (_c = document.getElementById("main-content-wrapper")) === null ||
+        _c === void 0
+            ? void 0
+            : _c.remove();
         let wrapper = document.getElementById("wrapper");
         let container = document.createElement("div");
         // container.style.background = "blue";
-        (_d = document.getElementById("wrapper")) === null || _d === void 0 ? void 0 : _d.before(container);
+        (_d = document.getElementById("wrapper")) === null || _d === void 0
+            ? void 0
+            : _d.before(container);
         if (wrapper) {
             wrapper.className = "";
         }
@@ -1078,7 +1344,8 @@ function studyPage() {
         h1.innerHTML = "0:00";
         container.appendChild(h1);
         function updateList() {
-            let containerTest = document.getElementsByClassName("containerDiv")[0];
+            let containerTest =
+                document.getElementsByClassName("containerDiv")[0];
             if (containerTest) {
                 containerTest.remove();
             }
@@ -1121,7 +1388,8 @@ function studyPage() {
                     dropdown.innerHTML = ""; // Clear previous options
                     let filteredOptions = [];
                     for (let i = 0; i < options.length; i++) {
-                        let option = options[i].toLowerCase() +
+                        let option =
+                            options[i].toLowerCase() +
                             optionTags[i].toLowerCase();
                         if (option.includes(query)) {
                             filteredOptions.push(options[i]);
@@ -1140,17 +1408,30 @@ function studyPage() {
                                 textLabel.innerText = option;
                                 dropdown.classList.add("hidden");
                                 let countnum = textLabel.id;
-                                countnum = String(countnum).slice(8, countnum.length);
-                                let inner = document.getElementById("txtlabel" + countnum);
+                                countnum = String(countnum).slice(
+                                    8,
+                                    countnum.length
+                                );
+                                let inner = document.getElementById(
+                                    "txtlabel" + countnum
+                                );
                                 todoList[Number(countnum)] = [
-                                    (_a = document.getElementById("txtlabel" + countnum)) === null || _a === void 0 ? void 0 : _a.innerText,
-                                    document.getElementById("checkbox" + countnum).checked,
+                                    (_a = document.getElementById(
+                                        "txtlabel" + countnum
+                                    )) === null || _a === void 0
+                                        ? void 0
+                                        : _a.innerText,
+                                    document.getElementById(
+                                        "checkbox" + countnum
+                                    ).checked,
                                 ];
-                                localStorage.setItem("todo", JSON.stringify(todoList));
+                                localStorage.setItem(
+                                    "todo",
+                                    JSON.stringify(todoList)
+                                );
                             });
                         });
-                    }
-                    else {
+                    } else {
                         dropdown.classList.add("hidden"); // Hide dropdown if no matches
                     }
                 });
@@ -1184,7 +1465,11 @@ function studyPage() {
                     countnum = String(countnum).slice(8, countnum.length);
                     let inner = document.getElementById("txtlabel" + countnum);
                     todoList[Number(countnum)] = [
-                        (_a = document.getElementById("txtlabel" + countnum)) === null || _a === void 0 ? void 0 : _a.innerText,
+                        (_a = document.getElementById(
+                            "txtlabel" + countnum
+                        )) === null || _a === void 0
+                            ? void 0
+                            : _a.innerText,
                         document.getElementById("checkbox" + countnum).checked,
                     ];
                     localStorage.setItem("todo", JSON.stringify(todoList));
@@ -1217,10 +1502,13 @@ add
         SetTextLabel();
         function SetTextLabel() {
             if (String(Math.floor(timeleft % 60)).length == 1) {
-                h1.innerHTML = `${Math.floor(timeleft / 60)}:0${Math.floor(timeleft % 60)} `;
-            }
-            else {
-                h1.innerHTML = `${Math.floor(timeleft / 60)}:${Math.floor(timeleft % 60)} `;
+                h1.innerHTML = `${Math.floor(timeleft / 60)}:0${Math.floor(
+                    timeleft % 60
+                )} `;
+            } else {
+                h1.innerHTML = `${Math.floor(timeleft / 60)}:${Math.floor(
+                    timeleft % 60
+                )} `;
             }
             let title = document.getElementsByTagName("title")[0];
             title.innerText = `(${h1.innerHTML}) Study Session | Schoology`;
@@ -1228,8 +1516,7 @@ add
         function toggle() {
             if (timerStart) {
                 startbtn.innerHTML = "Pause";
-            }
-            else {
+            } else {
                 startbtn.innerHTML = "Study";
             }
             localStorage.setItem("timerIsOn", JSON.stringify(timerStart));
@@ -1249,8 +1536,7 @@ add
                         return;
                     }
                 }, 100);
-            }
-            else {
+            } else {
                 if (countdown !== null) {
                     clearInterval(countdown);
                 }
@@ -1261,8 +1547,7 @@ add
             if (timerStart) {
                 timerStart = false;
                 startbtn.innerHTML = "Study";
-            }
-            else {
+            } else {
                 timerStart = true;
                 startbtn.innerHTML = "Pause";
             }
@@ -1345,7 +1630,9 @@ if (recentlyCompleted) {
 }
 setTimeout(() => {
     var _a, _b;
-    let RecentCompletelist = document.getElementsByClassName("recently-completed-event");
+    let RecentCompletelist = document.getElementsByClassName(
+        "recently-completed-event"
+    );
     let used = 0;
     for (let i = 0; i < RecentCompletelist.length; i++) {
         let elm = RecentCompletelist[i];
@@ -1353,14 +1640,23 @@ setTimeout(() => {
         let old = [];
         if (stored) {
             old = JSON.parse(stored);
-        }
-        else {
+        } else {
             old = [];
         }
-        let gradeBad = (_a = RecentCompletelist[i].getElementsByTagName("span")[5]
-            .firstElementChild) === null || _a === void 0 ? void 0 : _a.innerHTML;
+        let gradeBad =
+            (_a =
+                RecentCompletelist[i].getElementsByTagName("span")[5]
+                    .firstElementChild) === null || _a === void 0
+                ? void 0
+                : _a.innerHTML;
         if (old.includes(elm.innerText) == false && gradeBad !== "—") {
-            let link = (_b = RecentCompletelist[i].firstElementChild) === null || _b === void 0 ? void 0 : _b.getElementsByTagName("span")[1].getElementsByTagName("a")[0];
+            let link =
+                (_b = RecentCompletelist[i].firstElementChild) === null ||
+                _b === void 0
+                    ? void 0
+                    : _b
+                          .getElementsByTagName("span")[1]
+                          .getElementsByTagName("a")[0];
             link = link;
             old.push(elm.innerText);
             localStorage.setItem("oldGrade", JSON.stringify(old));
@@ -1371,7 +1667,10 @@ setTimeout(() => {
             iframe.src = link.href;
             iframe.onload = () => {
                 if (iframe.contentDocument) {
-                    grade = iframe.contentDocument.getElementsByClassName("grading-grade")[0];
+                    grade =
+                        iframe.contentDocument.getElementsByClassName(
+                            "grading-grade"
+                        )[0];
                     if (grade !== undefined) {
                         grade = grade.innerText;
                         iframe.remove();
@@ -1389,15 +1688,19 @@ setTimeout(() => {
                         setTimeout(() => {
                             popupBanner.style.right = "-300px";
                         }, 7000);
-                    }
-                    else {
-                        let src = iframe.src.replace("assignment", "assignments");
+                    } else {
+                        let src = iframe.src.replace(
+                            "assignment",
+                            "assignments"
+                        );
                         iframe.src = src + "/mydocument";
                         iframe.onload = () => {
                             let content = iframe.contentDocument;
                             if (content) {
                                 setTimeout(() => {
-                                    grade = content.getElementsByClassName("document-header-aside-graded-grade-3903705135")[0];
+                                    grade = content.getElementsByClassName(
+                                        "document-header-aside-graded-grade-3903705135"
+                                    )[0];
                                     if (grade !== null) {
                                         grade = grade.innerText;
                                         iframe.remove();
@@ -1405,10 +1708,13 @@ setTimeout(() => {
                                             .replace("Grade:", "")
                                             .trim();
                                         let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${link.href}>${link.innerText}</a>`;
-                                        let popupBanner = document.createElement("div");
+                                        let popupBanner =
+                                            document.createElement("div");
                                         popupBanner.id = "popupBanner";
                                         popupBanner.innerHTML = message;
-                                        popupBanner.style.top = `${20 + used * 100}px`;
+                                        popupBanner.style.top = `${
+                                            20 + used * 100
+                                        }px`;
                                         used += 1;
                                         document.body.appendChild(popupBanner);
                                         setTimeout(() => {
@@ -1433,7 +1739,9 @@ let waiting = setInterval(function () {
         clearInterval(waiting);
         if (localStorage.getItem("oldUpdate") !== update.innerText) {
             localStorage.setItem("oldUpdate", update.innerText);
-            let div = document.getElementsByClassName("s-edge-type-update-post sUpdate-processed")[0];
+            let div = document.getElementsByClassName(
+                "s-edge-type-update-post sUpdate-processed"
+            )[0];
             div.style.borderColor = "#42c5f9";
             div.style.borderWidth = "5px";
             div.style.borderStyle = "solid";
@@ -1441,12 +1749,4 @@ let waiting = setInterval(function () {
         }
     }
 }, 10);
-// function logKey(e: any) {
-//     if (e.keyCode == "91") {
-//         if (e.keyCode == "91") {
-//         alert();
-//         }
-//     }
-// }
-// document.body.addEventListener("down", logKey);
-// ©2024 William Chou. All rights reserved.
+// ©2025 William Chou. All rights reserved.
