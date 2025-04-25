@@ -25,11 +25,11 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["injected.js", "pdf.js", "text.js", "images/*"],
+      "resources": ["pdf.js", "text.js", "images/*"],
       "matches": ["<all_urls>"]
     }
   ],
-  "background": {
+"background": {
     "service_worker": "background.js"
   },
   "content_scripts": [

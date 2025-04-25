@@ -8,6 +8,8 @@ document.head.innerHTML += `<html manifest="offline_book.manifest">
   'GRAD' 0,
   'opsz' 24
 }</style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check_circle" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=volunteer_activism" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check_circle" />
 `;
 let asignmentLabel: any;
 let ready = 0;
@@ -114,11 +116,24 @@ function createBessyGradeButton() {
     buttonIcon.className = "volunteerBtn";
     buttonIcon.innerHTML = `<span class="material-symbols-outlined">check_circle</span>`;
     buttonIcon.addEventListener("click", function () {
-        window.open("https://bessy.io");
+        window.open("https://www.bessy.io/");
     });
     buttonTemplateClone.before(buttonIcon);
 }
-createBessyGradeButton();
+function createMobileServeButton() {
+    let buttonTemplateClone = document.getElementsByClassName(
+        "_24avl _3Rh90 _349XD"
+    )[1];
+    let buttonIcon = document.createElement("button");
+    buttonIcon.className = "mobileServeBtn";
+    buttonIcon.innerHTML = `<span class="material-symbols-outlined">volunteer_activism</span>`;
+    buttonIcon.addEventListener("click", function () {
+        window.open("https://app.mobileserve.com/app/#/");
+    });
+    buttonTemplateClone.before(buttonIcon);
+}
+// createBessyGradeButton();
+// createMobileServeButton();
 function adjustButtonHoverBrightness(hexColor: any, percent: any) {
     percent = Math.max(-100, Math.min(100, percent));
     let r = parseInt(hexColor.slice(1, 3), 16);
@@ -576,7 +591,7 @@ function updateProgressBarState() {
         let progressIsZero = false;
         if (progressBarDiv) {
             let targetProgressBarWidth =
-                (checks / checkboxElements.length) * 200 + 20;
+                (checks / checkboxElements.length) * 200;
 
             if (targetProgressBarWidth == 0) {
                 progressIsZero = true;
@@ -629,7 +644,8 @@ function updateProgressBarState() {
                             progressBarDiv.innerHTML = "0%";
                         } else {
                             progressBarDiv.innerHTML = `${String(
-                                Math.round((currentProgressBarWidth - 20) / 2)
+                                Math.round((currentProgressBarWidth - 20) / 2) +
+                                    10
                             )}%`;
                         }
                         progressBarDiv.style.backgroundColor = `rgb(${
@@ -811,6 +827,8 @@ function drawCheckboxes() {
                                         labelText.includes("minor") ||
                                         labelText.includes("c4u") ||
                                         labelText.includes("cfu") ||
+                                        labelText.includes("final") ||
+                                        labelText.includes("experience") ||
                                         labelText.includes("major")) &&
                                     labelText.includes("hw") == false
                                 ) {
@@ -1386,74 +1404,129 @@ setTimeout(() => {
             let grade: any = null;
             let asignmentIframe = document.createElement("iframe");
             document.body.appendChild(asignmentIframe);
+            //
+
+            //
             asignmentIframe.src = asignmentURL.href;
             asignmentIframe.onload = () => {
                 if (asignmentIframe.contentDocument) {
-                    grade =
-                        asignmentIframe.contentDocument.getElementsByClassName(
-                            "grading-grade"
-                        )[0] as HTMLDivElement;
+                    console.log("loaded");
+                    if (!asignmentURL.href.includes("launch")) {
+                        grade =
+                            asignmentIframe.contentDocument.getElementsByClassName(
+                                "grading-grade"
+                            )[0] as HTMLDivElement;
 
-                    if (grade !== undefined) {
-                        grade = grade.innerText;
-                        asignmentIframe.remove();
-                        grade = grade.replace("Grade:", "").trim();
-                        let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
-                        let popupBanner = document.createElement("div");
-                        popupBanner.id = "popupBanner";
-                        popupBanner.innerHTML = message;
-                        popupBanner.style.top = `${20 + popupIndex * 100}px`;
-                        popupIndex += 1;
-                        document.body.appendChild(popupBanner);
-                        setTimeout(() => {
-                            popupBanner.style.right = "20px";
-                        }, 100);
-                        setTimeout(() => {
-                            popupBanner.style.right = "-300px";
-                        }, 7000);
-                    } else {
-                        let src = asignmentIframe.src.replace(
-                            "assignment",
-                            "assignments"
-                        );
-                        asignmentIframe.src = src + "/mydocument";
-                        asignmentIframe.onload = () => {
-                            let content = asignmentIframe.contentDocument;
-                            if (content) {
-                                setTimeout(() => {
-                                    grade = content.getElementsByClassName(
-                                        "document-header-aside-graded-grade-3903705135"
-                                    )[0] as HTMLDivElement;
-                                    if (grade !== null) {
-                                        grade = grade.innerText;
+                        if (grade !== undefined) {
+                            grade = grade.innerText;
+                            asignmentIframe.remove();
+                            grade = grade.replace("Grade:", "").trim();
+                            let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                            let popupBanner = document.createElement("div");
+                            popupBanner.id = "popupBanner";
+                            popupBanner.innerHTML = message;
+                            popupBanner.style.top = `${
+                                20 + popupIndex * 100
+                            }px`;
+                            popupIndex += 1;
+                            document.body.appendChild(popupBanner);
+                            setTimeout(() => {
+                                popupBanner.style.right = "20px";
+                            }, 100);
+                            setTimeout(() => {
+                                popupBanner.style.right = "-300px";
+                            }, 7000);
+                        } else {
+                            let src = asignmentIframe.src.replace(
+                                "assignment",
+                                "assignments"
+                            );
+                            asignmentIframe.src = src + "/mydocument";
+                            asignmentIframe.onload = () => {
+                                let content = asignmentIframe.contentDocument;
+                                if (content) {
+                                    setTimeout(() => {
+                                        grade = content.getElementsByClassName(
+                                            "document-header-aside-graded-grade-3903705135"
+                                        )[0] as HTMLDivElement;
+                                        if (grade !== null) {
+                                            grade = grade.innerText;
 
-                                        asignmentIframe.remove();
-                                        grade = grade
-                                            .replace("Grade:", "")
-                                            .trim();
-                                        let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
-                                        let popupBanner =
-                                            document.createElement("div");
-                                        popupBanner.id = "popupBanner";
+                                            asignmentIframe.remove();
+                                            grade = grade
+                                                .replace("Grade:", "")
+                                                .trim();
+                                            let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                                            let popupBanner =
+                                                document.createElement("div");
+                                            popupBanner.id = "popupBanner";
 
-                                        popupBanner.innerHTML = message;
-                                        popupBanner.style.top = `${
-                                            20 + popupIndex * 100
-                                        }px`;
-                                        popupIndex += 1;
+                                            popupBanner.innerHTML = message;
+                                            popupBanner.style.top = `${
+                                                20 + popupIndex * 100
+                                            }px`;
+                                            popupIndex += 1;
 
-                                        document.body.appendChild(popupBanner);
+                                            document.body.appendChild(
+                                                popupBanner
+                                            );
 
-                                        setTimeout(() => {
-                                            popupBanner.style.right = "20px";
-                                        }, 100);
-                                        setTimeout(() => {
-                                            popupBanner.style.right = "-300px";
-                                        }, 7000);
-                                    }
-                                }, 2000);
-                            }
-                        };
+                                            setTimeout(() => {
+                                                popupBanner.style.right =
+                                                    "20px";
+                                            }, 100);
+                                            setTimeout(() => {
+                                                popupBanner.style.right =
+                                                    "-300px";
+                                            }, 7000);
+                                        }
+                                    }, 2000);
+                                }
+                            };
+                        }
+                        // } else if (asignmentURL.href.includes("launch")) {
+                        //     if (asignmentIframe.contentDocument) {
+                        //         console.log("check");
+                        //         console.log(asignmentIframe.contentDocument);
+                        //         let edPuzzleFrame =
+                        //             asignmentIframe.contentDocument.getElementsByClassName(
+                        //                 "external-tool-iframe"
+                        //             )[0] as HTMLIFrameElement;
+                        //         console.log(edPuzzleFrame);
+                        //         edPuzzleFrame.onload = () => {
+                        //             let waitForLoad = setInterval(() => {
+                        //                 if (edPuzzleFrame.contentDocument) {
+                        //                     grade =
+                        //                         edPuzzleFrame.contentDocument.getElementsByClassName(
+                        //                             "hrKVwmEKoE zD3HCBbYl5"
+                        //                         )[0] as HTMLIFrameElement;
+                        //                     grade = grade.innerText;
+                        //                     clearInterval(waitForLoad);
+                        //                     asignmentIframe.remove();
+                        //                     grade = grade
+                        //                         .replace("Grade:", "")
+                        //                         .trim();
+                        //                     let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                        //                     let popupBanner =
+                        //                         document.createElement("div");
+                        //                     popupBanner.id = "popupBanner";
+                        //                     popupBanner.innerHTML = message;
+                        //                     popupBanner.style.top = `${
+                        //                         20 + popupIndex * 100
+                        //                     }px`;
+                        //                     popupIndex += 1;
+                        //                     document.body.appendChild(popupBanner);
+                        //                     setTimeout(() => {
+                        //                         popupBanner.style.right = "20px";
+                        //                     }, 100);
+                        //                     setTimeout(() => {
+                        //                         popupBanner.style.right = "-300px";
+                        //                     }, 7000);
+                        //                     return;
+                        //                 }
+                        //             }, 1000);
+                        //         };
+                        //     }
                     }
                 }
             };
@@ -1487,5 +1560,38 @@ function titleCase(str: any) {
     }
     return splitStr.join(" ");
 }
+
+function getPreviousAnswers() {
+    let questionContainer = document.getElementsByClassName(
+        "lrn_response_wrapper"
+    );
+    let multipleChoiceContainers = document.getElementsByClassName(
+        "lrn_mcqgroup lrn_mcqgroup-horizontal"
+    );
+    alert();
+    let indexOfAnswer = 0;
+    Array.from(multipleChoiceContainers).forEach((questionContainer) => {
+        Array.from(questionContainer.children).forEach((answer) => {
+            if (answer.classList.contains("lrn_selected")) {
+                console.log((answer as HTMLDivElement).innerText);
+            }
+
+            indexOfAnswer += 1;
+        });
+    });
+}
+
+// Convert HTMLCollection to an array
+
+// setTimeout(() => {
+//     (
+//         document.getElementsByClassName(
+//             "_1tpub zJU7e _2gJbx _3lLLU _3hM4e"
+//         )[9] as HTMLDivElement
+//     ).click();
+//     setTimeout(() => {
+//         getPreviousAnswers();
+//     }, 1000);
+// }, 2000);
 // ©2025 William Chou. All rights reserved.
 //internet out @ 5:52

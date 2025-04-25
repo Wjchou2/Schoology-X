@@ -1,78 +1,42 @@
 "use strict";
-var __awaiter =
-    (this && this.__awaiter) ||
-    function (thisArg, _arguments, P, generator) {
-        function adopt(value) {
-            return value instanceof P
-                ? value
-                : new P(function (resolve) {
-                      resolve(value);
-                  });
-        }
-        return new (P || (P = Promise))(function (resolve, reject) {
-            function fulfilled(value) {
-                try {
-                    step(generator.next(value));
-                } catch (e) {
-                    reject(e);
-                }
-            }
-            function rejected(value) {
-                try {
-                    step(generator["throw"](value));
-                } catch (e) {
-                    reject(e);
-                }
-            }
-            function step(result) {
-                result.done
-                    ? resolve(result.value)
-                    : adopt(result.value).then(fulfilled, rejected);
-            }
-            step(
-                (generator = generator.apply(thisArg, _arguments || [])).next()
-            );
-        });
-    };
-console.log("injected :)");
+console.log("Schoology X Injected :)");
 document.head.innerHTML += `<html manifest="offline_book.manifest">
-`;
-document.head.innerHTML += `<link src="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"></link>`;
-document.head.innerHTML += `<style>.material-symbols-outlined{
+<link src="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"></link>
+<style>.material-symbols-outlined{
   font-variation-settings:
   'FILL' 0,
   'wght' 400,
   'GRAD' 0,
   'opsz' 24
-}</style>`;
+}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check_circle" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=volunteer_activism" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check_circle" />
+`;
+let asignmentLabel;
 let ready = 0;
-let allowedURL = [
-    "https://schoology.shschools.org/home",
-    "https://schoology.shschools.org/home/",
-    "https://schoology.shschools.org/",
-    "https://schoology.shschools.org",
-    "https://schoology.shschools.org/home/recent-activity",
+let baseUrl = "https://schoology.shschools.org";
+let allowedURLs = [
+    baseUrl + "/home",
+    baseUrl + "/home/",
+    baseUrl + "/",
+    baseUrl,
+    baseUrl + "/home/recent-activity",
 ];
-let readMessage = [];
-let temp = localStorage.getItem("readMessage");
+let userHasViewedRecentUpdate = [];
+let readMessageStorage = localStorage.getItem("readMessage");
 let displayedAll = false;
-if (temp) {
-    readMessage = JSON.parse(temp);
+if (readMessageStorage) {
+    userHasViewedRecentUpdate = JSON.parse(readMessageStorage);
 }
 function isBackgroundDark(hexColor) {
-    // Convert hex to RGB
     let r = parseInt(hexColor.slice(1, 3), 16);
     let g = parseInt(hexColor.slice(3, 5), 16);
     let b = parseInt(hexColor.slice(5, 7), 16);
-    // Calculate luminance
     const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-    // Return true if the background is dark (luminance < 128)
     return luminance < 128;
 }
-let currentclass = null;
-let distancefromtoday = 0;
-let distancefromtodayWeeks = 0;
-let order = [
+let calenderIncrementDay = 0;
+let classOrder = [
     "", // 1
     "", // 2
     "", // 3
@@ -82,7 +46,7 @@ let order = [
     "", // 7
     "End",
 ];
-const Weekdays = [
+const weekdays = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -91,149 +55,105 @@ const Weekdays = [
     "Friday",
     "Saturday",
 ];
-let courses = [
-    // Day 1
-    { name: order[0], day: 1, time: { hour: 8, min: 25 } }, // 1
-    { name: order[1], day: 1, time: { hour: 10, min: 0 } }, // 2
-    { name: order[2], day: 1, time: { hour: 11, min: 10 } }, // 3
-    { name: order[3], day: 1, time: { hour: 13, min: 0 } }, // 4
-    { name: order[4], day: 1, time: { hour: 14, min: 15 } }, // 5
-    { name: "End", day: 1, time: { hour: 15, min: 15 } }, // 5
-    // Day 2
-    { name: order[5], day: 2, time: { hour: 8, min: 25 } }, // 6
-    { name: order[6], day: 2, time: { hour: 10, min: 30 } }, // 7
-    { name: order[0], day: 2, time: { hour: 12, min: 20 } }, // 1
-    { name: order[1], day: 2, time: { hour: 13, min: 30 } }, // 2
-    { name: "End", day: 2, time: { hour: 15, min: 15 } }, // 5
-    // Day 3
-    { name: order[2], day: 3, time: { hour: 9, min: 25 } }, // 3
-    { name: order[3], day: 3, time: { hour: 10, min: 35 } }, // 4
-    { name: order[4], day: 3, time: { hour: 12, min: 25 } }, // 5
-    { name: order[5], day: 3, time: { hour: 13, min: 40 } }, // 6
-    { name: "End", day: 3, time: { hour: 15, min: 15 } }, // 5
-    // Day 4
-    { name: order[6], day: 4, time: { hour: 8, min: 25 } }, // 7
-    { name: order[0], day: 4, time: { hour: 10, min: 0 } }, // 1
-    { name: order[1], day: 4, time: { hour: 11, min: 10 } }, // 2
-    { name: order[2], day: 4, time: { hour: 13, min: 0 } }, // 3
-    { name: "End", day: 4, time: { hour: 15, min: 15 } }, // 5
-    // Day 5
-    { name: order[3], day: 5, time: { hour: 8, min: 25 } }, // 4
-    { name: order[4], day: 5, time: { hour: 10, min: 0 } }, // 5
-    { name: order[5], day: 5, time: { hour: 13, min: 0 } }, // 6
-    { name: order[6], day: 5, time: { hour: 14, min: 15 } }, // 7
-    { name: "End", day: 5, time: { hour: 15, min: 15 } }, // 5
-];
-function refresh() {
+let courses;
+function refreshCourses() {
     courses = [
         // Day 1
-        { name: order[0], day: 1, time: { hour: 8, min: 25 } }, // 1
-        { name: order[1], day: 1, time: { hour: 10, min: 0 } }, // 2
-        { name: order[2], day: 1, time: { hour: 11, min: 10 } }, // 3
-        { name: order[3], day: 1, time: { hour: 13, min: 0 } }, // 4
-        { name: order[4], day: 1, time: { hour: 14, min: 15 } }, // 5
+        { name: classOrder[0], day: 1, time: { hour: 8, min: 25 } }, // 1
+        { name: classOrder[1], day: 1, time: { hour: 10, min: 0 } }, // 2
+        { name: classOrder[2], day: 1, time: { hour: 11, min: 10 } }, // 3
+        { name: classOrder[3], day: 1, time: { hour: 13, min: 0 } }, // 4
+        { name: classOrder[4], day: 1, time: { hour: 14, min: 15 } }, // 5
         { name: "End", day: 1, time: { hour: 15, min: 15 } }, // 5
         // Day 2
-        { name: order[5], day: 2, time: { hour: 8, min: 25 } }, // 6
-        { name: order[6], day: 2, time: { hour: 10, min: 30 } }, // 7
-        { name: order[0], day: 2, time: { hour: 12, min: 20 } }, // 1
-        { name: order[1], day: 2, time: { hour: 13, min: 30 } }, // 2
+        { name: classOrder[5], day: 2, time: { hour: 8, min: 25 } }, // 6
+        { name: classOrder[6], day: 2, time: { hour: 10, min: 30 } }, // 7
+        { name: classOrder[0], day: 2, time: { hour: 12, min: 20 } }, // 1
+        { name: classOrder[1], day: 2, time: { hour: 13, min: 30 } }, // 2
         { name: "End", day: 2, time: { hour: 15, min: 15 } }, // 5
         // Day 3
-        { name: order[2], day: 3, time: { hour: 9, min: 25 } }, // 3
-        { name: order[3], day: 3, time: { hour: 10, min: 35 } }, // 4
-        { name: order[4], day: 3, time: { hour: 12, min: 25 } }, // 5
-        { name: order[5], day: 3, time: { hour: 13, min: 40 } }, // 6
+        { name: classOrder[2], day: 3, time: { hour: 9, min: 25 } }, // 3
+        { name: classOrder[3], day: 3, time: { hour: 10, min: 35 } }, // 4
+        { name: classOrder[4], day: 3, time: { hour: 12, min: 25 } }, // 5
+        { name: classOrder[5], day: 3, time: { hour: 13, min: 40 } }, // 6
         { name: "End", day: 3, time: { hour: 15, min: 15 } }, // 5
         // Day 4
-        { name: order[6], day: 4, time: { hour: 8, min: 25 } }, // 7
-        { name: order[0], day: 4, time: { hour: 10, min: 0 } }, // 1
-        { name: order[1], day: 4, time: { hour: 11, min: 10 } }, // 2
-        { name: order[2], day: 4, time: { hour: 13, min: 0 } }, // 3
+        { name: classOrder[6], day: 4, time: { hour: 8, min: 25 } }, // 7
+        { name: classOrder[0], day: 4, time: { hour: 10, min: 0 } }, // 1
+        { name: classOrder[1], day: 4, time: { hour: 11, min: 10 } }, // 2
+        { name: classOrder[2], day: 4, time: { hour: 13, min: 0 } }, // 3
         { name: "End", day: 4, time: { hour: 15, min: 15 } }, // 5
         // Day 5
-        { name: order[3], day: 5, time: { hour: 8, min: 25 } }, // 4
-        { name: order[4], day: 5, time: { hour: 10, min: 0 } }, // 5
-        { name: order[5], day: 5, time: { hour: 13, min: 0 } }, // 6
-        { name: order[6], day: 5, time: { hour: 14, min: 15 } }, // 7
+        { name: classOrder[3], day: 5, time: { hour: 8, min: 25 } }, // 4
+        { name: classOrder[4], day: 5, time: { hour: 10, min: 0 } }, // 5
+        { name: classOrder[5], day: 5, time: { hour: 13, min: 0 } }, // 6
+        { name: classOrder[6], day: 5, time: { hour: 14, min: 15 } }, // 7
         { name: "End", day: 5, time: { hour: 15, min: 15 } }, // 5
     ];
 }
-let deleteAsign = null; // Do something with the event
-let initial = true; // Do something with the event
-let old = null;
-window.addEventListener("deleteAsign", function (e) {
-    // Cast the event to CustomEvent
-    const customEvent = e;
-    if (customEvent.detail && typeof customEvent.detail.value !== "undefined") {
-        const deleteAsignValue = customEvent.detail.value; // Access the value from the event detail
-        deleteAsign = deleteAsignValue; // Set the variable
-        if (initial) {
-            initial = false; // Do something with the event
-            old = deleteAsign;
-        } else {
-            if (old !== deleteAsign) {
-                location.reload();
-            }
-        }
-    } else {
-        console.error("No value found in event detail");
-    }
-});
-function creatVolunteerBtn() {
-    let clone = document.getElementsByClassName("_24avl _3Rh90 _349XD")[1];
-    let btn = document.createElement("button");
-    btn.className = "volunteerBtn";
-    document.head.innerHTML += `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check_circle" />`;
-    btn.innerHTML = `<span class="material-symbols-outlined">
-check_circle</span>`;
-    btn.addEventListener("click", function () {
-        window.open("https://bessy.io");
+refreshCourses();
+let deleteCompleteAsignments = null;
+function createBessyGradeButton() {
+    let buttonTemplateClone = document.getElementsByClassName("_24avl _3Rh90 _349XD")[1];
+    let buttonIcon = document.createElement("button");
+    buttonIcon.className = "volunteerBtn";
+    buttonIcon.innerHTML = `<span class="material-symbols-outlined">check_circle</span>`;
+    buttonIcon.addEventListener("click", function () {
+        window.open("https://www.bessy.io/");
     });
-    clone.before(btn);
+    buttonTemplateClone.before(buttonIcon);
 }
-creatVolunteerBtn();
-function adjustBrightness(hexColor, percent) {
-    // Ensure percent is between -100 and 100
+function createMobileServeButton() {
+    let buttonTemplateClone = document.getElementsByClassName("_24avl _3Rh90 _349XD")[1];
+    let buttonIcon = document.createElement("button");
+    buttonIcon.className = "mobileServeBtn";
+    buttonIcon.innerHTML = `<span class="material-symbols-outlined">volunteer_activism</span>`;
+    buttonIcon.addEventListener("click", function () {
+        window.open("https://app.mobileserve.com/app/#/");
+    });
+    buttonTemplateClone.before(buttonIcon);
+}
+// createBessyGradeButton();
+// createMobileServeButton();
+function adjustButtonHoverBrightness(hexColor, percent) {
     percent = Math.max(-100, Math.min(100, percent));
-    // Convert hex to RGB
     let r = parseInt(hexColor.slice(1, 3), 16);
     let g = parseInt(hexColor.slice(3, 5), 16);
     let b = parseInt(hexColor.slice(5, 7), 16);
-    // Calculate adjustment factor
     let adjustmentFactor = Math.round((percent / 100) * 255);
-    // Adjust brightness
     r = Math.min(255, Math.max(0, r + adjustmentFactor));
     g = Math.min(255, Math.max(0, g + adjustmentFactor));
     b = Math.min(255, Math.max(0, b + adjustmentFactor));
-    // Convert RGB back to hex
-    let newHex =
-        "#" +
+    let newHex = "#" +
         ("0" + r.toString(16)).slice(-2) +
         ("0" + g.toString(16)).slice(-2) +
         ("0" + b.toString(16)).slice(-2);
     return newHex;
 }
-function getCurrentClass(day, currentHour, currentMinute) {
-    let currentClass = null;
-    // Find the current class by iterating through the list
-    for (const period of courses) {
-        if (period.day === day) {
-            // Compare the period's time with the current time
-            if (
-                period.time.hour < currentHour ||
-                (period.time.hour === currentHour &&
-                    period.time.min - 5 <= currentMinute)
-            ) {
-                currentClass = period;
-            }
-        }
-    }
-    // Return the name of the class if found, otherwise return null
-    return currentClass ? currentClass.name : null;
-}
-let originalColor = "#ffffff";
-let hoverColor = adjustBrightness(originalColor, -20); // Lighten by 20%
+// function getCurrentClass(
+//     day: Day,
+//     currentHour: number,
+//     currentMinute: number
+// ): string | null {
+//     let currentClass: Period | null = null;
+//     // Find the current class by iterating through the list
+//     for (const period of courses) {
+//         if (period.day === day) {
+//             // Compare the period's time with the current time
+//             if (
+//                 period.time.hour < currentHour ||
+//                 (period.time.hour === currentHour &&
+//                     period.time.min - 5 <= currentMinute)
+//             ) {
+//                 currentClass = period;
+//             }
+//         }
+//     }
+//     // Return the name of the class if found, otherwise return null
+//     return currentClass ? currentClass.name : null;
+// }
+let headerColor = "#ffffff";
+let headerHoverColor = adjustButtonHoverBrightness(headerColor, -20); // Lighten by 20%
 // let originalColor = "#0677bb";
 // let hoverColor = adjustBrightness(originalColor, 20); // Lighten by 20%
 window.addEventListener("colorChange", function (e) {
@@ -241,151 +161,132 @@ window.addEventListener("colorChange", function (e) {
     const customEvent = e;
     if (customEvent.detail && typeof customEvent.detail.value !== "undefined") {
         const deleteAsignValue = customEvent.detail.value; // Access the value from the event detail
-        originalColor = deleteAsignValue;
-        localStorage.setItem("color", originalColor);
-        if (isBackgroundDark(originalColor)) {
-            hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
-        } else {
-            hoverColor = adjustBrightness(originalColor, -10); // Lighten by 20%
+        headerColor = deleteAsignValue;
+        localStorage.setItem("color", headerColor);
+        if (isBackgroundDark(headerColor)) {
+            headerHoverColor = adjustButtonHoverBrightness(headerColor, 10); // Lighten by 20%
+        }
+        else {
+            headerHoverColor = adjustButtonHoverBrightness(headerColor, -10); // Lighten by 20%
         }
         //lightenhere
         changeHeaderColor();
-    } else {
+    }
+    else {
         console.error("No value found in event detail");
     }
 });
 if (localStorage.getItem("color")) {
-    originalColor = localStorage.getItem("color");
-    if (isBackgroundDark(originalColor)) {
-        hoverColor = adjustBrightness(originalColor, 10); // Lighten by 20%
-    } else {
-        hoverColor = adjustBrightness(originalColor, -10); // Lighten by 20%
+    headerColor = localStorage.getItem("color");
+    if (isBackgroundDark(headerColor)) {
+        headerHoverColor = adjustButtonHoverBrightness(headerColor, 10); // Lighten by 20%
+    }
+    else {
+        headerHoverColor = adjustButtonHoverBrightness(headerColor, -10); // Lighten by 20%
     }
 }
 window.addEventListener("resize", changeHeaderColor);
 function changeHeaderColor() {
-    // Function to check if any ancestor of the element is a <header>
     function hasHeaderAncestor(element) {
         while (element.parentElement) {
-            // Loop until there are no more parents
-            element = element.parentElement; // Move up the DOM tree
+            element = element.parentElement;
             if (element.tagName.toLowerCase() === "header") {
-                return true; // Found a <header> ancestor
+                return true;
             }
         }
-        return false; // No <header> ancestor found
+        return false;
     }
-    // hoverColor = "#24a5f5";
-    // Select all <a> and <li> elements
-    let anchors = document.getElementsByTagName("a");
-    let listItems = document.getElementsByTagName("li");
-    let btns = document.getElementsByTagName("button");
-    const header = document.getElementsByClassName(
-        "_1tpub _3mp5E _24W2g util-justify-content-space-between-3euFK"
-    )[0];
-    header.style.backgroundColor = originalColor;
-    document.getElementsByClassName(
-        "_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD"
-    )[0].style.backgroundColor = originalColor;
-    document.getElementsByClassName(
-        "_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD"
-    )[0].style.borderTop = `3px solid ${originalColor}`;
-    let IMGParent = document.getElementsByClassName(
-        "util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q"
-    )[0];
-    //thishere
-    let ids = [
+    let headerLinkElements = document.getElementsByTagName("a");
+    let headerButtonElements = document.getElementsByTagName("button");
+    const headerBackground = document.getElementsByClassName("_1tpub _3mp5E _24W2g util-justify-content-space-between-3euFK")[0];
+    headerBackground.style.backgroundColor = headerColor;
+    document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0].style.backgroundColor = headerColor;
+    document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0].style.borderTop = `3px solid ${headerColor}`;
+    let IMGParent = document.getElementsByClassName("util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q")[0];
+    let headerIconIds = [
         "icon-search-v2-3US0j",
         "icon-app-grid-v2-xZFWs",
         "icon-calendar-v2-16S3z",
         "icon-mail-v2-2Mxyq",
         "icon-bell-v2-3oo-G",
     ];
-    for (let i = 0; i < ids.length; i++) {
-        let elm = document.getElementById(ids[i]);
-        let path = elm.firstElementChild;
-        // elm.firstElementChild.id = "hi";
-        if (isBackgroundDark(originalColor)) {
+    for (let i = 0; i < headerIconIds.length; i++) {
+        let icon = document.getElementById(headerIconIds[i]);
+        let path = icon.firstElementChild;
+        if (isBackgroundDark(headerColor)) {
             path.setAttribute("fill", "#ffffff");
-        } else {
+        }
+        else {
             path.setAttribute("fill", "#333333");
         }
     }
-    const IMG = IMGParent.firstElementChild;
-    IMG.src = "https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
-    for (let i = 0; i < anchors.length; i++) {
-        if (hasHeaderAncestor(anchors[i])) {
-            if (
-                anchors[i].title !== "Home" &&
-                anchors[i].innerHTML !== "My Courses" &&
-                anchors[i].role !== "menuitem"
-            ) {
-                // alert(anchors[i].href);
-                if (anchors[i] !== null) {
-                    if (isBackgroundDark(originalColor)) {
-                        anchors[i].style.color = "#ffffff";
-                    } else {
-                        anchors[i].style.color = "#333333";
+    const SHSHeaderImage = IMGParent.firstElementChild;
+    SHSHeaderImage.src = "https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
+    for (let i = 0; i < headerLinkElements.length; i++) {
+        if (hasHeaderAncestor(headerLinkElements[i])) {
+            if (headerLinkElements[i].title !== "Home" &&
+                headerLinkElements[i].innerHTML !== "My Courses" &&
+                headerLinkElements[i].role !== "menuitem") {
+                if (headerLinkElements[i] !== null) {
+                    if (isBackgroundDark(headerColor)) {
+                        headerLinkElements[i].style.color =
+                            "#ffffff";
+                    }
+                    else {
+                        headerLinkElements[i].style.color =
+                            "#333333";
                     }
                 }
-                anchors[i].style.backgroundColor = originalColor;
-                anchors[i].style.borderRadius = "10px";
-                anchors[i].addEventListener("mouseover", function () {
-                    anchors[i].style.backgroundColor = hoverColor;
+                headerLinkElements[i].style.backgroundColor = headerColor;
+                headerLinkElements[i].style.borderRadius = "10px";
+                headerLinkElements[i].addEventListener("mouseover", function () {
+                    headerLinkElements[i].style.backgroundColor =
+                        headerHoverColor;
                 });
-                anchors[i].addEventListener("mouseleave", function () {
-                    anchors[i].style.backgroundColor = originalColor;
+                headerLinkElements[i].addEventListener("mouseleave", function () {
+                    headerLinkElements[i].style.backgroundColor =
+                        headerColor;
                 });
             }
         }
     }
-    for (let i = 0; i < btns.length; i++) {
-        if (hasHeaderAncestor(btns[i])) {
-            btns[i].style.backgroundColor = originalColor;
-            // if (originalColor !== "#ffffff") {
-            if (btns[i].firstElementChild !== null) {
-                if (isBackgroundDark(originalColor)) {
-                    btns[i].firstElementChild.style.color = "#ffffff";
-                    btns[i].style.color = "#ffffff";
-                    let gradebtn = document.getElementsByClassName(
-                        "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-                    )[2];
+    for (let i = 0; i < headerButtonElements.length; i++) {
+        if (hasHeaderAncestor(headerButtonElements[i])) {
+            headerButtonElements[i].style.backgroundColor = headerColor;
+            if (headerButtonElements[i].firstElementChild !==
+                null) {
+                if (isBackgroundDark(headerColor)) {
+                    headerButtonElements[i].firstElementChild.style.color = "#ffffff";
+                    headerButtonElements[i].style.color =
+                        "#ffffff";
+                    let gradebtn = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[2];
                     gradebtn.style.color = "#ffffff";
-                } else {
-                    btns[i].firstElementChild.style.color = "#333333";
-                    btns[i].style.color = "#333333";
-                    let gradebtn = document.getElementsByClassName(
-                        "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
-                    )[2];
+                }
+                else {
+                    headerButtonElements[i].firstElementChild.style.color = "#333333";
+                    headerButtonElements[i].style.color =
+                        "#333333";
+                    let gradebtn = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[2];
                     gradebtn.style.color = "#333333";
                 }
             }
-            btns[i].style.borderRadius = "10px";
-            btns[i].addEventListener("mouseover", function () {
-                btns[i].style.backgroundColor = hoverColor;
+            headerButtonElements[i].style.borderRadius = "10px";
+            headerButtonElements[i].addEventListener("mouseover", function () {
+                headerButtonElements[i].style.backgroundColor =
+                    headerHoverColor;
             });
-            btns[i].addEventListener("mouseleave", function () {
-                btns[i].style.backgroundColor = originalColor;
+            headerButtonElements[i].addEventListener("mouseleave", function () {
+                headerButtonElements[i].style.backgroundColor = headerColor;
             });
         }
     }
 }
-function getClass() {
-    const now = new Date();
-    const currentDays = now.getDay();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-    let ongoingClass = getCurrentClass(currentDays, currentHour, currentMinute);
-    return ongoingClass;
-}
 function waitForElement(className, callback) {
-    // Check if the element is already present
     let element = document.querySelector(className);
     if (element) {
         callback(element);
         return;
     }
-    // Create a new instance of MutationObserver
     const observer = new MutationObserver((mutationsList, observer) => {
         for (let mutation of mutationsList) {
             if (mutation.type === "childList") {
@@ -401,807 +302,512 @@ function waitForElement(className, callback) {
     observer.observe(document.body, { childList: true, subtree: true });
 }
 changeHeaderColor();
-let debounce = true;
-function coursesChange() {
+let courseOpenDebounce = true;
+function changeCourseStyles() {
     setInterval(function () {
-        if (debounce) {
-            debounce = false;
+        if (courseOpenDebounce) {
+            courseOpenDebounce = false;
             waitForElement(".Card-card-data-17m6S", function () {
-                const courses = document.getElementsByClassName(
-                    "Card-card-data-17m6S"
-                );
-                const imgs = document.getElementsByClassName(
-                    " _2q19q Card-card-image-uV6Bu"
-                );
-                let ongoingClass = getClass();
-                for (let i = 0; i < Math.max(courses.length, 7); i++) {
-                    const courseDiv = courses[i];
-                    let firstChild = courseDiv.firstElementChild;
-                    let secondChild =
-                        firstChild === null || firstChild === void 0
-                            ? void 0
-                            : firstChild.firstElementChild;
-                    let className =
-                        secondChild === null || secondChild === void 0
-                            ? void 0
-                            : secondChild.innerHTML;
-                    if (className) {
-                        order[i] = className;
+                var _a, _b;
+                const courseCards = document.getElementsByClassName("Card-card-data-17m6S");
+                const courseImages = document.getElementsByClassName(" _2q19q Card-card-image-uV6Bu");
+                // let ongoingClass = getClass();
+                for (let i = 0; i < Math.max(courseCards.length, 7); i++) {
+                    const selectedCourseCard = courseCards[i];
+                    let courseName = (_b = (_a = selectedCourseCard.firstElementChild) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.innerHTML;
+                    if (courseName) {
+                        classOrder[i] = courseName;
                     }
-                    courseDiv.style.borderRadius = "0  0 15px 15px";
-                    let imgelm = imgs[i];
-                    imgelm.style.borderRadius = " 15px 15px 0 0";
-                    const div = courseDiv.parentElement;
-                    div.parentElement.style.borderRadius = "15px";
-                    const div2 = courseDiv.parentElement;
-                    // const div3 = div2.parentElement as HTMLElement;
+                    selectedCourseCard.style.borderRadius = "0  0 15px 15px";
+                    let courseCardImage = courseImages[i];
+                    courseCardImage.style.borderRadius = " 15px 15px 0 0";
+                    const div = selectedCourseCard.parentElement;
+                    div.parentElement.style.borderRadius =
+                        "15px";
+                    const div2 = selectedCourseCard.parentElement;
                     if (div2) {
-                        imgelm.style.borderColor = "blue";
-                        courseDiv.style.borderColor = "blue";
+                        courseCardImage.style.borderColor = "blue";
+                        selectedCourseCard.style.borderColor = "blue";
                         div2.style.borderRadius = "15px";
                     }
                 }
-                localStorage.setItem("schedule", JSON.stringify(order));
-                createSchedule();
-                debounce = true;
+                localStorage.setItem("schedule", JSON.stringify(classOrder));
+                courseOpenDebounce = true;
             });
         }
     }, 100);
 }
-coursesChange();
-function next(amount) {
-    distancefromtoday += amount;
-    // if (distancefromtoday == 6) {
-    // }
-    let elem = document.getElementById("calender");
-    if (elem === null || elem === void 0 ? void 0 : elem.parentNode) {
-        elem.parentNode.removeChild(elem);
-    }
-    if (allowedURL.includes(window.location.href)) {
-        createSchedule();
-    }
-}
-function hovered(arrownum) {
-    let arrow = document.getElementById("arrow" + arrownum);
-    if (arrow) {
-        arrow.style.fill = "#2020e8";
-        arrow.style.cursor = "pointer";
-    }
-}
-function unhovered(arrownum) {
-    let arrow = document.getElementById("arrow" + arrownum);
-    if (arrow) {
-        arrow.style.fill = "#434343";
-        arrow.style.cursor = "auto";
-    }
-}
-let saveState = {};
-if (
-    allowedURL.includes(window.location.href) ||
-    window.location.href.includes("course-dashboard")
-) {
-    let interval = setInterval(function () {
-        if (
-            document.getElementsByClassName("submissions-title")[0] !==
-                undefined &&
+changeCourseStyles();
+let checkboxStates = {};
+if (allowedURLs.includes(window.location.href) ||
+    window.location.href.includes("course-dashboard")) {
+    let waitForHomePageInterval = setInterval(function () {
+        if (document.getElementsByClassName("submissions-title")[0] !==
+            undefined &&
             document.getElementsByClassName("submissions-title")[1] !==
-                undefined
-        ) {
-            clearInterval(interval);
+                undefined) {
+            clearInterval(waitForHomePageInterval);
             setTimeout(function () {
                 var _a, _b, _c;
                 ready = 1;
-                checkBoxmaker();
-                createSchedule();
+                drawCheckboxes();
                 let p = document.createElement("p");
                 p.innerHTML = "";
                 p.id = "progress";
-                (_a = document.getElementById("todo")) === null || _a === void 0
-                    ? void 0
-                    : _a.appendChild(p);
+                (_a = document.getElementById("todo")) === null || _a === void 0 ? void 0 : _a.appendChild(p);
                 let div = document.createElement("div");
                 div.id = "myProgress";
-                div.innerHTML = "0%";
-                (_b = document.getElementById("todo")) === null || _b === void 0
-                    ? void 0
-                    : _b.appendChild(div);
+                (_b = document.getElementById("todo")) === null || _b === void 0 ? void 0 : _b.appendChild(div);
                 let div2 = document.createElement("div");
                 div2.id = "myProgressFrame";
-                (_c = document.getElementById("todo")) === null || _c === void 0
-                    ? void 0
-                    : _c.appendChild(div2);
-                changeAmount();
+                (_c = document.getElementById("todo")) === null || _c === void 0 ? void 0 : _c.appendChild(div2);
+                updateProgressBarState();
             }, 0);
         }
     }, 10);
 }
-function createSchedule() {
-    return __awaiter(this, void 0, void 0, function* () {
-        // if (allowedURL.includes(window.location.href)) {
-        //     // let quote_list: any = [];
-        //     // await fetch("http://cs.shschools.org/kmo/quotes.txt")
-        //     //     .then((response) => response.text())
-        //     //     .then((data) => {
-        //     //         quote_list = data.split("\n");
-        //     //     });
-        //     const dateNow = new Date();
-        //     let dayNow = dateNow.getDate();
-        //     refresh();
-        //     const div = document.createElement("div");
-        //     const divstyle = div.style;
-        //     divstyle.width = "100px";
-        //     div.id = "calender";
-        //     divstyle.zIndex = "0";
-        //     divstyle.height = "350px";
-        //     divstyle.backgroundColor = "#ffffff";
-        //     divstyle.position = "absolute";
-        //     div.className = "todo todo-wrapper";
-        //     divstyle.top = "12.5rem";
-        //     divstyle.left = "2%";
-        //     divstyle.padding = "15px";
-        //     divstyle.textAlign = "";
-        //     divstyle.fontSize = "12px";
-        //     divstyle.fontFamily = "Roboto";
-        //     // const btn = document.createElement("button");
-        //     // const btnStyle = btn.style;
-        //     // btnStyle.width = "100px";
-        //     // btn.id = "notes";
-        //     // btn.innerHTML = "Notes";
-        //     // btnStyle.height = "30px";
-        //     // // btnStyle.backgroundColor = "#ffffff";
-        //     // btnStyle.position = "absolute";
-        //     // // btn.className = "todo todo-wrapper";
-        //     // btnStyle.top = "40%";
-        //     // btnStyle.left = "3%";
-        //     // btnStyle.padding = "15px";
-        //     // // btnStyle.textAlign = "";
-        //     // btnStyle.zIndex = "100";
-        //     // btnStyle.fontSize = "12px";
-        //     // btnStyle.fontFamily = "Roboto";
-        //     // btn.addEventListener("click", function () {
-        //     //     location.replace(`/${btn.id}`);
-        //     // });
-        //     let now = new Date();
-        //     now.setDate(now.getDate() + distancefromtoday);
-        //     const day = now.getDay();
-        //     const date = now.getDate();
-        //     const month = now.getMonth();
-        //     div.innerHTML = `<svg style="position:Relative; left:40px" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg><h2 style="position:Relative; left:10px">Schedule</h2>${
-        //         Weekdays[day]
-        //     } ${month + 1}/${date}`;
-        //     div.innerHTML +=
-        //         '<div style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:105px" onclick="next(1)" onmouseover="hovered(1)" onmouseleave="unhovered(1)"><svg  id="arrow1" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg></div>';
-        //     div.innerHTML +=
-        //         '<div   style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:5px" onclick="next(-1)" onmouseover="hovered(2)" onmouseleave="unhovered(2)"><svg id="arrow2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg></div>';
-        //     div.innerHTML += `<hr style="border-top: 1px solid #bbb;" class="solid"></br>`;
-        //     //working
-        //     let periodCount = 0;
-        //     // let save2 = {};
-        //     let save2 = localStorage.getItem("saveState2");
-        //     if (save2 !== null) {
-        //         if (JSON.parse(save2)) {
-        //             save2 = JSON.parse(save2);
-        //             localStorage.setItem("saveState2", JSON.stringify(save2));
-        //         }
-        //     }
-        //     // if (document.getElementById("calender") == null && order[0] !== "") {
-        //     let save3 = localStorage.getItem("schedule");
-        //     if (save3 !== null) {
-        //         order = JSON.parse(save3);
-        //         refresh();
-        //     }
-        //     if (order[0] !== "" || order == null) {
-        //         if (now.getDay() == 6 || now.getDay() == 0) {
-        //             div.innerHTML +=
-        //                 " <h3 style='text-align:left'>Weekend! No Classes.<h3>";
-        //         } else {
-        //             let element = document.getElementById("calender");
-        //             element?.parentNode?.removeChild(element);
-        //             for (const period of courses) {
-        //                 if (period.day === day) {
-        //                     if (period.name !== "End") {
-        //                         periodCount += 1;
-        //                         let startTime = "";
-        //                         if (period.time.hour > 12) {
-        //                             startTime =
-        //                                 period.time.hour -
-        //                                 12 +
-        //                                 ":" +
-        //                                 period.time.min;
-        //                             if (period.time.min == 0) {
-        //                                 startTime =
-        //                                     period.time.hour -
-        //                                     12 +
-        //                                     ":" +
-        //                                     period.time.min +
-        //                                     "0";
-        //                             }
-        //                         } else {
-        //                             startTime =
-        //                                 period.time.hour + ":" + period.time.min;
-        //                             if (period.time.min == 0) {
-        //                                 startTime =
-        //                                     period.time.hour +
-        //                                     ":" +
-        //                                     period.time.min +
-        //                                     "0";
-        //                             }
-        //                         }
-        //                         let endTime = "";
-        //                         if (period.time.hour + 1 > 12) {
-        //                             endTime =
-        //                                 period.time.hour +
-        //                                 1 -
-        //                                 12 +
-        //                                 ":" +
-        //                                 period.time.min;
-        //                             if (period.time.min == 0) {
-        //                                 endTime =
-        //                                     period.time.hour +
-        //                                     1 -
-        //                                     12 +
-        //                                     ":" +
-        //                                     period.time.min +
-        //                                     "0";
-        //                             }
-        //                         } else {
-        //                             endTime =
-        //                                 period.time.hour +
-        //                                 1 +
-        //                                 ":" +
-        //                                 period.time.min;
-        //                             if (period.time.min == 0) {
-        //                                 endTime =
-        //                                     period.time.hour +
-        //                                     1 +
-        //                                     ":" +
-        //                                     period.time.min +
-        //                                     "0";
-        //                             }
-        //                         }
-        //                         if (order[currentclass] == period.name) {
-        //                             div.innerHTML += `
-        //                     <span style='text-align:right'>${period.name}</span><br>(${startTime} - ${endTime})<br><br>
-        //                   `;
-        //                         } else {
-        //                             div.innerHTML += `
-        //                     <b>${period.name} </b><br>(${startTime} - ${endTime})<br><br>
-        //               `;
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //             divstyle.boxShadow = "0 1px 3px 0 rgba(0,0,0,.15)";
-        //         }
-        //     } else {
-        //         div.innerHTML +=
-        //             " <h3 style='text-align:left'>Schedule not saved, open course menu to load. Make sure your courses are ordered in the order you have them!<h3>";
-        //     }
-        //     // let quotesArr = quotes.split("\n");
-        //     // let todayQuote = quotesArr[dayNow];
-        //     // todayQuote = todayQuote
-        //     //     .replace(/â€œ/g, '"') // Replace the opening quotation marks
-        //     //     .replace(/â€/g, '"') // Replace the closing quotation marks
-        //     //     .replace(/â€™/g, "'"); // Replace the apostrophe
-        //     // div.innerHTML += `<br/><span style="font-size:10px">${todayQuote}</span>`;
-        //     const container = document.getElementById("body");
-        //     if (container) {
-        //         container.appendChild(div);
-        //         // container.appendChild(btn);
-        //     }
-        //     // div.innerHTML +=
-        //     //     "<button onclick='crash()' style=`width=50px;height=50px;`>hi</button>";
-        // }
-    });
-}
+// async function createScheduleDiv() {
+//     if (allowedURLs.includes(window.location.href)) {
+//         refreshCourses();
+//         const div = document.createElement("div");
+//         const divstyle = div.style;
+//         divstyle.width = "100px";
+//         div.id = "calender";
+//         divstyle.zIndex = "0";
+//         divstyle.height = "350px";
+//         divstyle.backgroundColor = "#ffffff";
+//         divstyle.position = "absolute";
+//         div.className = "todo todo-wrapper";
+//         divstyle.top = "12.5rem";
+//         divstyle.left = "2%";
+//         divstyle.padding = "15px";
+//         divstyle.textAlign = "";
+//         divstyle.fontSize = "12px";
+//         divstyle.fontFamily = "Roboto";
+//         let now = new Date();
+//         now.setDate(now.getDate() + calenderIncrementDay);
+//         const day = now.getDay();
+//         const date = now.getDate();
+//         const month = now.getMonth();
+//         div.innerHTML = `<svg style="position:Relative; left:40px" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg><h2 style="position:Relative; left:10px">Schedule</h2>${
+//             weekdays[day]
+//         } ${month + 1}/${date}`;
+//         div.innerHTML +=
+//             '<div style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:105px" onclick="next(1)" onmouseover="calenderArrowHovered(1)" onmouseleave="calenderArrowUnhovered(1)"><svg  id="arrow1" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg></div>';
+//         div.innerHTML +=
+//             '<div   style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:5px" onclick="next(-1)" onmouseover="calenderArrowHovered(2)" onmouseleave="calenderArrowUnhovered(2)"><svg id="arrow2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg></div>';
+//         div.innerHTML += `<hr style="border-top: 1px solid #bbb;" class="solid"></br>`;
+//         let periodCount = 0;
+//         let save2 = localStorage.getItem("saveState2");
+//         if (save2 !== null) {
+//             if (JSON.parse(save2)) {
+//                 save2 = JSON.parse(save2);
+//                 localStorage.setItem("saveState2", JSON.stringify(save2));
+//             }
+//         }
+//         let save3 = localStorage.getItem("schedule");
+//         if (save3 !== null) {
+//             classOrder = JSON.parse(save3);
+//             refreshCourses();
+//         }
+//         if (classOrder[0] !== "" || classOrder == null) {
+//             if (now.getDay() == 6 || now.getDay() == 0) {
+//                 div.innerHTML +=
+//                     " <h3 style='text-align:left'>Weekend! No Classes.<h3>";
+//             } else {
+//                 let element = document.getElementById("calender");
+//                 element?.parentNode?.removeChild(element);
+//                 for (const period of courses) {
+//                     if (period.day === day) {
+//                         if (period.name !== "End") {
+//                             periodCount += 1;
+//                             let startTime = "";
+//                             if (period.time.hour > 12) {
+//                                 startTime =
+//                                     period.time.hour -
+//                                     12 +
+//                                     ":" +
+//                                     period.time.min;
+//                                 if (period.time.min == 0) {
+//                                     startTime =
+//                                         period.time.hour -
+//                                         12 +
+//                                         ":" +
+//                                         period.time.min +
+//                                         "0";
+//                                 }
+//                             } else {
+//                                 startTime =
+//                                     period.time.hour + ":" + period.time.min;
+//                                 if (period.time.min == 0) {
+//                                     startTime =
+//                                         period.time.hour +
+//                                         ":" +
+//                                         period.time.min +
+//                                         "0";
+//                                 }
+//                             }
+//                             let endTime = "";
+//                             if (period.time.hour + 1 > 12) {
+//                                 endTime =
+//                                     period.time.hour +
+//                                     1 -
+//                                     12 +
+//                                     ":" +
+//                                     period.time.min;
+//                                 if (period.time.min == 0) {
+//                                     endTime =
+//                                         period.time.hour +
+//                                         1 -
+//                                         12 +
+//                                         ":" +
+//                                         period.time.min +
+//                                         "0";
+//                                 }
+//                             } else {
+//                                 endTime =
+//                                     period.time.hour +
+//                                     1 +
+//                                     ":" +
+//                                     period.time.min;
+//                                 if (period.time.min == 0) {
+//                                     endTime =
+//                                         period.time.hour +
+//                                         1 +
+//                                         ":" +
+//                                         period.time.min +
+//                                         "0";
+//                                 }
+//                             }
+//                         }
+//                     }
+//                 }
+//                 divstyle.boxShadow = "0 1px 3px 0 rgba(0,0,0,.15)";
+//             }
+//         } else {
+//             div.innerHTML +=
+//                 " <h3 style='text-align:left'>Schedule not saved, open course menu to load. Make sure your courses are ordered in the order you have them!<h3>";
+//         }
+//         const container = document.getElementById("body");
+//         if (container) {
+//             container.appendChild(div);
+//         }
+//     }
 // }
-function changeAmount() {
-    let bar = document.getElementById("progress");
-    if (bar) {
-        let progressCheck = document.getElementsByClassName("progressCheck");
+// createScheduleDiv();
+function updateProgressBarState() {
+    let progressFraction = document.getElementById("progress");
+    if (progressFraction) {
+        let checkboxElements = document.getElementsByClassName("progressCheck");
         let checks = 0;
-        for (let i = 0; i < progressCheck.length; i++) {
-            let inputThing = progressCheck[i];
-            if (inputThing.checked == true) {
+        for (let i = 0; i < checkboxElements.length; i++) {
+            let selectedCheckboxElement = checkboxElements[i];
+            if (selectedCheckboxElement.checked == true) {
                 checks += 1;
             }
         }
-        let myProgress = document.getElementById("myProgress");
-        if (myProgress) {
-            let targetWidth = (checks / progressCheck.length) * 200;
-            if (targetWidth == 0) {
-                targetWidth = 0.01;
+        let progressBarDiv = document.getElementById("myProgress");
+        let progressIsZero = false;
+        if (progressBarDiv) {
+            let targetProgressBarWidth = (checks / checkboxElements.length) * 200;
+            if (targetProgressBarWidth == 0) {
+                progressIsZero = true;
             }
-            let width = Number(
-                myProgress.style.width.slice(
-                    0,
-                    myProgress.style.width.length - 2
-                )
-            );
-            let increase = true;
-            if (width < targetWidth) {
-                increase = true;
-            } else {
-                increase = false;
+            else {
+                progressIsZero = false;
+            }
+            let currentProgressBarWidth = Number(progressBarDiv.style.width.slice(0, progressBarDiv.style.width.length - 2));
+            let incrementIncrease = true;
+            if (currentProgressBarWidth < targetProgressBarWidth) {
+                incrementIncrease = true;
+            }
+            else {
+                incrementIncrease = false;
             }
             let id = setInterval(frame, 8);
             function frame() {
-                if (increase && width >= targetWidth) {
-                    width = 0;
+                if (incrementIncrease &&
+                    currentProgressBarWidth >= targetProgressBarWidth) {
+                    currentProgressBarWidth = 0;
                     clearInterval(id);
-                } else if (increase == false && width <= targetWidth) {
-                    width = 0;
+                }
+                else if (incrementIncrease == false &&
+                    currentProgressBarWidth <= targetProgressBarWidth) {
+                    currentProgressBarWidth = 0;
                     clearInterval(id);
-                } else {
-                    if (increase) {
-                        width++;
-                    } else {
-                        width--;
+                }
+                else {
+                    if (incrementIncrease) {
+                        currentProgressBarWidth++;
                     }
-                    if (myProgress) {
-                        myProgress.style.width = width + "px";
-                        if (targetWidth == 0.01) {
-                            targetWidth = 20;
-                            myProgress.innerHTML = "0%";
-                        } else {
-                            myProgress.innerHTML = `${String(
-                                Math.round(width / 2)
-                            )}%`;
+                    else {
+                        currentProgressBarWidth--;
+                    }
+                    if (progressBarDiv) {
+                        progressBarDiv.style.width =
+                            currentProgressBarWidth + "px";
+                        if (progressIsZero) {
+                            targetProgressBarWidth = 20;
+                            progressBarDiv.innerHTML = "0%";
                         }
-                        myProgress.style.backgroundColor = `rgb(${
-                            255 / 2 - (Math.round(width / 2) * 2.25) / 1.5
-                        }, ${Math.round(width / 2) * 2.25},${
-                            (Math.round(width / 2) * 2.25) / 1.5
-                        } )`;
+                        else {
+                            progressBarDiv.innerHTML = `${String(Math.round((currentProgressBarWidth - 20) / 2) +
+                                10)}%`;
+                        }
+                        progressBarDiv.style.backgroundColor = `rgb(${255 / 2 -
+                            (Math.round(currentProgressBarWidth / 2) * 2.25) / 1}, ${(Math.round(currentProgressBarWidth / 2) * 2.25) /
+                            1.2},${(Math.round(currentProgressBarWidth / 2) * 2.25) / 2} )`;
                     }
                 }
             }
         }
-        bar.innerHTML = `${checks}/${progressCheck.length}`;
+        progressFraction.innerHTML = `${checks}/${checkboxElements.length}`;
     }
 }
-let div = document.getElementById("upcoming-events");
-if (div) {
-    div.style.display = "none";
+let upcomingEventsDiv = document.getElementById("upcoming-events");
+if (upcomingEventsDiv) {
+    upcomingEventsDiv.style.display = "none";
 }
-document.getElementsByClassName(
-    "typography-button-primary-loader-button-3107419752"
-)[0];
-function checkBoxmaker() {
-    waitForElement(
-        ".upcoming-event.upcoming-event-block.course-event",
-        function () {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-            let progressCheck =
-                document.getElementsByClassName("progressCheck");
-            // Convert the HTMLCollection to an array and iterate over it
-            Array.from(progressCheck).forEach((element) => {
-                element.remove();
-            });
-            let progressCheckLabel =
-                document.getElementsByClassName("progressCheckLabel");
-            // Convert the HTMLCollection to an array and iterate over it
-            Array.from(progressCheckLabel).forEach((element) => {
-                element.remove();
-            });
-            let buttonShow = false;
-            // document.getElementsByClassName("submissions-title")[1].innerHTML =
-            //     "Due TODAY";
-            let upcoming = document.getElementsByClassName(
-                "upcoming-event upcoming-event-block course-event"
-            );
-            for (let j = 0; j < upcoming.length; j++) {
-                if (upcoming[j].className.includes("hidden-important")) {
-                    let elm = upcoming[j].getElementsByTagName("img")[0];
-                    if (elm == undefined) {
-                        buttonShow = true;
-                    }
+function drawCheckboxes() {
+    waitForElement(".upcoming-event.upcoming-event-block.course-event", function () {
+        var _a, _b, _c, _d, _e, _f, _g;
+        let progressCheck = document.getElementsByClassName("progressCheck");
+        Array.from(progressCheck).forEach((element) => {
+            element.remove();
+        });
+        // let progressCheckLabel =
+        //     document.getElementsByClassName("progressCheckLabel");
+        // // Convert the HTMLCollection to an array and iterate over it
+        // Array.from(progressCheckLabel).forEach((element) => {
+        //     element.remove();
+        // });
+        let showMoreButtonInAsignments = false;
+        let upcomingCourseEvents = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
+        for (let j = 0; j < upcomingCourseEvents.length; j++) {
+            if (upcomingCourseEvents[j].className.includes("hidden-important")) {
+                let hiddenAsignmentCheckElement = upcomingCourseEvents[j].getElementsByTagName("img")[0];
+                if (hiddenAsignmentCheckElement == undefined) {
+                    showMoreButtonInAsignments = true;
                 }
             }
-            if (buttonShow) {
-                if (document.getElementById("todo") !== undefined) {
-                    let todo = document.getElementById("todo");
-                    if (displayedAll == false) {
-                        todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
-                        displayedAll = true;
-                    } else {
-                        todo.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
+        }
+        if (showMoreButtonInAsignments) {
+            if (document.getElementById("todo") !== undefined) {
+                let asignmentListDiv = document.getElementById("todo");
+                if (displayedAll == false) {
+                    asignmentListDiv.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
+                    displayedAll = true;
+                }
+                else {
+                    asignmentListDiv.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
                  class="active sExtlink-processed sEdgeMore-processed">Less</a></li>`;
-                        displayedAll = false;
-                    }
-                    //dropdownthing
-                    (_a = document.getElementById("dropdownMore")) === null ||
-                    _a === void 0
-                        ? void 0
-                        : _a.addEventListener("click", function () {
-                              var _a;
-                              if (document.getElementById("dropdownMore")) {
-                                  (_a =
-                                      document.getElementById(
-                                          "dropdownMore"
-                                      )) === null || _a === void 0
-                                      ? void 0
-                                      : _a.remove();
-                              }
-                              const img = document.createElement("img");
-                              img.id = "ajaxloader";
-                              img.className = "dropdowndiv2";
-                              img.src =
-                                  "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/ajax-loader.gif";
-                              todo.appendChild(img);
-                              setTimeout(() => {
-                                  var _a, _b, _c;
-                                  (_a =
-                                      document.getElementById("ajaxloader")) ===
-                                      null || _a === void 0
-                                      ? void 0
-                                      : _a.remove();
-                                  let upcoming =
-                                      document.getElementsByClassName(
-                                          "upcoming-event upcoming-event-block course-event"
-                                      );
-                                  if (document.getElementById("dropdown")) {
-                                      (_b =
-                                          document.getElementById(
-                                              "dropdown"
-                                          )) === null || _b === void 0
-                                          ? void 0
-                                          : _b.remove();
-                                  }
-                                  for (let j = 0; j < upcoming.length; j++) {
-                                      if (
-                                          upcoming[j].className.includes(
-                                              "hidden-important"
-                                          )
-                                      ) {
-                                          let elm =
-                                              upcoming[j].getElementsByTagName(
-                                                  "img"
-                                              )[0];
-                                          if (elm == undefined) {
-                                              let newClass = upcoming[
-                                                  j
-                                              ].className.replace(
-                                                  "hidden-important",
-                                                  ""
-                                              );
-                                              (_c =
-                                                  upcoming[j]
-                                                      .previousElementSibling) ===
-                                                  null || _c === void 0
-                                                  ? void 0
-                                                  : _c.className.replace(
-                                                        "hidden",
-                                                        ""
-                                                    );
-                                              upcoming[j].className = newClass;
-                                          }
-                                      }
-                                  }
-                                  checkBoxmaker();
-                                  changeAmount();
-                              }, 300);
-                          });
+                    displayedAll = false;
                 }
-            }
-            upcoming = document.getElementsByClassName(
-                "upcoming-event upcoming-event-block course-event"
-            );
-            for (let j = 0; j < upcoming.length; j++) {
-                if (
-                    upcoming[j].className.includes("hidden-important") == false
-                ) {
-                    let input = document.createElement("input");
-                    input.className = "progressCheck";
-                    input.type = "checkbox";
-                    let save = localStorage.getItem("saveState");
-                    upcoming[j].appendChild(input);
-                    let children =
-                        (_c =
-                            (_b = input.parentElement) === null || _b === void 0
-                                ? void 0
-                                : _b.firstElementChild) === null ||
-                        _c === void 0
-                            ? void 0
-                            : _c.children;
-                    let childrenchild = children[0].children[1].children;
-                    if (childrenchild) {
-                        for (let i = 0; i < childrenchild.length; i++) {
-                            if (
-                                childrenchild[i].className ==
-                                "sExtlink-processed"
-                            ) {
-                                let elm = childrenchild[i];
-                                let original = elm.innerText;
-                                let lower = original.toLowerCase();
-                                if (
-                                    (lower.includes("quiz") ||
-                                        lower.includes(" test") ||
-                                        lower.includes("minor") ||
-                                        lower.includes("c4u") ||
-                                        lower.includes("cfu") ||
-                                        lower.includes("major")) &&
-                                    lower.includes("hw") == false
-                                ) {
-                                    input.style.accentColor = "green";
-                                    elm.style.color = "red";
-                                }
-                                if (save !== null) {
-                                    let elm = childrenchild[i];
-                                    saveState = JSON.parse(save);
-                                    if (saveState[elm.innerText] == true) {
-                                        input.checked = true;
-                                        childrenchild[
-                                            i
-                                        ].innerHTML = `<s>${elm.innerText}</s>`;
-                                        let child =
-                                            (_f =
-                                                (_e =
-                                                    (_d =
-                                                        childrenchild[i]
-                                                            .parentElement) ===
-                                                        null || _d === void 0
-                                                        ? void 0
-                                                        : _d.parentElement) ===
-                                                    null || _e === void 0
-                                                    ? void 0
-                                                    : _e.parentElement) ===
-                                                null || _f === void 0
-                                                ? void 0
-                                                : _f.parentElement;
-                                        child.style.opacity = "0.8";
-                                        let timout = setInterval(() => {
-                                            if (deleteAsign == false) {
-                                                clearInterval(timout);
-                                            } else if (
-                                                deleteAsign !== null &&
-                                                deleteAsign == true
-                                            ) {
-                                                child.remove();
-                                                clearInterval(timout);
-                                            }
-                                        }, 1);
-                                    } else {
-                                        input.checked = false;
-                                        let child =
-                                            (_j =
-                                                (_h =
-                                                    (_g =
-                                                        childrenchild[i]
-                                                            .parentElement) ===
-                                                        null || _g === void 0
-                                                        ? void 0
-                                                        : _g.parentElement) ===
-                                                    null || _h === void 0
-                                                    ? void 0
-                                                    : _h.parentElement) ===
-                                                null || _j === void 0
-                                                ? void 0
-                                                : _j.parentElement;
-                                        child.style.opacity = "1";
-                                        childrenchild[
-                                            i
-                                        ].innerHTML = `${childrenchild[
-                                            i
-                                        ].innerHTML.replace(/<\/?s>/g, "")}`;
-                                    }
-                                }
-                            }
-                        }
+                //dropdownthing
+                (_a = document
+                    .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+                    var _a;
+                    if (document.getElementById("dropdownMore")) {
+                        (_a = document
+                            .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.remove();
                     }
-                    let dateHeaders =
-                        document.getElementsByClassName("date-header");
-                    Array.from(dateHeaders).forEach((element) => {
-                        var _a;
-                        if (
-                            ((_a = element.nextElementSibling) === null ||
-                            _a === void 0
-                                ? void 0
-                                : _a.classList.contains("hidden-important")) ==
-                            false
-                        ) {
-                            element.className = element.className.replace(
-                                "hidden",
-                                ""
-                            );
+                    const loadingImage = document.createElement("img");
+                    loadingImage.id = "ajaxloader";
+                    loadingImage.className = "dropdowndiv2";
+                    loadingImage.src =
+                        "https://schoology.shschools.org/sites/all/themes/schoology_theme/images/ajax-loader.gif";
+                    asignmentListDiv.appendChild(loadingImage);
+                    setTimeout(() => {
+                        var _a, _b, _c;
+                        (_a = document.getElementById("ajaxloader")) === null || _a === void 0 ? void 0 : _a.remove();
+                        let upcoming = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
+                        if (document.getElementById("dropdown")) {
+                            (_b = document
+                                .getElementById("dropdown")) === null || _b === void 0 ? void 0 : _b.remove();
                         }
-                        let child = element.firstElementChild;
-                        function titleCase(str) {
-                            var splitStr = str.toLowerCase().split(" ");
-                            for (var i = 0; i < splitStr.length; i++) {
-                                splitStr[i] =
-                                    splitStr[i].charAt(0).toUpperCase() +
-                                    splitStr[i].substring(1);
-                            }
-                            return splitStr.join(" ");
-                        }
-                        let innertext = element.innerText;
-                        innertext = titleCase(innertext);
-                        element.innerHTML = `<p>` + innertext + `</p>`;
-                        child = element.firstElementChild;
-                        child.className = "h4s";
-                    });
-                    input.addEventListener("click", function () {
-                        var _a, _b, _c, _d, _e, _f, _g, _h;
-                        let children =
-                            (_b =
-                                (_a = input.parentElement) === null ||
-                                _a === void 0
-                                    ? void 0
-                                    : _a.firstElementChild) === null ||
-                            _b === void 0
-                                ? void 0
-                                : _b.children;
-                        let childrenchild = children[0].children[1].children;
-                        if (childrenchild) {
-                            changeAmount();
-                            for (let i = 0; i < childrenchild.length; i++) {
-                                if (
-                                    childrenchild[i].className ==
-                                    "sExtlink-processed"
-                                ) {
-                                    let elmchild = childrenchild[i];
-                                    if (input.checked) {
-                                        saveState[elmchild.innerText] = true;
-                                        localStorage.setItem(
-                                            "saveState",
-                                            JSON.stringify(saveState)
-                                        );
-                                        childrenchild[
-                                            i
-                                        ].innerHTML = `<s>${elmchild.innerText}</s>`;
-                                        let child =
-                                            (_e =
-                                                (_d =
-                                                    (_c =
-                                                        childrenchild[i]
-                                                            .parentElement) ===
-                                                        null || _c === void 0
-                                                        ? void 0
-                                                        : _c.parentElement) ===
-                                                    null || _d === void 0
-                                                    ? void 0
-                                                    : _d.parentElement) ===
-                                                null || _e === void 0
-                                                ? void 0
-                                                : _e.parentElement;
-                                        child.style.opacity = "0.8";
-                                        if (
-                                            deleteAsign !== null &&
-                                            deleteAsign
-                                        ) {
-                                            child.remove();
-                                        }
-                                    } else {
-                                        let child =
-                                            (_h =
-                                                (_g =
-                                                    (_f =
-                                                        childrenchild[i]
-                                                            .parentElement) ===
-                                                        null || _f === void 0
-                                                        ? void 0
-                                                        : _f.parentElement) ===
-                                                    null || _g === void 0
-                                                    ? void 0
-                                                    : _g.parentElement) ===
-                                                null || _h === void 0
-                                                ? void 0
-                                                : _h.parentElement;
-                                        child.style.opacity = "1";
-                                        childrenchild[
-                                            i
-                                        ].innerHTML = `${childrenchild[
-                                            i
-                                        ].innerHTML.replace(/<\/?s>/g, "")}`;
-                                        saveState[elmchild.innerText] = false;
-                                        localStorage.setItem(
-                                            "saveState",
-                                            JSON.stringify(saveState)
-                                        );
-                                    }
+                        for (let j = 0; j < upcoming.length; j++) {
+                            if (upcoming[j].className.includes("hidden-important")) {
+                                let hiddenAsignmentCheckElement = upcoming[j].getElementsByTagName("img")[0];
+                                if (hiddenAsignmentCheckElement ==
+                                    undefined) {
+                                    let newHiddenElementClass = upcoming[j].className.replace("hidden-important", "");
+                                    (_c = upcoming[j].previousElementSibling) === null || _c === void 0 ? void 0 : _c.className.replace("hidden", "");
+                                    upcoming[j].className =
+                                        newHiddenElementClass;
                                 }
                             }
                         }
-                    });
-                }
+                        drawCheckboxes();
+                        updateProgressBarState();
+                    }, 300);
+                });
             }
         }
-    );
+        upcomingCourseEvents = document.getElementsByClassName("upcoming-event upcoming-event-block course-event");
+        for (let j = 0; j < upcomingCourseEvents.length; j++) {
+            if (upcomingCourseEvents[j].className.includes("hidden-important") == false) {
+                let checkbox = document.createElement("input");
+                checkbox.className = "progressCheck";
+                checkbox.type = "checkbox";
+                let checkboxState = localStorage.getItem("saveState");
+                upcomingCourseEvents[j].appendChild(checkbox);
+                let asignmentLabelList = (_d = (_c = (_b = checkbox.parentElement) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.firstElementChild) === null || _d === void 0 ? void 0 : _d.children[1].children;
+                if (asignmentLabelList) {
+                    for (let i = 0; i < asignmentLabelList.length; i++) {
+                        asignmentLabel =
+                            (_g = (_f = (_e = asignmentLabelList[i].parentElement) === null || _e === void 0 ? void 0 : _e.parentElement) === null || _f === void 0 ? void 0 : _f.parentElement) === null || _g === void 0 ? void 0 : _g.parentElement;
+                        if (asignmentLabelList[i].className ==
+                            "sExtlink-processed") {
+                            let selectedAsignmentLabel = asignmentLabelList[i];
+                            let labelText = selectedAsignmentLabel.innerText.toLowerCase();
+                            if ((labelText.includes("quiz") ||
+                                labelText.includes(" test") ||
+                                labelText.includes("minor") ||
+                                labelText.includes("c4u") ||
+                                labelText.includes("cfu") ||
+                                labelText.includes("final") ||
+                                labelText.includes("experience") ||
+                                labelText.includes("major")) &&
+                                labelText.includes("hw") == false) {
+                                checkbox.style.accentColor = "green";
+                                selectedAsignmentLabel.style.color = "red";
+                            }
+                            if (checkboxState !== null) {
+                                checkboxStates = JSON.parse(checkboxState);
+                                if (checkboxStates[selectedAsignmentLabel.innerText] == true) {
+                                    checkbox.checked = true;
+                                    asignmentLabelList[i].innerHTML = `<s>${selectedAsignmentLabel.innerText}</s>`;
+                                    asignmentLabel.style.opacity = "0.8";
+                                }
+                                else {
+                                    checkbox.checked = false;
+                                    asignmentLabel.style.opacity = "1";
+                                    asignmentLabelList[i].innerHTML = `${asignmentLabelList[i].innerHTML.replace(/<\/?s>/g, "")}`;
+                                }
+                            }
+                        }
+                    }
+                }
+                let dateHeadersList = document.getElementsByClassName("date-header");
+                Array.from(dateHeadersList).forEach((dateHeader) => {
+                    var _a;
+                    if (((_a = dateHeader.nextElementSibling) === null || _a === void 0 ? void 0 : _a.classList.contains("hidden-important")) == false) {
+                        dateHeader.className = dateHeader.className.replace("hidden", "");
+                    }
+                    let textLabel = dateHeader.firstElementChild;
+                    let dateHeaderText = dateHeader
+                        .innerText;
+                    dateHeaderText = titleCase(dateHeaderText);
+                    dateHeader.innerHTML =
+                        `<p>` + dateHeaderText + `</p>`;
+                    textLabel =
+                        dateHeader.firstElementChild;
+                    textLabel.className = "h4s";
+                });
+                checkbox.addEventListener("click", function () {
+                    var _a, _b, _c, _d, _e, _f;
+                    let asignmentDivList = (_c = (_b = (_a = checkbox.parentElement) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.children[1].children;
+                    if (asignmentDivList) {
+                        updateProgressBarState();
+                        for (let i = 0; i < asignmentDivList.length; i++) {
+                            if (asignmentDivList[i].className ==
+                                "sExtlink-processed") {
+                                let asignmentNameElement = asignmentDivList[i];
+                                let asignmentDiv = (_f = (_e = (_d = asignmentNameElement.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.parentElement) === null || _f === void 0 ? void 0 : _f.parentElement;
+                                if (checkbox.checked) {
+                                    checkboxStates[asignmentNameElement.innerText] = true;
+                                    localStorage.setItem("saveState", JSON.stringify(checkboxStates));
+                                    asignmentDivList[i].innerHTML = `<s>${asignmentNameElement.innerText}</s>`;
+                                    asignmentDiv.style.opacity = "0.8";
+                                }
+                                else {
+                                    asignmentDiv.style.opacity = "1";
+                                    asignmentDivList[i].innerHTML = `${asignmentDivList[i].innerHTML.replace(/<\/?s>/g, "")}`;
+                                    checkboxStates[asignmentNameElement.innerText] = false;
+                                    localStorage.setItem("saveState", JSON.stringify(checkboxStates));
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
 }
-function gradeUpdate() {
+function displayGrades() {
     var _a;
-    if (
-        window.location.href == "https://schoology.shschools.org/grades/grades"
-    ) {
-        let gradebookElms = document.getElementsByClassName(
-            "gradebook-course-grades"
-        );
-        for (let i = 0; i < gradebookElms.length; i++) {
-            let elm = gradebookElms[i];
-            elm.style.display = "block";
-            let parent =
-                document.getElementsByClassName("course-grade-value")[i];
-            let gradeElm =
-                (_a = parent.firstChild) === null || _a === void 0
-                    ? void 0
-                    : _a.firstChild;
-            let grade = gradeElm.innerHTML;
-            let title = document.getElementsByClassName(
-                "gradebook-course-title"
-            )[i];
-            title.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
-            let gradeDivs = document.getElementsByClassName(
-                " gradebook-course hierarchical-grading-report show-title interactive sGradesGradebook-processed sGradeHierarchicalReport-processed"
-            )[i];
-            gradeDivs.style.borderRadius = "10px";
+    if (window.location.href == "https://schoology.shschools.org/grades/grades") {
+        let gradebookCourses = document.getElementsByClassName("gradebook-course-grades");
+        for (let i = 0; i < gradebookCourses.length; i++) {
+            let selectedCourse = gradebookCourses[i];
+            selectedCourse.style.display = "block";
+            let parent = document.getElementsByClassName("course-grade-value")[i];
+            let grade = ((_a = parent.firstChild) === null || _a === void 0 ? void 0 : _a.firstChild)
+                .innerHTML;
+            let gradebookCourseDiv = document.getElementsByClassName("gradebook-course-title")[i];
+            gradebookCourseDiv.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
         }
-        for (let i = 0; i < gradebookElms.length; i++) {
-            let elm = gradebookElms[i];
-            elm.style.display = "none";
+        for (let i = 0; i < gradebookCourses.length; i++) {
+            let selectedCourse = gradebookCourses[i];
+            selectedCourse.style.display = "none";
         }
     }
 }
-gradeUpdate();
+displayGrades();
 function notePage() {
     var _a, _b;
     if (window.location.href == "https://schoology.shschools.org/study") {
-        let title = document.getElementsByTagName("title")[0];
-        title.innerText = "Notes | Schoology";
-        let text = localStorage.getItem("textSave");
-        (_a = document.getElementById("content-wrapper")) === null ||
-        _a === void 0
-            ? void 0
-            : _a.remove();
-        let div = document.createElement("textarea");
-        let notecontainer = document.createElement("div");
-        notecontainer.id = "notecontainer";
-        div.className = "textAreaNote";
-        div.id = "textarea";
-        let divheader = document.createElement("div");
-        divheader.className = "divheader";
-        divheader.id = "divheader1";
-        if (text) {
-            div.value = text;
+        let pageTitle = document.getElementsByTagName("title")[0];
+        pageTitle.innerText = "Notes | Schoology";
+        let savedNotes = localStorage.getItem("textSave");
+        (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
+        let textArea = document.createElement("textarea");
+        let noteContainer = document.createElement("div");
+        noteContainer.id = "notecontainer";
+        textArea.className = "textAreaNote";
+        textArea.id = "textarea";
+        let notesHeader = document.createElement("div");
+        notesHeader.className = "divheader";
+        notesHeader.id = "divheader1";
+        if (savedNotes) {
+            textArea.value = savedNotes;
         }
-        divheader.innerHTML = "Notes";
-        notecontainer.appendChild(divheader);
-        notecontainer.appendChild(div);
-        let shown = true;
-        divheader.addEventListener("click", function () {
-            if (shown) {
-                shown = false;
-                div.style.transition = "all 0.2s";
-                div.style.borderStyle = "none";
+        notesHeader.innerHTML = "Notes";
+        noteContainer.appendChild(notesHeader);
+        noteContainer.appendChild(textArea);
+        let notesVisible = true;
+        notesHeader.addEventListener("click", function () {
+            if (notesVisible) {
+                notesVisible = false;
+                textArea.style.transition = "all 0.2s";
+                textArea.style.borderStyle = "none";
                 setTimeout(() => {
-                    div.style.opacity = "0";
-                    div.style.padding = "0px";
+                    textArea.style.opacity = "0";
+                    textArea.style.padding = "0px";
                 }, 200);
-                div.style.height = "0px";
-            } else {
-                shown = true;
-                div.style.opacity = "1";
-                div.style.transition = "all 0.2s";
-                div.style.borderStyle = "solid";
-                div.style.padding = "15px";
-                div.style.height = "500px";
+                textArea.style.height = "0px";
+            }
+            else {
+                notesVisible = true;
+                textArea.style.opacity = "1";
+                textArea.style.transition = "all 0.2s";
+                textArea.style.borderStyle = "solid";
+                textArea.style.padding = "15px";
+                textArea.style.height = "500px";
             }
         });
-        (_b = document.getElementById("body")) === null || _b === void 0
-            ? void 0
-            : _b.appendChild(notecontainer);
-        div.addEventListener("input", function () {
-            if (div) {
-                localStorage.setItem("textSave", div.value);
+        (_b = document.getElementById("body")) === null || _b === void 0 ? void 0 : _b.appendChild(noteContainer);
+        textArea.addEventListener("input", function () {
+            if (textArea) {
+                localStorage.setItem("textSave", textArea.value);
             }
         });
     }
 }
 notePage();
-function studyPage() {
+function createStudyPage() {
     var _a, _b, _c, _d;
     if (window.location.href == "https://schoology.shschools.org/study") {
-        let seconds = 0;
         let lastBlurTime = 0; // To store the timestamp when the window is blurred
         let todoList = [];
         todoList = localStorage.getItem("todo");
@@ -1215,33 +821,33 @@ function studyPage() {
         window.addEventListener("load", returned);
         let awaytimeout;
         function leave() {
-            // Save the current time in seconds when the window is blurred
             lastBlurTime = Math.round(new Date().getTime() / 1000);
             localStorage.setItem("lastBlurTime", JSON.stringify(lastBlurTime));
             clearInterval(countdown);
             awaytimeout = setInterval(() => {
                 let title = document.getElementsByTagName("title")[0];
-                title.innerText = `(${h1.innerHTML}) Study Session | Schoology`;
+                title.innerText = `(${timerText.innerHTML}) Study Session | Schoology`;
             }, 1000);
         }
         function returned() {
             if (awaytimeout) {
                 clearInterval(awaytimeout);
             }
-            let test = localStorage.getItem("lastBlurTime");
-            if (test) {
-                lastBlurTime = JSON.parse(test);
-                if (lastBlurTime > 0 && timerStart) {
+            let savedLastBlurTime = localStorage.getItem("lastBlurTime");
+            if (savedLastBlurTime) {
+                lastBlurTime = JSON.parse(savedLastBlurTime);
+                if (lastBlurTime > 0 && timerIsOn) {
                     const currentTime = Math.round(new Date().getTime() / 1000);
                     const secondsElapsed = currentTime - lastBlurTime;
-                    timeleft -= secondsElapsed;
+                    timeLeft -= secondsElapsed;
                     lastBlurTime = 0;
-                    if (timeleft >= 0) {
-                        toggle();
-                    } else {
-                        timeleft = 0;
+                    if (timeLeft >= 0) {
+                        toggleTimerState();
+                    }
+                    else {
+                        timeLeft = 0;
                         localStorage.setItem("timeLeft", "0");
-                        SetTextLabel();
+                        setTextLabel();
                     }
                 }
             }
@@ -1261,195 +867,133 @@ function studyPage() {
         asignmentcontainer.id = "asignmentcontainer";
         document.body.appendChild(asignmentcontainer);
         function getCurrentAsignments() {
-            fetch(
-                "https://schoology.shschools.org/home/upcoming_submissions_ajax"
-            )
+            fetch("https://schoology.shschools.org/home/upcoming_submissions_ajax")
                 .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(
-                            `HTTP error! Status: ${response.status}`
-                        );
-                    }
-                    return response.json(); // Assuming the response is JSON
-                })
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json(); // Assuming the response is JSON
+            })
                 .then((data) => {
-                    let asignmentContainer =
-                        document.getElementById("asignmentcontainer");
-                    asignmentContainer.innerHTML += data.html;
-                    let asignments =
-                        document.getElementsByClassName("event-title");
-                    Array.from(asignments).forEach((element) => {
-                        var _a;
-                        let elementInner = element.firstElementChild;
-                        let elementInnerdate =
-                            (_a = element.lastElementChild) === null ||
-                            _a === void 0
-                                ? void 0
-                                : _a.lastElementChild;
-                        // let elementInner =
-                        //     element.firstElementChild as HTMLParagraphElement;
-                        // options.push(
-                        //     `(${elementInnerdate.innerText}) ${elementInner.innerText}`
-                        options.push(elementInner.innerText);
-                        optionTags.push(elementInnerdate.innerText);
-                    });
-                    asignmentcontainer.remove();
-                })
-                .catch((error) => {
-                    console.error("Error fetching data:", error);
-                    return error;
+                let asignmentContainer = document.getElementById("asignmentcontainer");
+                asignmentContainer.innerHTML += data.html;
+                let asignments = document.getElementsByClassName("event-title");
+                Array.from(asignments).forEach((asignment) => {
+                    var _a;
+                    let asignmentName = asignment.firstElementChild;
+                    let asignmentTag = (_a = asignment.lastElementChild) === null || _a === void 0 ? void 0 : _a.lastElementChild;
+                    options.push(asignmentName.innerText);
+                    optionTags.push(asignmentTag.innerText);
                 });
+                asignmentcontainer.remove();
+            })
+                .catch((error) => {
+                console.error("Error fetching data:", error);
+                return error;
+            });
         }
+        //FINISH LABELING VARIABLES BELOW
         getCurrentAsignments();
-        // let data=getCurrentAsignments();
-        // var regex = /le/gi,
-        //     result,
-        //     indices = [];
-        // while ((result = regex.exec(data))) {
-        //     indices.push(result.index);
-        // }
-        let title = document.getElementsByTagName("title")[0];
-        title.innerText = "Study Session | Schoology";
-        (_a = document.getElementById("content-wrapper")) === null ||
-        _a === void 0
-            ? void 0
-            : _a.remove();
-        (_b = document.getElementById("site-navigation-footer")) === null ||
-        _b === void 0
-            ? void 0
-            : _b.remove();
-        (_c = document.getElementById("main-content-wrapper")) === null ||
-        _c === void 0
-            ? void 0
-            : _c.remove();
+        let pageTitle = document.getElementsByTagName("title")[0];
+        pageTitle.innerText = "Study Session | Schoology";
+        (_a = document.getElementById("content-wrapper")) === null || _a === void 0 ? void 0 : _a.remove();
+        (_b = document.getElementById("site-navigation-footer")) === null || _b === void 0 ? void 0 : _b.remove();
+        (_c = document.getElementById("main-content-wrapper")) === null || _c === void 0 ? void 0 : _c.remove();
         let wrapper = document.getElementById("wrapper");
         let container = document.createElement("div");
-        // container.style.background = "blue";
-        (_d = document.getElementById("wrapper")) === null || _d === void 0
-            ? void 0
-            : _d.before(container);
+        (_d = document.getElementById("wrapper")) === null || _d === void 0 ? void 0 : _d.before(container);
         if (wrapper) {
             wrapper.className = "";
         }
-        let TODOlabel = document.createElement("p");
-        TODOlabel.className = "todolabel";
-        TODOlabel.innerHTML = "Todo List:";
-        container.appendChild(TODOlabel);
-        let startbtn = document.createElement("button");
-        startbtn.className = "hugeBtn";
-        startbtn.innerHTML = "Study";
-        container.appendChild(startbtn);
-        let h1 = document.createElement("h1");
-        h1.className = "timerText";
-        h1.innerHTML = "0:00";
-        container.appendChild(h1);
+        let todoHeader = document.createElement("p");
+        todoHeader.className = "todolabel";
+        todoHeader.innerHTML = "Todo List:";
+        let startTimerButton = document.createElement("button");
+        startTimerButton.className = "hugeBtn";
+        startTimerButton.innerHTML = "Study";
+        let timerText = document.createElement("h1");
+        timerText.className = "timerText";
+        timerText.innerHTML = "0:00";
+        container.appendChild(todoHeader);
+        container.appendChild(startTimerButton);
+        container.appendChild(timerText);
         function updateList() {
-            let containerTest =
-                document.getElementsByClassName("containerDiv")[0];
-            if (containerTest) {
-                containerTest.remove();
+            let todoListDiv = document.getElementsByClassName("containerDiv")[0];
+            if (todoListDiv) {
+                todoListDiv.remove();
             }
-            let container = document.createElement("div");
-            container.className = "containerDiv";
-            let count = -1;
-            startbtn.before(container);
-            container.appendChild(createNewBtn);
+            todoListDiv = document.createElement("div");
+            todoListDiv.className = "containerDiv";
+            let todoListItemCount = -1;
+            startTimerButton.before(todoListDiv);
+            todoListDiv.appendChild(createNewBtn);
             todoList.forEach((item) => {
-                count++;
+                todoListItemCount++;
                 const [itemName, values] = item;
-                let newElm = document.createElement("div");
-                newElm.className = "listDiv";
-                let textLabel = document.createElement("p");
-                textLabel.className = "textLabel";
-                textLabel.innerHTML = itemName;
-                textLabel.contentEditable = "true";
-                textLabel.id = "txtlabel" + String(count);
-                let checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.checked = values;
-                checkbox.className = "checkboxItem";
-                checkbox.id = "checkbox" + String(count);
-                let button = document.createElement("button");
-                button.className = "deletebn";
-                button.id = "deletebn" + String(count);
-                button.innerHTML = "X";
-                newElm.style.marginTop = "0px";
-                checkbox.style.marginTop = "0px";
-                createNewBtn.before(newElm);
-                newElm.appendChild(textLabel);
-                newElm.appendChild(checkbox);
-                newElm.appendChild(button);
-                //begin
-                let dropdown = document.createElement("section");
-                dropdown.classList.add("hi2d");
-                // Show and filter dropdown
-                textLabel.addEventListener("input", () => {
-                    const query = textLabel.innerText.toLowerCase();
-                    dropdown.innerHTML = ""; // Clear previous options
+                let todoItemDiv = document.createElement("div");
+                todoItemDiv.className = "listDiv";
+                let todoItemName = document.createElement("p");
+                todoItemName.className = "textLabel";
+                todoItemName.innerHTML = itemName;
+                todoItemName.contentEditable = "true";
+                todoItemName.id = "txtlabel" + String(todoListItemCount);
+                let todoItemCheckBox = document.createElement("input");
+                todoItemCheckBox.type = "checkbox";
+                todoItemCheckBox.checked = values;
+                todoItemCheckBox.className = "checkboxItem";
+                todoItemCheckBox.id = "checkbox" + String(todoListItemCount);
+                let todoItemRemove = document.createElement("button");
+                todoItemRemove.className = "deletebn";
+                todoItemRemove.id = "deletebn" + String(todoListItemCount);
+                todoItemRemove.innerHTML = "X";
+                todoItemDiv.style.marginTop = "0px";
+                todoItemCheckBox.style.marginTop = "0px";
+                createNewBtn.before(todoItemDiv);
+                todoItemDiv.appendChild(todoItemName);
+                todoItemDiv.appendChild(todoItemCheckBox);
+                todoItemDiv.appendChild(todoItemRemove);
+                let todoOptions = document.createElement("section");
+                todoItemName.addEventListener("input", () => {
+                    const query = todoItemName.innerText.toLowerCase();
+                    todoOptions.innerHTML = "";
                     let filteredOptions = [];
                     for (let i = 0; i < options.length; i++) {
-                        let option =
-                            options[i].toLowerCase() +
+                        let option = options[i].toLowerCase() +
                             optionTags[i].toLowerCase();
                         if (option.includes(query)) {
                             filteredOptions.push(options[i]);
                         }
-                        //addtags
                     }
                     if (filteredOptions.length > 0) {
-                        dropdown.classList.remove("hidden");
+                        todoOptions.classList.remove("hidden");
                         filteredOptions.forEach((option) => {
-                            const div = document.createElement("div");
-                            div.classList.add("selectoptions");
-                            div.textContent = option;
-                            dropdown.appendChild(div);
-                            div.addEventListener("click", () => {
+                            let dropdownOptionDiv = document.createElement("div");
+                            dropdownOptionDiv.classList.add("selectoptions");
+                            dropdownOptionDiv.textContent = option;
+                            todoOptions.appendChild(dropdownOptionDiv);
+                            dropdownOptionDiv.addEventListener("click", () => {
                                 var _a;
-                                textLabel.innerText = option;
-                                dropdown.classList.add("hidden");
-                                let countnum = textLabel.id;
-                                countnum = String(countnum).slice(
-                                    8,
-                                    countnum.length
-                                );
-                                let inner = document.getElementById(
-                                    "txtlabel" + countnum
-                                );
-                                todoList[Number(countnum)] = [
-                                    (_a = document.getElementById(
-                                        "txtlabel" + countnum
-                                    )) === null || _a === void 0
-                                        ? void 0
-                                        : _a.innerText,
-                                    document.getElementById(
-                                        "checkbox" + countnum
-                                    ).checked,
+                                todoItemName.innerText = option;
+                                todoOptions.classList.add("hidden");
+                                let todoListItemIndex = todoItemName.id;
+                                todoListItemIndex = String(todoListItemIndex).slice(8, todoListItemIndex.length);
+                                todoList[Number(todoListItemIndex)] = [
+                                    (_a = document.getElementById("txtlabel" + todoListItemIndex)) === null || _a === void 0 ? void 0 : _a.innerText,
+                                    document.getElementById("checkbox" + todoListItemIndex).checked,
                                 ];
-                                localStorage.setItem(
-                                    "todo",
-                                    JSON.stringify(todoList)
-                                );
+                                localStorage.setItem("todo", JSON.stringify(todoList));
                             });
                         });
-                    } else {
-                        dropdown.classList.add("hidden"); // Hide dropdown if no matches
+                    }
+                    else {
+                        todoOptions.classList.add("hidden"); // Hide dropdown if no matches
                     }
                 });
-                newElm.after(dropdown);
-                // Hide dropdow if clicked outside
-                // document.addEventListener("click", (e) => {
-                //     let target=e.target
-                //     if (target !==null){
-                //     if (!target.closest(".input-container")) {
-                //         dropdown.classList.add("hidden");
-                //     }
-                // }
-                // });
-                //end
-                button.addEventListener("click", function () {
-                    let countnum = this.id;
-                    countnum = String(countnum).slice(8, countnum.length);
-                    todoList.splice(Number(countnum), 1); // 2nd parameter means remove one item only
+                todoItemDiv.after(todoOptions);
+                todoItemRemove.addEventListener("click", function () {
+                    let todoListItemIndex = this.id;
+                    todoListItemIndex = String(todoListItemIndex).slice(8, todoListItemIndex.length);
+                    todoList.splice(Number(todoListItemIndex), 1); // 2nd parameter means remove one item only
                     localStorage.setItem("todo", JSON.stringify(todoList));
                     let parent = this.parentElement;
                     parent.style.transition = "all 0.5s";
@@ -1459,23 +1003,18 @@ function studyPage() {
                         updateList();
                     }, 500);
                 });
-                function changed() {
+                function saveUpdatedList() {
                     var _a;
-                    let countnum = this.id;
-                    countnum = String(countnum).slice(8, countnum.length);
-                    let inner = document.getElementById("txtlabel" + countnum);
-                    todoList[Number(countnum)] = [
-                        (_a = document.getElementById(
-                            "txtlabel" + countnum
-                        )) === null || _a === void 0
-                            ? void 0
-                            : _a.innerText,
-                        document.getElementById("checkbox" + countnum).checked,
+                    let todoListItemIndex = this.id;
+                    todoListItemIndex = String(todoListItemIndex).slice(8, todoListItemIndex.length);
+                    todoList[Number(todoListItemIndex)] = [
+                        (_a = document.getElementById("txtlabel" + todoListItemIndex)) === null || _a === void 0 ? void 0 : _a.innerText,
+                        document.getElementById("checkbox" + todoListItemIndex).checked,
                     ];
                     localStorage.setItem("todo", JSON.stringify(todoList));
                 }
-                textLabel.addEventListener("input", changed);
-                checkbox.addEventListener("input", changed);
+                todoItemName.addEventListener("input", saveUpdatedList);
+                todoItemCheckBox.addEventListener("input", saveUpdatedList);
             });
         }
         let createNewBtn = document.createElement("button");
@@ -1489,259 +1028,219 @@ add
             localStorage.setItem("todo", JSON.stringify(todoList));
             updateList();
         });
-        let timerStart = false;
-        let timeleft = 1200;
+        let timerIsOn = false;
+        let timeLeft = 1200;
         let countdown = null;
         let isOnStorage = localStorage.getItem("timerIsOn");
         let timeLeftStorage = localStorage.getItem("timeLeft");
         if (isOnStorage && timeLeftStorage) {
-            timerStart = JSON.parse(isOnStorage);
-            timeleft = JSON.parse(timeLeftStorage);
-            toggle();
+            timerIsOn = JSON.parse(isOnStorage);
+            timeLeft = JSON.parse(timeLeftStorage);
+            toggleTimerState();
         }
-        SetTextLabel();
-        function SetTextLabel() {
-            if (String(Math.floor(timeleft % 60)).length == 1) {
-                h1.innerHTML = `${Math.floor(timeleft / 60)}:0${Math.floor(
-                    timeleft % 60
-                )} `;
-            } else {
-                h1.innerHTML = `${Math.floor(timeleft / 60)}:${Math.floor(
-                    timeleft % 60
-                )} `;
+        setTextLabel();
+        function setTextLabel() {
+            if (String(Math.floor(timeLeft % 60)).length == 1) {
+                timerText.innerHTML = `${Math.floor(timeLeft / 60)}:0${Math.floor(timeLeft % 60)} `;
+            }
+            else {
+                timerText.innerHTML = `${Math.floor(timeLeft / 60)}:${Math.floor(timeLeft % 60)} `;
             }
             let title = document.getElementsByTagName("title")[0];
-            title.innerText = `(${h1.innerHTML}) Study Session | Schoology`;
+            title.innerText = `(${timerText.innerHTML}) Study Session | Schoology`;
         }
-        function toggle() {
-            if (timerStart) {
-                startbtn.innerHTML = "Pause";
-            } else {
-                startbtn.innerHTML = "Study";
+        function toggleTimerState() {
+            if (timerIsOn) {
+                startTimerButton.innerHTML = "Pause";
             }
-            localStorage.setItem("timerIsOn", JSON.stringify(timerStart));
+            else {
+                startTimerButton.innerHTML = "Study";
+            }
+            localStorage.setItem("timerIsOn", JSON.stringify(timerIsOn));
             if (countdown !== null) {
                 clearInterval(countdown);
             }
-            if (timerStart) {
+            if (timerIsOn) {
                 countdown = setInterval(() => {
-                    timeleft -= 0.1;
-                    localStorage.setItem("timeLeft", JSON.stringify(timeleft));
-                    SetTextLabel();
-                    if (timeleft <= 0) {
-                        h1.innerHTML = "0:00";
-                        timerStart = false;
-                        timeleft = 1200;
-                        toggle();
+                    timeLeft -= 0.1;
+                    localStorage.setItem("timeLeft", JSON.stringify(timeLeft));
+                    setTextLabel();
+                    if (timeLeft <= 0) {
+                        timerText.innerHTML = "0:00";
+                        timerIsOn = false;
+                        timeLeft = 1200;
+                        toggleTimerState();
                         return;
                     }
                 }, 100);
-            } else {
+            }
+            else {
                 if (countdown !== null) {
                     clearInterval(countdown);
                 }
             }
         }
         updateList();
-        startbtn.addEventListener("click", function () {
-            if (timerStart) {
-                timerStart = false;
-                startbtn.innerHTML = "Study";
-            } else {
-                timerStart = true;
-                startbtn.innerHTML = "Pause";
+        startTimerButton.addEventListener("click", function () {
+            if (timerIsOn) {
+                timerIsOn = false;
+                startTimerButton.innerHTML = "Study";
             }
-            toggle();
+            else {
+                timerIsOn = true;
+                startTimerButton.innerHTML = "Pause";
+            }
+            toggleTimerState();
         });
     }
 }
-studyPage();
-// let url: any;
-// function loadFrame() {
-//     let link = (
-//         document.getElementsByClassName("attachments-file-name")[0]
-//             .firstElementChild as HTMLLinkElement
-//     ).href;
-//     fetch(link)
-//         .then((response) => response.blob())
-//         .then((blob) => {
-//             // Create a blob URL for the PDF
-//             url = window.URL.createObjectURL(blob);
-//             // Set the src of the iframe to the Blob URL to display the PDF
-//             (
-//                 document.getElementsByClassName(
-//                     "docviewer-iframe"
-//                 )[0] as HTMLIFrameElement
-//             ).src = url;
-//             (
-//                 document.getElementsByClassName(
-//                     "view-file-popup  sExtlink-processed"
-//                 )[0] as HTMLLinkElement
-//             ).href = url;
-//         });
-// }
-// let link = (
-//     document.getElementsByClassName("attachments-file-name")[0]
-//         .firstElementChild as HTMLLinkElement
-// ).href;
-// if (window.location.href.includes("materials/gp") && !link.includes(".docx")) {
-//     loadFrame();
-//     setTimeout(() => {
-//         let centerTop = document.getElementById("center-top");
-//         if (centerTop) {
-//             document.head.innerHTML += `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=open_in_full" />`;
-//             centerTop.innerHTML += `<a href="${url}" target="_blank" id="expand" style=" text-decoration:none; position:absolute; left:95%; top:10%;font-size: 30px "
-//      class="material-symbols-outlined">
-//     open_in_full
-//     </a>`;
-//             centerTop.innerHTML += `<a  onclick="loadFrame()"  target="_blank" id="expand" style=" cursor: pointer; text-decoration:none; position:absolute; left:91%; top:10%;font-size: 30px "
-//     class="material-symbols-outlined">
-//     frame_reload
-//     </a>`;
-//         }
-//     }, 1000);
-// }
-//
-// function newbtn() {
-//     let parent = document.getElementsByClassName(
-//         "_2trRU _2K08O fSqCh _1tpub"
-//     )[1];
-//     let item = parent.firstElementChild?.cloneNode() as HTMLLIElement;
-//     if (item) {
-//         item.id;
-//         parent.appendChild(item);
-//     }
-// }
-// newbtn();
-// let btnTemp = document.getElementById("edit-submit") as HTMLInputElement;
-// btnTemp.id = "edit-submitTemp";
-// let btn = document.getElementById("edit-submit") as HTMLInputElement;
-// btnTemp.id = "edit-submit";
-// alert(btn.value);
-// // let btn = document.getElementById("edit-submit") as HTMLInputElement;
-// btn.addEventListener("hover", function () {
-//     if (btn.value == "Submit") {
-//         alert("submited");
-//     }
-// });
-let recentlyCompleted = document.getElementsByClassName("refresh-button")[0];
-if (recentlyCompleted) {
-    recentlyCompleted.click();
+createStudyPage();
+let recentlyCompletedButton = document.getElementsByClassName("refresh-button")[0];
+if (recentlyCompletedButton) {
+    recentlyCompletedButton.click();
 }
 setTimeout(() => {
     var _a, _b;
-    let RecentCompletelist = document.getElementsByClassName(
-        "recently-completed-event"
-    );
-    let used = 0;
+    let RecentCompletelist = document.getElementsByClassName("recently-completed-event");
+    let popupIndex = 0;
     for (let i = 0; i < RecentCompletelist.length; i++) {
         let elm = RecentCompletelist[i];
-        let stored = localStorage.getItem("oldGrade");
-        let old = [];
-        if (stored) {
-            old = JSON.parse(stored);
-        } else {
-            old = [];
+        let storedOldGrade = localStorage.getItem("oldGrade");
+        let oldGrade = [];
+        if (storedOldGrade) {
+            oldGrade = JSON.parse(storedOldGrade);
         }
-        let gradeBad =
-            (_a =
-                RecentCompletelist[i].getElementsByTagName("span")[5]
-                    .firstElementChild) === null || _a === void 0
-                ? void 0
-                : _a.innerHTML;
-        if (old.includes(elm.innerText) == false && gradeBad !== "—") {
-            let link =
-                (_b = RecentCompletelist[i].firstElementChild) === null ||
-                _b === void 0
-                    ? void 0
-                    : _b
-                          .getElementsByTagName("span")[1]
-                          .getElementsByTagName("a")[0];
-            link = link;
-            old.push(elm.innerText);
-            localStorage.setItem("oldGrade", JSON.stringify(old));
+        else {
+            oldGrade = [];
+        }
+        let hasGradeInputted = (_a = RecentCompletelist[i].getElementsByTagName("span")[5]
+            .firstElementChild) === null || _a === void 0 ? void 0 : _a.innerHTML;
+        if (oldGrade.includes(elm.innerText) == false &&
+            hasGradeInputted !== "—") {
+            let asignmentURL = (_b = RecentCompletelist[i].firstElementChild) === null || _b === void 0 ? void 0 : _b.getElementsByTagName("span")[1].getElementsByTagName("a")[0];
+            asignmentURL = asignmentURL;
+            oldGrade.push(elm.innerText);
+            localStorage.setItem("oldGrade", JSON.stringify(oldGrade));
             let grade = null;
-            let iframe = document.createElement("iframe");
-            document.body.appendChild(iframe);
-            // iframe.src = a[j].href;
-            iframe.src = link.href;
-            iframe.onload = () => {
-                if (iframe.contentDocument) {
-                    grade =
-                        iframe.contentDocument.getElementsByClassName(
-                            "grading-grade"
-                        )[0];
-                    if (grade !== undefined) {
-                        grade = grade.innerText;
-                        iframe.remove();
-                        grade = grade.replace("Grade:", "").trim();
-                        let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${link.href}>${link.innerText}</a>`;
-                        let popupBanner = document.createElement("div");
-                        popupBanner.id = "popupBanner";
-                        popupBanner.innerHTML = message;
-                        popupBanner.style.top = `${20 + used * 100}px`;
-                        used += 1;
-                        document.body.appendChild(popupBanner);
-                        setTimeout(() => {
-                            popupBanner.style.right = "20px";
-                        }, 100);
-                        setTimeout(() => {
-                            popupBanner.style.right = "-300px";
-                        }, 7000);
-                    } else {
-                        let src = iframe.src.replace(
-                            "assignment",
-                            "assignments"
-                        );
-                        iframe.src = src + "/mydocument";
-                        iframe.onload = () => {
-                            let content = iframe.contentDocument;
-                            if (content) {
-                                setTimeout(() => {
-                                    grade = content.getElementsByClassName(
-                                        "document-header-aside-graded-grade-3903705135"
-                                    )[0];
-                                    if (grade !== null) {
-                                        grade = grade.innerText;
-                                        iframe.remove();
-                                        grade = grade
-                                            .replace("Grade:", "")
-                                            .trim();
-                                        let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${link.href}>${link.innerText}</a>`;
-                                        let popupBanner =
-                                            document.createElement("div");
-                                        popupBanner.id = "popupBanner";
-                                        popupBanner.innerHTML = message;
-                                        popupBanner.style.top = `${
-                                            20 + used * 100
-                                        }px`;
-                                        used += 1;
-                                        document.body.appendChild(popupBanner);
-                                        setTimeout(() => {
-                                            popupBanner.style.right = "20px";
-                                        }, 100);
-                                        setTimeout(() => {
-                                            popupBanner.style.right = "-300px";
-                                        }, 7000);
-                                    }
-                                }, 2000);
-                            }
-                        };
+            let asignmentIframe = document.createElement("iframe");
+            document.body.appendChild(asignmentIframe);
+            //
+            //
+            asignmentIframe.src = asignmentURL.href;
+            asignmentIframe.onload = () => {
+                if (asignmentIframe.contentDocument) {
+                    console.log("loaded");
+                    if (!asignmentURL.href.includes("launch")) {
+                        grade =
+                            asignmentIframe.contentDocument.getElementsByClassName("grading-grade")[0];
+                        if (grade !== undefined) {
+                            grade = grade.innerText;
+                            asignmentIframe.remove();
+                            grade = grade.replace("Grade:", "").trim();
+                            let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                            let popupBanner = document.createElement("div");
+                            popupBanner.id = "popupBanner";
+                            popupBanner.innerHTML = message;
+                            popupBanner.style.top = `${20 + popupIndex * 100}px`;
+                            popupIndex += 1;
+                            document.body.appendChild(popupBanner);
+                            setTimeout(() => {
+                                popupBanner.style.right = "20px";
+                            }, 100);
+                            setTimeout(() => {
+                                popupBanner.style.right = "-300px";
+                            }, 7000);
+                        }
+                        else {
+                            let src = asignmentIframe.src.replace("assignment", "assignments");
+                            asignmentIframe.src = src + "/mydocument";
+                            asignmentIframe.onload = () => {
+                                let content = asignmentIframe.contentDocument;
+                                if (content) {
+                                    setTimeout(() => {
+                                        grade = content.getElementsByClassName("document-header-aside-graded-grade-3903705135")[0];
+                                        if (grade !== null) {
+                                            grade = grade.innerText;
+                                            asignmentIframe.remove();
+                                            grade = grade
+                                                .replace("Grade:", "")
+                                                .trim();
+                                            let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                                            let popupBanner = document.createElement("div");
+                                            popupBanner.id = "popupBanner";
+                                            popupBanner.innerHTML = message;
+                                            popupBanner.style.top = `${20 + popupIndex * 100}px`;
+                                            popupIndex += 1;
+                                            document.body.appendChild(popupBanner);
+                                            setTimeout(() => {
+                                                popupBanner.style.right =
+                                                    "20px";
+                                            }, 100);
+                                            setTimeout(() => {
+                                                popupBanner.style.right =
+                                                    "-300px";
+                                            }, 7000);
+                                        }
+                                    }, 2000);
+                                }
+                            };
+                        }
+                        // } else if (asignmentURL.href.includes("launch")) {
+                        //     if (asignmentIframe.contentDocument) {
+                        //         console.log("check");
+                        //         console.log(asignmentIframe.contentDocument);
+                        //         let edPuzzleFrame =
+                        //             asignmentIframe.contentDocument.getElementsByClassName(
+                        //                 "external-tool-iframe"
+                        //             )[0] as HTMLIFrameElement;
+                        //         console.log(edPuzzleFrame);
+                        //         edPuzzleFrame.onload = () => {
+                        //             let waitForLoad = setInterval(() => {
+                        //                 if (edPuzzleFrame.contentDocument) {
+                        //                     grade =
+                        //                         edPuzzleFrame.contentDocument.getElementsByClassName(
+                        //                             "hrKVwmEKoE zD3HCBbYl5"
+                        //                         )[0] as HTMLIFrameElement;
+                        //                     grade = grade.innerText;
+                        //                     clearInterval(waitForLoad);
+                        //                     asignmentIframe.remove();
+                        //                     grade = grade
+                        //                         .replace("Grade:", "")
+                        //                         .trim();
+                        //                     let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                        //                     let popupBanner =
+                        //                         document.createElement("div");
+                        //                     popupBanner.id = "popupBanner";
+                        //                     popupBanner.innerHTML = message;
+                        //                     popupBanner.style.top = `${
+                        //                         20 + popupIndex * 100
+                        //                     }px`;
+                        //                     popupIndex += 1;
+                        //                     document.body.appendChild(popupBanner);
+                        //                     setTimeout(() => {
+                        //                         popupBanner.style.right = "20px";
+                        //                     }, 100);
+                        //                     setTimeout(() => {
+                        //                         popupBanner.style.right = "-300px";
+                        //                     }, 7000);
+                        //                     return;
+                        //                 }
+                        //             }, 1000);
+                        //         };
+                        //     }
                     }
                 }
             };
         }
     }
 }, 2000);
-let waiting = setInterval(function () {
+const waitForFrameLoad = setInterval(function () {
     let update = document.getElementsByClassName("update-body s-rte")[0];
     if (update) {
-        clearInterval(waiting);
+        clearInterval(waitForFrameLoad);
         if (localStorage.getItem("oldUpdate") !== update.innerText) {
             localStorage.setItem("oldUpdate", update.innerText);
-            let div = document.getElementsByClassName(
-                "s-edge-type-update-post sUpdate-processed"
-            )[0];
+            let div = document.getElementsByClassName("s-edge-type-update-post sUpdate-processed")[0];
             div.style.borderColor = "#42c5f9";
             div.style.borderWidth = "5px";
             div.style.borderStyle = "solid";
@@ -1749,4 +1248,38 @@ let waiting = setInterval(function () {
         }
     }
 }, 10);
+function titleCase(str) {
+    let splitStr = str.toLowerCase().split(" ");
+    for (var i = 0; i < splitStr.length; i++) {
+        splitStr[i] =
+            splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    }
+    return splitStr.join(" ");
+}
+function getPreviousAnswers() {
+    let questionContainer = document.getElementsByClassName("lrn_response_wrapper");
+    let multipleChoiceContainers = document.getElementsByClassName("lrn_mcqgroup lrn_mcqgroup-horizontal");
+    alert();
+    let indexOfAnswer = 0;
+    Array.from(multipleChoiceContainers).forEach((questionContainer) => {
+        Array.from(questionContainer.children).forEach((answer) => {
+            if (answer.classList.contains("lrn_selected")) {
+                console.log(answer.innerText);
+            }
+            indexOfAnswer += 1;
+        });
+    });
+}
+// Convert HTMLCollection to an array
+// setTimeout(() => {
+//     (
+//         document.getElementsByClassName(
+//             "_1tpub zJU7e _2gJbx _3lLLU _3hM4e"
+//         )[9] as HTMLDivElement
+//     ).click();
+//     setTimeout(() => {
+//         getPreviousAnswers();
+//     }, 1000);
+// }, 2000);
 // ©2025 William Chou. All rights reserved.
+//internet out @ 5:52

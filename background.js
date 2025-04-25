@@ -88,23 +88,27 @@ function logOnCommitted(details) {
     //     document.head.appendChild(el3);
     //     //
 }
-
 if (chrome.webNavigation) {
     chrome.webNavigation.onDOMContentLoaded.addListener((details) => {
         if (details.frameId === 0) {
-            console.log("DOMContentLoaded Event Fired:", details);
-            chrome.scripting
-                .executeScript({
-                    target: { tabId: details.tabId },
-                    files: ["injected.js", "pdf.js"],
-                })
-                .catch((error) =>
-                    console.error("Script Injection Error:", error)
-                );
+            chrome.tabs.get(details.tabId, (tab) => {
+                if (
+                    tab &&
+                    tab.url &&
+                    tab.url.startsWith("https://schoology.shschools.org/")
+                ) {
+                    console.log("✅ Schoology tab detected:", tab.url);
+
+                    chrome.scripting
+                        .executeScript({
+                            target: { tabId: details.tabId },
+                            files: ["injected.js", "pdf.js"],
+                        })
+                        .catch((error) =>
+                            console.error("Script Injection Error:", error)
+                        );
+                }
+            });
         }
     });
-} else {
-    console.error(
-        "❌ chrome.webNavigation is undefined. Check permissions and manifest version."
-    );
 }
