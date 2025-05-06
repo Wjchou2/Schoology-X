@@ -1,4 +1,7 @@
 console.log("Schoology X Injected :)");
+declare var YT: any;
+let player: any; // Global player variable
+
 document.head.innerHTML += `<html manifest="offline_book.manifest">
 <link src="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"></link>
 <style>.material-symbols-outlined{
@@ -10,6 +13,7 @@ document.head.innerHTML += `<html manifest="offline_book.manifest">
 }</style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check_circle" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=volunteer_activism" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=check_circle" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=timer" />
 `;
 let asignmentLabel: any;
 let ready = 0;
@@ -125,15 +129,17 @@ function createMobileServeButton() {
         "_24avl _3Rh90 _349XD"
     )[1];
     let buttonIcon = document.createElement("button");
-    buttonIcon.className = "mobileServeBtn";
-    buttonIcon.innerHTML = `<span class="material-symbols-outlined">volunteer_activism</span>`;
+    buttonIcon.className = "volunteerBtn";
+    buttonIcon.innerHTML = `<span class="material-symbols-outlined">
+timer
+</span>`;
     buttonIcon.addEventListener("click", function () {
-        window.open("https://app.mobileserve.com/app/#/");
+        window.open("/study");
     });
     buttonTemplateClone.before(buttonIcon);
 }
 // createBessyGradeButton();
-// createMobileServeButton();
+createMobileServeButton();
 function adjustButtonHoverBrightness(hexColor: any, percent: any) {
     percent = Math.max(-100, Math.min(100, percent));
     let r = parseInt(hexColor.slice(1, 3), 16);
@@ -988,9 +994,7 @@ function notePage() {
         noteContainer.id = "notecontainer";
         textArea.className = "textAreaNote";
         textArea.id = "textarea";
-
         let notesHeader = document.createElement("div");
-
         notesHeader.className = "divheader";
         notesHeader.id = "divheader1";
 
@@ -1030,8 +1034,7 @@ function notePage() {
     }
 }
 
-notePage();
-
+// notePage();
 function createStudyPage() {
     if (window.location.href == "https://schoology.shschools.org/study") {
         let lastBlurTime = 0; // To store the timestamp when the window is blurred
@@ -1149,17 +1152,24 @@ function createStudyPage() {
         if (wrapper) {
             wrapper.className = "";
         }
+        document.body.style.backgroundImage = `url("https://flocus.com/minimalist-pomodoro-timer/8e6ce4c67a9bf6bf67d0.jpg")`;
         let todoHeader = document.createElement("p");
         todoHeader.className = "todolabel";
         todoHeader.innerHTML = "Todo List:";
         let startTimerButton = document.createElement("button");
         startTimerButton.className = "hugeBtn";
         startTimerButton.innerHTML = "Study";
+        let resetButton = document.createElement("button");
+        resetButton.className = "hugeBtn";
+        resetButton.id = "resetButton";
+        resetButton.innerHTML = "Reset";
         let timerText = document.createElement("h1");
         timerText.className = "timerText";
         timerText.innerHTML = "0:00";
         container.appendChild(todoHeader);
         container.appendChild(startTimerButton);
+        container.appendChild(resetButton);
+
         container.appendChild(timerText);
         function updateList() {
             let todoListDiv =
@@ -1172,7 +1182,8 @@ function createStudyPage() {
             type Todo = [itemName: string, values: boolean];
             let todoListItemCount = -1;
             startTimerButton.before(todoListDiv);
-            todoListDiv.appendChild(createNewBtn);
+            todoListDiv.appendChild(buttonRow);
+            // todoListDiv.appendChild(clearBtn);
             todoList.forEach((item: Todo) => {
                 todoListItemCount++;
                 const [itemName, values] = item;
@@ -1194,7 +1205,7 @@ function createStudyPage() {
                 todoItemRemove.innerHTML = "X";
                 todoItemDiv.style.marginTop = "0px";
                 todoItemCheckBox.style.marginTop = "0px";
-                createNewBtn.before(todoItemDiv);
+                buttonRow.before(todoItemDiv);
                 todoItemDiv.appendChild(todoItemName);
                 todoItemDiv.appendChild(todoItemCheckBox);
                 todoItemDiv.appendChild(todoItemRemove);
@@ -1285,12 +1296,69 @@ function createStudyPage() {
                 todoItemCheckBox.addEventListener("input", saveUpdatedList);
             });
         }
+
+        document.head.innerHTML += `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add" />`;
         let createNewBtn = document.createElement("button");
         createNewBtn.className = "createNewBtn";
+        let clearBtn = document.createElement("button");
+        clearBtn.className = "createNewBtn";
+        clearBtn.id = "clearListBtn";
+        clearBtn.innerHTML = "Clear All";
+        clearBtn.style.backgroundColor = "rgb(223 160 160)";
         createNewBtn.innerHTML = `<span id="plusIcon" class="material-symbols-outlined">
 add
 </span><span> Create new Item</span>`;
-        container.appendChild(createNewBtn);
+        let buttonRow = document.createElement("div");
+        buttonRow.className = "button-row"; // For styling
+        buttonRow.appendChild(createNewBtn);
+        buttonRow.appendChild(clearBtn);
+        let selectedSound = 1;
+        let soundsButton = document.createElement("button");
+        soundsButton.className = "soundButton";
+        soundsButton.innerHTML = "Music";
+        container.appendChild(soundsButton);
+
+        let ytContainer = document.createElement("div");
+        document.body.appendChild(ytContainer);
+
+        let iframe = document.createElement("iframe");
+        iframe.width = "100";
+        iframe.height = "100";
+        iframe.style.display = "block"; // Hide iframe, it will play in the background
+        iframe.src =
+            "https://www.youtube.com/embed/Rm2vkXRFJ-s?autoplay=1&start=48&controls=0&modestbranding=1&rel=0&showinfo=0";
+        soundsButton.addEventListener("click", function () {
+            if (selectedSound == 1) {
+                selectedSound = 0;
+                iframe.src =
+                    "https://www.youtube.com/embed/WPni755-Krg?autoplay=1&start=48&controls=0&modestbranding=1&rel=0&showinfo=0";
+            } else {
+                iframe.src =
+                    "https://www.youtube.com/embed/Rm2vkXRFJ-s?autoplay=1&start=48&controls=0&modestbranding=1&rel=0&showinfo=0";
+                selectedSound = 1;
+            }
+        });
+        document.body.appendChild(iframe);
+        container.appendChild(buttonRow);
+        clearBtn.addEventListener("click", function () {
+            todoList = [];
+            localStorage.setItem("todo", JSON.stringify(todoList));
+            updateList();
+        });
+        let header = document.getElementById("header") as HTMLDivElement;
+        header.style.transition = "all 0.2s";
+        header.style.opacity = "0";
+        document.addEventListener("mousemove", function (event) {
+            let mouseY = event.clientY; // Get the vertical mouse position (Y-axis)
+
+            // Define a threshold for "near the top" (e.g., 50px from the top)
+            if (mouseY < 50) {
+                header.style.opacity = "1";
+            } else {
+                header.style.opacity = "0";
+            }
+        });
+
         createNewBtn.addEventListener("click", function () {
             todoList.push(["New Item", false]);
             localStorage.setItem("todo", JSON.stringify(todoList));
@@ -1298,9 +1366,8 @@ add
             updateList();
         });
         let timerIsOn = false;
-        let timeLeft = 1200;
+        let timeLeft = 1500;
         let countdown: any = null;
-
         let isOnStorage = localStorage.getItem("timerIsOn");
         let timeLeftStorage = localStorage.getItem("timeLeft");
         if (isOnStorage && timeLeftStorage) {
@@ -1327,8 +1394,18 @@ add
         function toggleTimerState() {
             if (timerIsOn) {
                 startTimerButton.innerHTML = "Pause";
+                if (player) {
+                    player.pauseVideo(); // Pause the video
+                } else {
+                    console.log("no player");
+                }
             } else {
                 startTimerButton.innerHTML = "Study";
+                if (player) {
+                    player.playVideo(); // Play the video
+                } else {
+                    console.log("no player");
+                }
             }
             localStorage.setItem("timerIsOn", JSON.stringify(timerIsOn));
             if (countdown !== null) {
@@ -1342,7 +1419,7 @@ add
                     if (timeLeft <= 0) {
                         timerText.innerHTML = "0:00";
                         timerIsOn = false;
-                        timeLeft = 1200;
+                        timeLeft = 1500;
                         toggleTimerState();
                         return;
                     }
@@ -1354,6 +1431,13 @@ add
             }
         }
         updateList();
+        resetButton.addEventListener("click", function () {
+            timeLeft = 1500;
+            localStorage.setItem("timeLeft", JSON.stringify(timeLeft));
+            timerIsOn = false;
+            toggleTimerState();
+            setTextLabel();
+        });
         startTimerButton.addEventListener("click", function () {
             if (timerIsOn) {
                 timerIsOn = false;
@@ -1594,4 +1678,3 @@ function getPreviousAnswers() {
 //     }, 1000);
 // }, 2000);
 // ©2025 William Chou. All rights reserved.
-//internet out @ 5:52
