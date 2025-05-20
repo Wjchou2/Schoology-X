@@ -272,7 +272,7 @@ background: url(arrowup.png) 0 0 repeat;
   color:#ffffff;
   font-weight: 300;
   position: absolute;
-  margin-top: 6rem;
+  margin-top: 3rem;
 }
 .timerText{
   display: block;
@@ -334,7 +334,7 @@ width: 30px;
 display: inline-table;
 position: absolute;
 position: absolute;
-margin-top: 14rem;
+margin-top: 11rem;
 
 }
 
