@@ -115,7 +115,7 @@ if (extensionOn && extensionOn == "true") {
 check_circle
 </span>`;
         buttonIcon.addEventListener("click", function () {
-            window.open("https://www.bessy.io/");
+            window.open("https://gunn.one/grades");
         });
         buttonTemplateClone.before(buttonIcon);
     }
@@ -143,7 +143,7 @@ volunteer_activism
 timer
 </span>`;
         buttonIcon.addEventListener("click", function () {
-            window.open("/study");
+            window.open("https://wjchou2.github.io/Learnify/index.html");
         });
         buttonTemplateClone.before(buttonIcon);
     }
@@ -163,7 +163,7 @@ quiz
         });
         buttonTemplateClone.before(buttonIcon);
     }
-    createFinalsButton();
+    // createFinalsButton();
 
     createStudyButton();
     createBessyGradeButton();
@@ -495,136 +495,138 @@ quiz
         }, 10);
     }
 
-    // async function createScheduleDiv() {
-    //     if (allowedURLs.includes(window.location.href)) {
-    //         refreshCourses();
-    //         const div = document.createElement("div");
-    //         const divstyle = div.style;
-    //         divstyle.width = "100px";
-    //         div.id = "calender";
-    //         divstyle.zIndex = "0";
-    //         divstyle.height = "350px";
-    //         divstyle.backgroundColor = "#ffffff";
-    //         divstyle.position = "absolute";
-    //         div.className = "todo todo-wrapper";
-    //         divstyle.top = "12.5rem";
-    //         divstyle.left = "2%";
-    //         divstyle.padding = "15px";
-    //         divstyle.textAlign = "";
-    //         divstyle.fontSize = "12px";
-    //         divstyle.fontFamily = "Roboto";
-    //         let now = new Date();
-    //         now.setDate(now.getDate() + calenderIncrementDay);
-    //         const day = now.getDay();
-    //         const date = now.getDate();
-    //         const month = now.getMonth();
+    async function createScheduleDiv() {
+        if (allowedURLs.includes(window.location.href)) {
+            refreshCourses();
+            const div = document.createElement("div");
+            const divstyle = div.style;
+            divstyle.width = "100px";
+            div.id = "calender";
+            divstyle.zIndex = "0";
+            divstyle.height = "350px";
+            divstyle.backgroundColor = "#ffffff";
+            divstyle.position = "absolute";
+            div.className = "todo todo-wrapper";
+            divstyle.top = "12.5rem";
+            divstyle.left = "2%";
+            divstyle.padding = "15px";
+            divstyle.textAlign = "";
+            divstyle.fontSize = "12px";
+            divstyle.fontFamily = "Roboto";
+            let now = new Date();
+            now.setDate(now.getDate() + calenderIncrementDay);
+            const day = now.getDay();
+            const date = now.getDate();
+            const month = now.getMonth();
 
-    //         div.innerHTML = `<svg style="position:Relative; left:40px" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg><h2 style="position:Relative; left:10px">Schedule</h2>${
-    //             weekdays[day]
-    //         } ${month + 1}/${date}`;
-    //         div.innerHTML +=
-    //             '<div style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:105px" onclick="next(1)" onmouseover="calenderArrowHovered(1)" onmouseleave="calenderArrowUnhovered(1)"><svg  id="arrow1" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg></div>';
-    //         div.innerHTML +=
-    //             '<div   style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:5px" onclick="next(-1)" onmouseover="calenderArrowHovered(2)" onmouseleave="calenderArrowUnhovered(2)"><svg id="arrow2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg></div>';
-    //         div.innerHTML += `<hr style="border-top: 1px solid #bbb;" class="solid"></br>`;
-    //         let periodCount = 0;
-    //         let save2 = localStorage.getItem("saveState2");
-    //         if (save2 !== null) {
-    //             if (JSON.parse(save2)) {
-    //                 save2 = JSON.parse(save2);
-    //                 localStorage.setItem("saveState2", JSON.stringify(save2));
-    //             }
-    //         }
-    //         let save3 = localStorage.getItem("schedule");
-    //         if (save3 !== null) {
-    //             classOrder = JSON.parse(save3);
-    //             refreshCourses();
-    //         }
-    //         if (classOrder[0] !== "" || classOrder == null) {
-    //             if (now.getDay() == 6 || now.getDay() == 0) {
-    //                 div.innerHTML +=
-    //                     " <h3 style='text-align:left'>Weekend! No Classes.<h3>";
-    //             } else {
-    //                 let element = document.getElementById("calender");
-    //                 element?.parentNode?.removeChild(element);
-    //                 for (const period of courses) {
-    //                     if (period.day === day) {
-    //                         if (period.name !== "End") {
-    //                             periodCount += 1;
-    //                             let startTime = "";
-    //                             if (period.time.hour > 12) {
-    //                                 startTime =
-    //                                     period.time.hour -
-    //                                     12 +
-    //                                     ":" +
-    //                                     period.time.min;
-    //                                 if (period.time.min == 0) {
-    //                                     startTime =
-    //                                         period.time.hour -
-    //                                         12 +
-    //                                         ":" +
-    //                                         period.time.min +
-    //                                         "0";
-    //                                 }
-    //                             } else {
-    //                                 startTime =
-    //                                     period.time.hour + ":" + period.time.min;
-    //                                 if (period.time.min == 0) {
-    //                                     startTime =
-    //                                         period.time.hour +
-    //                                         ":" +
-    //                                         period.time.min +
-    //                                         "0";
-    //                                 }
-    //                             }
-    //                             let endTime = "";
-    //                             if (period.time.hour + 1 > 12) {
-    //                                 endTime =
-    //                                     period.time.hour +
-    //                                     1 -
-    //                                     12 +
-    //                                     ":" +
-    //                                     period.time.min;
-    //                                 if (period.time.min == 0) {
-    //                                     endTime =
-    //                                         period.time.hour +
-    //                                         1 -
-    //                                         12 +
-    //                                         ":" +
-    //                                         period.time.min +
-    //                                         "0";
-    //                                 }
-    //                             } else {
-    //                                 endTime =
-    //                                     period.time.hour +
-    //                                     1 +
-    //                                     ":" +
-    //                                     period.time.min;
-    //                                 if (period.time.min == 0) {
-    //                                     endTime =
-    //                                         period.time.hour +
-    //                                         1 +
-    //                                         ":" +
-    //                                         period.time.min +
-    //                                         "0";
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //                 divstyle.boxShadow = "0 1px 3px 0 rgba(0,0,0,.15)";
-    //             }
-    //         } else {
-    //             div.innerHTML +=
-    //                 " <h3 style='text-align:left'>Schedule not saved, open course menu to load. Make sure your courses are ordered in the order you have them!<h3>";
-    //         }
+            div.innerHTML = `<svg style="position:Relative; left:40px" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/></svg><h2 style="position:Relative; left:10px">Schedule</h2>${
+                weekdays[day]
+            } ${month + 1}/${date}`;
+            div.innerHTML +=
+                '<div style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:105px" onclick="next(1)" onmouseover="calenderArrowHovered(1)" onmouseleave="calenderArrowUnhovered(1)"><svg  id="arrow1" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg></div>';
+            div.innerHTML +=
+                '<div   style="width:`24px`;height:`24px`;background-color:`grey`;position: absolute;top:5px; left:5px" onclick="next(-1)" onmouseover="calenderArrowHovered(2)" onmouseleave="calenderArrowUnhovered(2)"><svg id="arrow2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg></div>';
+            div.innerHTML += `<hr style="border-top: 1px solid #bbb;" class="solid"></br>`;
+            let periodCount = 0;
+            let save2 = localStorage.getItem("saveState2");
+            if (save2 !== null) {
+                if (JSON.parse(save2)) {
+                    save2 = JSON.parse(save2);
+                    localStorage.setItem("saveState2", JSON.stringify(save2));
+                }
+            }
+            let save3 = localStorage.getItem("schedule");
+            if (save3 !== null) {
+                classOrder = JSON.parse(save3);
+                refreshCourses();
+            }
+            if (classOrder[0] !== "" || classOrder == null) {
+                if (now.getDay() == 6 || now.getDay() == 0) {
+                    div.innerHTML +=
+                        " <h3 style='text-align:left'>Weekend! No Classes.<h3>";
+                } else {
+                    let element = document.getElementById("calender");
+                    element?.parentNode?.removeChild(element);
+                    for (const period of courses) {
+                        if (period.day === day) {
+                            if (period.name !== "End") {
+                                periodCount += 1;
+                                let startTime = "";
+                                if (period.time.hour > 12) {
+                                    startTime =
+                                        period.time.hour -
+                                        12 +
+                                        ":" +
+                                        period.time.min;
+                                    if (period.time.min == 0) {
+                                        startTime =
+                                            period.time.hour -
+                                            12 +
+                                            ":" +
+                                            period.time.min +
+                                            "0";
+                                    }
+                                } else {
+                                    startTime =
+                                        period.time.hour +
+                                        ":" +
+                                        period.time.min;
+                                    if (period.time.min == 0) {
+                                        startTime =
+                                            period.time.hour +
+                                            ":" +
+                                            period.time.min +
+                                            "0";
+                                    }
+                                }
+                                let endTime = "";
+                                if (period.time.hour + 1 > 12) {
+                                    endTime =
+                                        period.time.hour +
+                                        1 -
+                                        12 +
+                                        ":" +
+                                        period.time.min;
+                                    if (period.time.min == 0) {
+                                        endTime =
+                                            period.time.hour +
+                                            1 -
+                                            12 +
+                                            ":" +
+                                            period.time.min +
+                                            "0";
+                                    }
+                                } else {
+                                    endTime =
+                                        period.time.hour +
+                                        1 +
+                                        ":" +
+                                        period.time.min;
+                                    if (period.time.min == 0) {
+                                        endTime =
+                                            period.time.hour +
+                                            1 +
+                                            ":" +
+                                            period.time.min +
+                                            "0";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    divstyle.boxShadow = "0 1px 3px 0 rgba(0,0,0,.15)";
+                }
+            } else {
+                div.innerHTML +=
+                    " <h3 style='text-align:left'>Schedule not saved, open course menu to load. Make sure your courses are ordered in the order you have them!<h3>";
+            }
 
-    //         const container = document.getElementById("body");
-    //         if (container) {
-    //             container.appendChild(div);
-    //         }
-    //     }
-    // }
+            const container = document.getElementById("body");
+            if (container) {
+                container.appendChild(div);
+            }
+        }
+    }
     // createScheduleDiv();
 
     function updateProgressBarState() {
@@ -649,8 +651,7 @@ quiz
             if (progressBarDiv) {
                 let targetProgressBarWidth =
                     (checks / checkboxElements.length) * 200;
-
-                if (targetProgressBarWidth == 0) {
+                if (checks == 0) {
                     progressIsZero = true;
                 } else {
                     progressIsZero = false;
@@ -672,7 +673,6 @@ quiz
                 }
 
                 let id = setInterval(frame, 8);
-
                 function frame() {
                     if (
                         incrementIncrease &&
@@ -681,7 +681,7 @@ quiz
                         currentProgressBarWidth = 0;
                         clearInterval(id);
                     } else if (
-                        incrementIncrease == false &&
+                        !incrementIncrease &&
                         currentProgressBarWidth <= targetProgressBarWidth
                     ) {
                         currentProgressBarWidth = 0;
@@ -695,7 +695,6 @@ quiz
                         if (progressBarDiv) {
                             progressBarDiv.style.width =
                                 currentProgressBarWidth + "px";
-
                             if (progressIsZero) {
                                 targetProgressBarWidth = 20;
                                 progressBarDiv.innerHTML = "0%";
@@ -742,13 +741,7 @@ quiz
                 Array.from(progressCheck).forEach((element) => {
                     element.remove();
                 });
-                // let progressCheckLabel =
-                //     document.getElementsByClassName("progressCheckLabel");
 
-                // // Convert the HTMLCollection to an array and iterate over it
-                // Array.from(progressCheckLabel).forEach((element) => {
-                //     element.remove();
-                // });
                 let showMoreButtonInAsignments = false;
 
                 let upcomingCourseEvents = document.getElementsByClassName(
@@ -868,6 +861,7 @@ quiz
                         checkbox.type = "checkbox";
 
                         let checkboxState = localStorage.getItem("saveState");
+
                         upcomingCourseEvents[j].appendChild(checkbox);
 
                         let asignmentLabelList = checkbox.parentElement
@@ -1225,7 +1219,6 @@ quiz
                         return error;
                     });
             }
-            //FINISH LABELING VARIABLES BELOW
             getCurrentAsignments();
             let pageTitle = document.getElementsByTagName(
                 "title"
@@ -1780,7 +1773,7 @@ document.addEventListener("keydown", function (event) {
     if (
         event.key.toLowerCase() === "e" &&
         event.shiftKey &&
-        (event.metaKey || event.ctrlKey) && // metaKey = ⌘ on Mac, ctrlKey for fallback
+        (event.metaKey || event.ctrlKey) &&
         !clicked
     ) {
         clicked = true;
