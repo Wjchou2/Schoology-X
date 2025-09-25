@@ -1397,7 +1397,8 @@ quiz
             clearBtn.style.backgroundColor = "rgb(223 160 160)";
             createNewBtn.innerHTML = `<span id="plusIcon" class="material-symbols-outlined">
 add
-</span><span> Create new Item</span>`;
+</span><span> Create new 
+Item</span>`;
             let buttonRow = document.createElement("div");
             buttonRow.className = "button-row"; // For styling
             buttonRow.appendChild(createNewBtn);
