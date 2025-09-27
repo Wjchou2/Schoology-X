@@ -20,7 +20,11 @@ if (docx) {
     link = docx.firstElementChild.href;
 }
 
-if (window.location.href.includes("materials/gp") && !link.includes(".docx")) {
+if (
+    link != null &&
+    window.location.href.includes("materials/gp") &&
+    !link.includes(".docx")
+) {
     loadFrame();
     setTimeout(() => {
         let centerTop = document.getElementById("center-top");

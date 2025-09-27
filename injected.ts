@@ -1587,9 +1587,6 @@ Item</span>`;
                 let grade: any = null;
                 let asignmentIframe = document.createElement("iframe");
                 document.body.appendChild(asignmentIframe);
-                //
-
-                //
                 asignmentIframe.src = asignmentURL.href;
                 asignmentIframe.onload = () => {
                     if (asignmentIframe.contentDocument) {
@@ -1599,8 +1596,10 @@ Item</span>`;
                                 asignmentIframe.contentDocument.getElementsByClassName(
                                     "grading-grade"
                                 )[0] as HTMLDivElement;
-
-                            if (grade !== undefined) {
+                            if (
+                                grade !== undefined &&
+                                grade.innerText != null
+                            ) {
                                 grade = grade.innerText;
                                 asignmentIframe.remove();
                                 grade = grade.replace("Grade:", "").trim();
