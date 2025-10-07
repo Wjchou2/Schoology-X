@@ -140,13 +140,92 @@ cursor:pointer;
     width: 100%;
     text-align: center;
   }
-/* #dropdown{
-  color:#930123
-} */
-/* .dropdowndiv::before{
-  transform: rotate(180deg) scaleX(-1);
+ .navAddMenu h2{
 
-} */
+  padding:5% ;
+  font-size: clamp(1px,2vw,500px);
+ }
+ .navAddMenu{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100000;
+  width: 40%;
+  background: lightgreen;
+  aspect-ratio: 1.5/1;
+  background-color: #0677bb;
+  border-radius: 10px;
+  color: white;
+  }
+  .navChoice:hover{
+    transform: scale(1.05);
+        background-color: #05639d;
+
+    }
+  .navChoice{
+    transition: all 0.15s;
+    transform: none;
+    width: 90%;
+     
+
+    aspect-ratio: 7/1;
+    background-color: #0677bb;
+    margin: 5%;
+    display: flex;             /* use flexbox */
+  justify-content: center;   /* horizontal center */
+  align-items: center;       /* vertical center */
+  border: 1px solid black;
+  font-size: clamp(1px,1vw,500px);
+  border-radius: 10px;
+  cursor: pointer;
+  }
+   .navAddChoices{
+    justify-content: center;
+    position: absolute;
+    z-index: 100000;
+    width: 50%;
+    height: 80%;
+    top:20%;
+    background: lightgreen;
+   /* left: 50%; */
+
+  }
+  .icon{
+
+    transform: none;
+    transition: all 0.1s;
+  }
+  .icon:hover{
+ transform: scale(1.2);
+  }
+  .navSettingsList{
+    justify-content: center;
+    position: absolute;
+    z-index: 100000;
+    width: 50%;
+    height: 80%;
+    top:20%;
+    background: lightgreen;
+   left:50%;
+  }
+  .iconMenu{
+    height: 50%;
+    background-color: #af4396;
+    overflow: scroll;
+  }
+ .inputMenu{
+      height: 50%;
+          background: rgb(144, 158, 238);
+
+  }
+  .inputLink{
+    
+  }
+  .saveButton{
+    
+  }
 .dropdowndiv{
 margin-left: 39%;
 
