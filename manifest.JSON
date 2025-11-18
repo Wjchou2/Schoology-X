@@ -34,7 +34,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://schoology.shschools.org/*"],
+      "matches": ["https://schoology.shschools.org/*",  
+      "https://*.schoology.com/*",
+        "https://*.schoologyapp.com/*"],
       "css": ["Injectedstyles.css"],
       "run_at": "document_end"
     }

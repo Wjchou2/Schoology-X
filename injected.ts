@@ -485,6 +485,7 @@ timer
         progressFraction.innerHTML = `${checks}/${total}`;
 
         const progressBarDiv = document.getElementById("myProgress");
+
         if (!progressBarDiv) return;
 
         const percent = total === 0 ? 0 : (checks / total) * 100;
@@ -492,11 +493,38 @@ timer
             total === 0 ? 15 : Math.min(98, Math.max(15, percent));
         progressBarDiv.style.width = `${widthPercent}%`;
         progressBarDiv.innerHTML = `${Math.round(percent)}%`;
-
+        animateProgressLabel(progressBarDiv, Math.round(percent));
         const normalized = Math.min(100, widthPercent);
         progressBarDiv.style.backgroundColor = `rgb(${
             255 / 2 - (normalized * 2.25) / 1
         }, ${(normalized * 2.25) / 1.2}, ${(normalized * 2.25) / 2})`;
+    }
+    let progressAnimationFrame: number | null = null;
+    let displayedProgressPercent = 0;
+    function animateProgressLabel(element: HTMLElement, targetPercent: number) {
+        const duration = 300;
+        const startPercent = displayedProgressPercent;
+        const startTime = performance.now();
+
+        if (progressAnimationFrame !== null) {
+            cancelAnimationFrame(progressAnimationFrame);
+        }
+
+        const step = (now: number) => {
+            const progress = Math.min(1, (now - startTime) / duration);
+            const value = Math.round(
+                startPercent + (targetPercent - startPercent) * progress
+            );
+            displayedProgressPercent = value;
+            element.innerHTML = `${value}%`;
+            if (progress < 1) {
+                progressAnimationFrame = requestAnimationFrame(step);
+            } else {
+                progressAnimationFrame = null;
+            }
+        };
+
+        progressAnimationFrame = requestAnimationFrame(step);
     }
     let upcomingEventsDiv = document.getElementById(
         "upcoming-events"
@@ -530,7 +558,7 @@ timer
             index++;
         });
         closePopup(); //close is. not valid func
-
+        updateProgressBarState();
         // drawCheckboxes();
     }
     function test() {

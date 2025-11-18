@@ -17,11 +17,13 @@
   
 #myProgress{
   position: absolute;
-  top: 75px;
-  left: 75%;
+  /* top: 75px; */
+  /* left: 75%; */
+
+  transition: width 0.3s;
   width: 0%;
-  height: 20px;
-  border-radius: 10px;
+  height: 16px;
+  border-radius: 8px;
   background-color: #0677bb;
   text-align: center;
   margin: auto;
@@ -39,8 +41,8 @@
 }
 #progress{
     position: absolute;
-    top: 80px;
-    left: 95%;
+    top: 7.6rem;
+    left: 93%;
     font-size: 15px;
 }
 
@@ -48,7 +50,9 @@
   position: absolute;
   top: 75px;
   left: 75%;
-  width: 200px;
+  width: 16%;
+  justify-content: center;
+  align-items: center;
   height: 20px;
   border-radius: 10px;
   border-width: 2px;
@@ -229,14 +233,15 @@ cursor:pointer;
     align-items: center;
     color:white;
     display: flex;
-    background-color: #05639d;
-    width: 3rem;
+    background-color: #4479b3;
+    width: 2.5rem;
     aspect-ratio: 1/1;
     position: absolute;
-    top: 7rem;
+    top: 7.3rem;
     border-style: none;
+    border-radius: 2px;
      /* top: 70rem; */
-    right:0.4rem;
+    right:1.3rem;
      /* left:50rem; */
     
     cursor: pointer;
