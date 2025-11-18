@@ -1,6 +1,39 @@
 console.log("Schoology X Injected :)");
-let extensionOn = localStorage.getItem("extensionOn");
-if (!(extensionOn && extensionOn == "true")) {
+
+type CustomAssignment = {
+    title: string;
+    date: string;
+    classTag: string;
+};
+
+type CheckboxStateMap = Record<string, boolean>;
+
+const CLASS_NAMES = {
+    upcomingEvent: "upcoming-event upcoming-event-block course-event",
+    customAssignment: "CustomAssignment",
+    hiddenImportant: "hidden-important",
+};
+
+const STORAGE_KEYS = {
+    extensionOn: "extensionOn",
+    schedule: "schedule",
+    customAssignments: "customAssignments",
+    checkboxStates: "saveState",
+    color: "color",
+    readMessage: "readMessage",
+    oldGrade: "oldGrade",
+};
+
+const extensionDisabled =
+    localStorage.getItem(STORAGE_KEYS.extensionOn) === "true";
+
+if (!extensionDisabled) {
+    initExtension();
+}
+
+registerExtensionToggleShortcut();
+
+function initExtension() {
     document.head.insertAdjacentHTML(
         "beforeend",
         `
@@ -59,24 +92,13 @@ if (!(extensionOn && extensionOn == "true")) {
     }
     function normalizeDateString(str: string) {
         if (!str) return str;
-
         str = str.trim();
-
-        // Remove leading "Due "
         str = str.replace(/^Due\s+/i, "");
-
-        // Remove weekday (e.g. "Tuesday, ")
         str = str.replace(/^([A-Za-z]+),\s*/i, "");
-
-        // Split off the time if present ("11:59 pm")
         let parts = str.split(" at ");
-        let datePart = parts[0]; // "November 18, 2025"
-        let timePart = parts[1] || ""; // "11:59 pm" or ""
-
-        // Normalize commas and spaces
+        let datePart = parts[0];
+        let timePart = parts[1] || "";
         datePart = datePart.replace(/\s+/g, " ").replace(/\s*,\s*/g, ", ");
-
-        // Return standardized string
         return timePart ? `${datePart} ${timePart}` : datePart;
     }
 
@@ -116,7 +138,6 @@ if (!(extensionOn && extensionOn == "true")) {
         return luminance < 128;
     }
 
-    let deleteCompleteAssignments: any = null;
     function createBessyGradeButton() {
         let buttonTemplateClone = document.getElementsByClassName(
             "_24avl _3Rh90 _349XD"
@@ -938,11 +959,11 @@ timer
                             assignmentListDiv.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
                             displayedAllAssignments = true;
                         } else {
-                            //             asignmentListDiv.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
+                            //             assignmentListDiv.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
                             //  class="active sExtlink-processed sEdgeMore-processed">Less</a></li>`;
                             //             displayedAllAssignments = false;
                         }
-                        //dropdownthing
+
                         document
                             .getElementById("dropdownMore")
                             ?.addEventListener("click", function () {
@@ -1031,11 +1052,6 @@ timer
                         let checkboxState = localStorage.getItem("saveState");
 
                         upcomingCourseEvents[j].appendChild(checkbox);
-                        // assignmentDates[Number(j)] = (
-                        //     upcomingCourseEvents[j].getElementsByClassName(
-                        //         "readonly-title event-subtitle"
-                        //     )[0] as HTMLParagraphElement
-                        // ).innerText;
 
                         let assignmentLabelList = checkbox.parentElement
                             ?.firstElementChild?.firstElementChild?.children[1]
@@ -1056,13 +1072,13 @@ timer
                                     assignmentLabelList[i].className ==
                                     "sExtlink-processed"
                                 ) {
-                                    let selectedAsignmentLabel =
+                                    let selectedAssignmentLabel =
                                         assignmentLabelList[
                                             i
                                         ] as HTMLDivElement;
 
                                     let labelText =
-                                        selectedAsignmentLabel.innerText.toLowerCase();
+                                        selectedAssignmentLabel.innerText.toLowerCase();
 
                                     if (
                                         labelText.includes("quiz") ||
@@ -1072,11 +1088,12 @@ timer
                                         labelText.includes("cfu") ||
                                         labelText.includes("final") ||
                                         labelText.includes("essay") ||
+                                        labelText.includes("prueba") ||
                                         labelText.includes("major")
                                         // labelText.includes("hw") == false
                                     ) {
                                         checkbox.style.accentColor = "green";
-                                        selectedAsignmentLabel.style.color =
+                                        selectedAssignmentLabel.style.color =
                                             "red";
                                     }
 
@@ -1086,13 +1103,14 @@ timer
 
                                         if (
                                             checkboxStates[
-                                                selectedAsignmentLabel.innerText
+                                                selectedAssignmentLabel
+                                                    .innerText
                                             ]
                                         ) {
                                             checkbox.checked = true;
                                             assignmentLabelList[
                                                 i
-                                            ].innerHTML = `<s>${selectedAsignmentLabel.innerText}</s>`;
+                                            ].innerHTML = `<s>${selectedAssignmentLabel.innerText}</s>`;
 
                                             assignmentLabel.style.opacity =
                                                 "0.8";
@@ -1139,53 +1157,53 @@ timer
                         });
 
                         checkbox.addEventListener("click", function () {
-                            let asignmentDivList = checkbox.parentElement
+                            let assignmentDivList = checkbox.parentElement
                                 ?.firstElementChild?.firstElementChild
                                 ?.children[1].children as HTMLCollection;
 
-                            if (asignmentDivList) {
+                            if (assignmentDivList) {
                                 updateProgressBarState();
                                 for (
                                     let i = 0;
-                                    i < asignmentDivList.length;
+                                    i < assignmentDivList.length;
                                     i++
                                 ) {
                                     if (
-                                        asignmentDivList[i].className ==
+                                        assignmentDivList[i].className ==
                                         "sExtlink-processed"
                                     ) {
-                                        let asignmentNameElement =
-                                            asignmentDivList[
+                                        let assignmentNameElement =
+                                            assignmentDivList[
                                                 i
                                             ] as HTMLParagraphElement;
-                                        let asignmentDiv: any =
-                                            asignmentNameElement.parentElement
+                                        let assignmentDiv: any =
+                                            assignmentNameElement.parentElement
                                                 ?.parentElement?.parentElement
                                                 ?.parentElement;
                                         if (checkbox.checked) {
                                             checkboxStates[
-                                                asignmentNameElement.innerText
+                                                assignmentNameElement.innerText
                                             ] = true;
                                             localStorage.setItem(
                                                 "saveState",
                                                 JSON.stringify(checkboxStates)
                                             );
-                                            asignmentDivList[
+                                            assignmentDivList[
                                                 i
-                                            ].innerHTML = `<s>${asignmentNameElement.innerText}</s>`;
-                                            asignmentDiv.style.opacity = "0.8";
+                                            ].innerHTML = `<s>${assignmentNameElement.innerText}</s>`;
+                                            assignmentDiv.style.opacity = "0.8";
                                         } else {
-                                            asignmentDiv.style.opacity = "1";
-                                            asignmentDivList[
+                                            assignmentDiv.style.opacity = "1";
+                                            assignmentDivList[
                                                 i
-                                            ].innerHTML = `${asignmentDivList[
+                                            ].innerHTML = `${assignmentDivList[
                                                 i
                                             ].innerHTML.replace(
                                                 /<\/?s>/g,
                                                 ""
                                             )}`;
                                             checkboxStates[
-                                                asignmentNameElement.innerText
+                                                assignmentNameElement.innerText
                                             ] = false;
 
                                             localStorage.setItem(
@@ -1262,21 +1280,21 @@ timer
                 oldGrade.includes(elm.innerText) == false &&
                 hasGradeInputted !== "—"
             ) {
-                let asignmentURL: any = RecentCompletelist[i].firstElementChild
+                let assignmentURL: any = RecentCompletelist[i].firstElementChild
                     ?.getElementsByTagName("span")[1]
                     .getElementsByTagName("a")[0];
-                asignmentURL = asignmentURL as HTMLLinkElement;
+                assignmentURL = assignmentURL as HTMLLinkElement;
                 oldGrade.push(elm.innerText);
                 localStorage.setItem("oldGrade", JSON.stringify(oldGrade));
                 let grade: any = null;
-                let asignmentIframe = document.createElement("iframe");
-                document.body.appendChild(asignmentIframe);
-                asignmentIframe.src = asignmentURL.href;
-                asignmentIframe.onload = () => {
-                    if (asignmentIframe.contentDocument) {
-                        if (!asignmentURL.href.includes("launch")) {
+                let assignmentIframe = document.createElement("iframe");
+                document.body.appendChild(assignmentIframe);
+                assignmentIframe.src = assignmentURL.href;
+                assignmentIframe.onload = () => {
+                    if (assignmentIframe.contentDocument) {
+                        if (!assignmentURL.href.includes("launch")) {
                             grade =
-                                asignmentIframe.contentDocument.getElementsByClassName(
+                                assignmentIframe.contentDocument.getElementsByClassName(
                                     "grading-grade"
                                 )[0] as HTMLDivElement;
                             if (
@@ -1284,9 +1302,9 @@ timer
                                 grade.innerText != null
                             ) {
                                 grade = grade.innerText;
-                                asignmentIframe.remove();
+                                assignmentIframe.remove();
                                 grade = grade.replace("Grade:", "").trim();
-                                let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                                let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${assignmentURL.href}>${assignmentURL.innerText}</a>`;
                                 let popupBanner = document.createElement("div");
                                 popupBanner.id = "popupBanner";
                                 popupBanner.innerHTML = message;
@@ -1302,14 +1320,14 @@ timer
                                     popupBanner.style.right = "-300px";
                                 }, 7000);
                             } else {
-                                let src = asignmentIframe.src.replace(
+                                let src = assignmentIframe.src.replace(
                                     "assignment",
                                     "assignments"
                                 );
-                                asignmentIframe.src = src + "/mydocument";
-                                asignmentIframe.onload = () => {
+                                assignmentIframe.src = src + "/mydocument";
+                                assignmentIframe.onload = () => {
                                     let content =
-                                        asignmentIframe.contentDocument;
+                                        assignmentIframe.contentDocument;
                                     if (content) {
                                         setTimeout(() => {
                                             grade =
@@ -1319,11 +1337,11 @@ timer
                                             if (grade !== null) {
                                                 grade = grade.innerText;
 
-                                                asignmentIframe.remove();
+                                                assignmentIframe.remove();
                                                 grade = grade
                                                     .replace("Grade:", "")
                                                     .trim();
-                                                let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                                                let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${assignmentURL.href}>${assignmentURL.innerText}</a>`;
                                                 let popupBanner =
                                                     document.createElement(
                                                         "div"
@@ -1387,24 +1405,26 @@ timer
         return splitStr.join(" ");
     }
 }
-//Toggle extension
-let clicked = false;
-document.addEventListener("keydown", function (event) {
-    if (
-        event.key &&
-        event.key.toLowerCase() === "e" &&
-        event.shiftKey &&
-        (event.metaKey || event.ctrlKey) &&
-        !clicked
-    ) {
-        clicked = true;
-        let extensionOn = localStorage.getItem("extensionOn");
-        if (extensionOn && extensionOn == "true") {
-            localStorage.setItem("extensionOn", "false");
-        } else {
-            localStorage.setItem("extensionOn", "true");
+
+function registerExtensionToggleShortcut() {
+    let clicked = false;
+    document.addEventListener("keydown", function (event) {
+        if (
+            event.key &&
+            event.key.toLowerCase() === "e" &&
+            event.shiftKey &&
+            (event.metaKey || event.ctrlKey) &&
+            !clicked
+        ) {
+            clicked = true;
+            let extensionOn = localStorage.getItem(STORAGE_KEYS.extensionOn);
+            if (extensionOn && extensionOn == "true") {
+                localStorage.setItem(STORAGE_KEYS.extensionOn, "false");
+            } else {
+                localStorage.setItem(STORAGE_KEYS.extensionOn, "true");
+            }
+            location.reload();
         }
-        location.reload();
-    }
-});
+    });
+}
 // ©2025 William Chou. All rights reserved.

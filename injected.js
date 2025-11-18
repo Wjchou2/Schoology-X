@@ -1,7 +1,25 @@
 "use strict";
 console.log("Schoology X Injected :)");
-let extensionOn = localStorage.getItem("extensionOn");
-if (!(extensionOn && extensionOn == "true")) {
+const CLASS_NAMES = {
+    upcomingEvent: "upcoming-event upcoming-event-block course-event",
+    customAssignment: "CustomAssignment",
+    hiddenImportant: "hidden-important",
+};
+const STORAGE_KEYS = {
+    extensionOn: "extensionOn",
+    schedule: "schedule",
+    customAssignments: "customAssignments",
+    checkboxStates: "saveState",
+    color: "color",
+    readMessage: "readMessage",
+    oldGrade: "oldGrade",
+};
+const extensionDisabled = localStorage.getItem(STORAGE_KEYS.extensionOn) === "true";
+if (!extensionDisabled) {
+    initExtension();
+}
+registerExtensionToggleShortcut();
+function initExtension() {
     document.head.insertAdjacentHTML("beforeend", `
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
@@ -51,17 +69,12 @@ if (!(extensionOn && extensionOn == "true")) {
         if (!str)
             return str;
         str = str.trim();
-        // Remove leading "Due "
         str = str.replace(/^Due\s+/i, "");
-        // Remove weekday (e.g. "Tuesday, ")
         str = str.replace(/^([A-Za-z]+),\s*/i, "");
-        // Split off the time if present ("11:59 pm")
         let parts = str.split(" at ");
-        let datePart = parts[0]; // "November 18, 2025"
-        let timePart = parts[1] || ""; // "11:59 pm" or ""
-        // Normalize commas and spaces
+        let datePart = parts[0];
+        let timePart = parts[1] || "";
         datePart = datePart.replace(/\s+/g, " ").replace(/\s*,\s*/g, ", ");
-        // Return standardized string
         return timePart ? `${datePart} ${timePart}` : datePart;
     }
     function getCustomAssignmentTimestamp(dateString) {
@@ -98,7 +111,6 @@ if (!(extensionOn && extensionOn == "true")) {
         const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
         return luminance < 128;
     }
-    let deleteCompleteAssignments = null;
     function createBessyGradeButton() {
         let buttonTemplateClone = document.getElementsByClassName("_24avl _3Rh90 _349XD")[1];
         let buttonIcon = document.createElement("button");
@@ -733,11 +745,10 @@ timer
                         displayedAllAssignments = true;
                     }
                     else {
-                        //             asignmentListDiv.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
+                        //             assignmentListDiv.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;" ><a
                         //  class="active sExtlink-processed sEdgeMore-processed">Less</a></li>`;
                         //             displayedAllAssignments = false;
                     }
-                    //dropdownthing
                     (_a = document
                         .getElementById("dropdownMore")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
                         var _a;
@@ -786,11 +797,6 @@ timer
                     checkbox.type = "checkbox";
                     let checkboxState = localStorage.getItem("saveState");
                     upcomingCourseEvents[j].appendChild(checkbox);
-                    // assignmentDates[Number(j)] = (
-                    //     upcomingCourseEvents[j].getElementsByClassName(
-                    //         "readonly-title event-subtitle"
-                    //     )[0] as HTMLParagraphElement
-                    // ).innerText;
                     let assignmentLabelList = (_d = (_c = (_b = checkbox.parentElement) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.firstElementChild) === null || _d === void 0 ? void 0 : _d.children[1].children;
                     if (assignmentLabelList) {
                         for (let i = 0; i < assignmentLabelList.length; i++) {
@@ -798,8 +804,8 @@ timer
                                 (_g = (_f = (_e = assignmentLabelList[i].parentElement) === null || _e === void 0 ? void 0 : _e.parentElement) === null || _f === void 0 ? void 0 : _f.parentElement) === null || _g === void 0 ? void 0 : _g.parentElement;
                             if (assignmentLabelList[i].className ==
                                 "sExtlink-processed") {
-                                let selectedAsignmentLabel = assignmentLabelList[i];
-                                let labelText = selectedAsignmentLabel.innerText.toLowerCase();
+                                let selectedAssignmentLabel = assignmentLabelList[i];
+                                let labelText = selectedAssignmentLabel.innerText.toLowerCase();
                                 if (labelText.includes("quiz") ||
                                     labelText.includes("test") ||
                                     labelText.includes("minor") ||
@@ -807,19 +813,21 @@ timer
                                     labelText.includes("cfu") ||
                                     labelText.includes("final") ||
                                     labelText.includes("essay") ||
+                                    labelText.includes("prueba") ||
                                     labelText.includes("major")
                                 // labelText.includes("hw") == false
                                 ) {
                                     checkbox.style.accentColor = "green";
-                                    selectedAsignmentLabel.style.color =
+                                    selectedAssignmentLabel.style.color =
                                         "red";
                                 }
                                 if (checkboxState !== null) {
                                     checkboxStates =
                                         JSON.parse(checkboxState);
-                                    if (checkboxStates[selectedAsignmentLabel.innerText]) {
+                                    if (checkboxStates[selectedAssignmentLabel
+                                        .innerText]) {
                                         checkbox.checked = true;
-                                        assignmentLabelList[i].innerHTML = `<s>${selectedAsignmentLabel.innerText}</s>`;
+                                        assignmentLabelList[i].innerHTML = `<s>${selectedAssignmentLabel.innerText}</s>`;
                                         assignmentLabel.style.opacity =
                                             "0.8";
                                     }
@@ -851,24 +859,24 @@ timer
                     });
                     checkbox.addEventListener("click", function () {
                         var _a, _b, _c, _d, _e, _f;
-                        let asignmentDivList = (_c = (_b = (_a = checkbox.parentElement) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.children[1].children;
-                        if (asignmentDivList) {
+                        let assignmentDivList = (_c = (_b = (_a = checkbox.parentElement) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.children[1].children;
+                        if (assignmentDivList) {
                             updateProgressBarState();
-                            for (let i = 0; i < asignmentDivList.length; i++) {
-                                if (asignmentDivList[i].className ==
+                            for (let i = 0; i < assignmentDivList.length; i++) {
+                                if (assignmentDivList[i].className ==
                                     "sExtlink-processed") {
-                                    let asignmentNameElement = asignmentDivList[i];
-                                    let asignmentDiv = (_f = (_e = (_d = asignmentNameElement.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.parentElement) === null || _f === void 0 ? void 0 : _f.parentElement;
+                                    let assignmentNameElement = assignmentDivList[i];
+                                    let assignmentDiv = (_f = (_e = (_d = assignmentNameElement.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.parentElement) === null || _f === void 0 ? void 0 : _f.parentElement;
                                     if (checkbox.checked) {
-                                        checkboxStates[asignmentNameElement.innerText] = true;
+                                        checkboxStates[assignmentNameElement.innerText] = true;
                                         localStorage.setItem("saveState", JSON.stringify(checkboxStates));
-                                        asignmentDivList[i].innerHTML = `<s>${asignmentNameElement.innerText}</s>`;
-                                        asignmentDiv.style.opacity = "0.8";
+                                        assignmentDivList[i].innerHTML = `<s>${assignmentNameElement.innerText}</s>`;
+                                        assignmentDiv.style.opacity = "0.8";
                                     }
                                     else {
-                                        asignmentDiv.style.opacity = "1";
-                                        asignmentDivList[i].innerHTML = `${asignmentDivList[i].innerHTML.replace(/<\/?s>/g, "")}`;
-                                        checkboxStates[asignmentNameElement.innerText] = false;
+                                        assignmentDiv.style.opacity = "1";
+                                        assignmentDivList[i].innerHTML = `${assignmentDivList[i].innerHTML.replace(/<\/?s>/g, "")}`;
+                                        checkboxStates[assignmentNameElement.innerText] = false;
                                         localStorage.setItem("saveState", JSON.stringify(checkboxStates));
                                     }
                                 }
@@ -925,25 +933,25 @@ timer
                 .firstElementChild) === null || _a === void 0 ? void 0 : _a.innerHTML;
             if (oldGrade.includes(elm.innerText) == false &&
                 hasGradeInputted !== "—") {
-                let asignmentURL = (_b = RecentCompletelist[i].firstElementChild) === null || _b === void 0 ? void 0 : _b.getElementsByTagName("span")[1].getElementsByTagName("a")[0];
-                asignmentURL = asignmentURL;
+                let assignmentURL = (_b = RecentCompletelist[i].firstElementChild) === null || _b === void 0 ? void 0 : _b.getElementsByTagName("span")[1].getElementsByTagName("a")[0];
+                assignmentURL = assignmentURL;
                 oldGrade.push(elm.innerText);
                 localStorage.setItem("oldGrade", JSON.stringify(oldGrade));
                 let grade = null;
-                let asignmentIframe = document.createElement("iframe");
-                document.body.appendChild(asignmentIframe);
-                asignmentIframe.src = asignmentURL.href;
-                asignmentIframe.onload = () => {
-                    if (asignmentIframe.contentDocument) {
-                        if (!asignmentURL.href.includes("launch")) {
+                let assignmentIframe = document.createElement("iframe");
+                document.body.appendChild(assignmentIframe);
+                assignmentIframe.src = assignmentURL.href;
+                assignmentIframe.onload = () => {
+                    if (assignmentIframe.contentDocument) {
+                        if (!assignmentURL.href.includes("launch")) {
                             grade =
-                                asignmentIframe.contentDocument.getElementsByClassName("grading-grade")[0];
+                                assignmentIframe.contentDocument.getElementsByClassName("grading-grade")[0];
                             if (grade !== undefined &&
                                 grade.innerText != null) {
                                 grade = grade.innerText;
-                                asignmentIframe.remove();
+                                assignmentIframe.remove();
                                 grade = grade.replace("Grade:", "").trim();
-                                let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                                let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${assignmentURL.href}>${assignmentURL.innerText}</a>`;
                                 let popupBanner = document.createElement("div");
                                 popupBanner.id = "popupBanner";
                                 popupBanner.innerHTML = message;
@@ -958,21 +966,21 @@ timer
                                 }, 7000);
                             }
                             else {
-                                let src = asignmentIframe.src.replace("assignment", "assignments");
-                                asignmentIframe.src = src + "/mydocument";
-                                asignmentIframe.onload = () => {
-                                    let content = asignmentIframe.contentDocument;
+                                let src = assignmentIframe.src.replace("assignment", "assignments");
+                                assignmentIframe.src = src + "/mydocument";
+                                assignmentIframe.onload = () => {
+                                    let content = assignmentIframe.contentDocument;
                                     if (content) {
                                         setTimeout(() => {
                                             grade =
                                                 content.getElementsByClassName("document-header-aside-graded-grade-3903705135")[0];
                                             if (grade !== null) {
                                                 grade = grade.innerText;
-                                                asignmentIframe.remove();
+                                                assignmentIframe.remove();
                                                 grade = grade
                                                     .replace("Grade:", "")
                                                     .trim();
-                                                let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${asignmentURL.href}>${asignmentURL.innerText}</a>`;
+                                                let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${assignmentURL.href}>${assignmentURL.innerText}</a>`;
                                                 let popupBanner = document.createElement("div");
                                                 popupBanner.id = "popupBanner";
                                                 popupBanner.innerHTML = message;
@@ -1021,23 +1029,24 @@ timer
         return splitStr.join(" ");
     }
 }
-//Toggle extension
-let clicked = false;
-document.addEventListener("keydown", function (event) {
-    if (event.key &&
-        event.key.toLowerCase() === "e" &&
-        event.shiftKey &&
-        (event.metaKey || event.ctrlKey) &&
-        !clicked) {
-        clicked = true;
-        let extensionOn = localStorage.getItem("extensionOn");
-        if (extensionOn && extensionOn == "true") {
-            localStorage.setItem("extensionOn", "false");
+function registerExtensionToggleShortcut() {
+    let clicked = false;
+    document.addEventListener("keydown", function (event) {
+        if (event.key &&
+            event.key.toLowerCase() === "e" &&
+            event.shiftKey &&
+            (event.metaKey || event.ctrlKey) &&
+            !clicked) {
+            clicked = true;
+            let extensionOn = localStorage.getItem(STORAGE_KEYS.extensionOn);
+            if (extensionOn && extensionOn == "true") {
+                localStorage.setItem(STORAGE_KEYS.extensionOn, "false");
+            }
+            else {
+                localStorage.setItem(STORAGE_KEYS.extensionOn, "true");
+            }
+            location.reload();
         }
-        else {
-            localStorage.setItem("extensionOn", "true");
-        }
-        location.reload();
-    }
-});
+    });
+}
 // ©2025 William Chou. All rights reserved.
