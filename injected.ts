@@ -450,12 +450,13 @@ timer
                     p.innerHTML = "";
                     p.id = "progress";
                     document.getElementById("todo")?.appendChild(p);
-                    let div = document.createElement("div");
-                    div.id = "myProgress";
-                    document.getElementById("todo")?.appendChild(div);
+
                     let div2 = document.createElement("div");
                     div2.id = "myProgressFrame";
                     document.getElementById("todo")?.appendChild(div2);
+                    let div = document.createElement("div");
+                    div.id = "myProgress";
+                    div2.appendChild(div);
                     updateProgressBarState();
                 }, 0);
             }
@@ -464,100 +465,38 @@ timer
 
     function updateProgressBarState() {
         let progressFraction = document.getElementById("progress");
-        if (progressFraction) {
-            let checkboxElements = document.getElementsByClassName(
-                "progressCheck"
-            ) as HTMLCollection;
+        if (!progressFraction) return;
 
-            let checks = 0;
+        const checkboxElements = document.getElementsByClassName(
+            "progressCheck"
+        ) as HTMLCollection;
+        const total = checkboxElements.length;
+        let checks = 0;
 
-            for (let i = 0; i < checkboxElements.length; i++) {
-                let selectedCheckboxElement = checkboxElements[
-                    i
-                ] as HTMLInputElement;
-                if (selectedCheckboxElement.checked == true) {
-                    checks += 1;
-                }
+        for (let i = 0; i < total; i++) {
+            let selectedCheckboxElement = checkboxElements[
+                i
+            ] as HTMLInputElement;
+            if (selectedCheckboxElement.checked) {
+                checks += 1;
             }
-            let progressBarDiv = document.getElementById("myProgress");
-            let progressIsZero = false;
-            if (progressBarDiv) {
-                let targetProgressBarWidth =
-                    (checks / checkboxElements.length) * 200;
-                if (checks == 0) {
-                    progressIsZero = true;
-                } else {
-                    progressIsZero = false;
-                }
-
-                let currentProgressBarWidth = Number(
-                    progressBarDiv.style.width.slice(
-                        0,
-                        progressBarDiv.style.width.length - 2
-                    )
-                );
-
-                let incrementIncrease: boolean = true;
-
-                if (currentProgressBarWidth < targetProgressBarWidth) {
-                    incrementIncrease = true;
-                } else {
-                    incrementIncrease = false;
-                }
-
-                let id = setInterval(frame, 8);
-                function frame() {
-                    if (
-                        incrementIncrease &&
-                        currentProgressBarWidth >= targetProgressBarWidth
-                    ) {
-                        currentProgressBarWidth = 0;
-                        clearInterval(id);
-                    } else if (
-                        !incrementIncrease &&
-                        currentProgressBarWidth <= targetProgressBarWidth
-                    ) {
-                        currentProgressBarWidth = 0;
-                        clearInterval(id);
-                    } else {
-                        if (incrementIncrease) {
-                            currentProgressBarWidth++;
-                        } else {
-                            currentProgressBarWidth--;
-                        }
-                        if (progressBarDiv) {
-                            progressBarDiv.style.width =
-                                currentProgressBarWidth + "px";
-                            if (progressIsZero) {
-                                targetProgressBarWidth = 20;
-                                progressBarDiv.innerHTML = "0%";
-                            } else {
-                                progressBarDiv.innerHTML = `${String(
-                                    Math.round(
-                                        (currentProgressBarWidth - 20) / 2
-                                    ) + 10
-                                )}%`;
-                            }
-                            progressBarDiv.style.backgroundColor = `rgb(${
-                                255 / 2 -
-                                (Math.round(currentProgressBarWidth / 2) *
-                                    2.25) /
-                                    1
-                            }, ${
-                                (Math.round(currentProgressBarWidth / 2) *
-                                    2.25) /
-                                1.2
-                            },${
-                                (Math.round(currentProgressBarWidth / 2) *
-                                    2.25) /
-                                2
-                            } )`;
-                        }
-                    }
-                }
-            }
-            progressFraction.innerHTML = `${checks}/${checkboxElements.length}`;
         }
+
+        progressFraction.innerHTML = `${checks}/${total}`;
+
+        const progressBarDiv = document.getElementById("myProgress");
+        if (!progressBarDiv) return;
+
+        const percent = total === 0 ? 0 : (checks / total) * 100;
+        const widthPercent =
+            total === 0 ? 15 : Math.min(98, Math.max(15, percent));
+        progressBarDiv.style.width = `${widthPercent}%`;
+        progressBarDiv.innerHTML = `${Math.round(percent)}%`;
+
+        const normalized = Math.min(100, widthPercent);
+        progressBarDiv.style.backgroundColor = `rgb(${
+            255 / 2 - (normalized * 2.25) / 1
+        }, ${(normalized * 2.25) / 1.2}, ${(normalized * 2.25) / 2})`;
     }
     let upcomingEventsDiv = document.getElementById(
         "upcoming-events"
@@ -787,6 +726,7 @@ timer
             ).checked = false;
         }
         link.innerHTML = title;
+        // link.style.color = "#4479b3";
         link.removeAttribute("href");
         Array.from(newEvent.getElementsByClassName("customLabel")).forEach(
             (element) => {
