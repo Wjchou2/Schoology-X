@@ -245,12 +245,6 @@ pointer-events:all;
   }
 
 
-  .inputLink{
-    
-  }
-  .saveButton{
-    
-  }
 .dropdowndiv{
 margin-left: 39%;
 
@@ -275,7 +269,7 @@ background: url(/images/arrowup.png) 0 0 repeat;
 
   font-size: 30px;
   z-index: 100;
-  font-family: Roboto, sans-serif; /* Adding a fallback font */
+  font-family: Roboto, sans-serif; 
 
 }
 #notecontainer{
@@ -299,7 +293,7 @@ background: url(/images/arrowup.png) 0 0 repeat;
 
       font-size: 30px;
       z-index: 100;
-      font-family: Roboto, sans-serif; /* Adding a fallback font */
+      font-family: Roboto, sans-serif; 
   transition: all 0s;
     
 
