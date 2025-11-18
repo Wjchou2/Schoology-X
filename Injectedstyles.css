@@ -227,6 +227,7 @@ cursor:pointer;
   .customLabel{
     cursor: pointer;
   }
+ 
   #newTaskBtn{
     text-align: center;
     justify-content: center;
@@ -248,7 +249,9 @@ cursor:pointer;
 z-index: 1;
 pointer-events:all;
   }
-
+   #newTaskBtn span:hover{
+          background-color: rgb(59, 143, 195);
+    }
 
 .dropdowndiv{
 margin-left: 39%;
