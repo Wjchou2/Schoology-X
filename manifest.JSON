@@ -13,10 +13,7 @@
   "host_permissions": [
     "https://schoology.shschools.org/*"
   ],
-  "action": {
-    "default_popup": "index.html"
-  },
-  
+
   "icons": {
     "16": "/images/logo.png",
     "32": "/images/logo.png",
