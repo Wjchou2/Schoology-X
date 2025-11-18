@@ -220,6 +220,31 @@ cursor:pointer;
           background: rgb(144, 158, 238);
 
   }
+  .customLabel{
+    cursor: pointer;
+  }
+  #newTaskBtn{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color:white;
+    display: flex;
+    background-color: #05639d;
+    width: 3rem;
+    aspect-ratio: 1/1;
+    position: absolute;
+    top: 7rem;
+    border-style: none;
+     /* top: 70rem; */
+    right:0.4rem;
+     /* left:50rem; */
+    
+    cursor: pointer;
+z-index: 1;
+pointer-events:all;
+  }
+
+
   .inputLink{
     
   }
