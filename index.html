@@ -1,109 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Website Block</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap"
-            rel="stylesheet"
-        />
-        <style>
-            * {
-                color: white;
-            }
-            body {
-                width: 400px; /* Desired size */
-                height: 310px; /* Desired size */
-                margin: 0;
-                padding: 20px;
-                font-family: "Dosis", sans-serif; /* Updated font */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                background-color: #282929; /* Light background for a modern look */
-                border-radius: 10px; /* Rounded corners */
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            }
-
-            h1 {
-                font-size: 24px;
-                margin-bottom: 20px;
-                /* color: #343a40; */
-            }
-
-            .colorText {
-                font-size: 16px;
-                margin: 10px 0; /* Spacing for better layout */
-                /* color: #495057; */
-            }
-
-            #deleteAsignBox {
-                margin-right: 10px; /* Space between checkbox and label */
-            }
-
-            #colorchangebox,
-            #resetColor,
-            #resetColorBlue {
-                margin-top: 10px; /* Space for separation */
-                border: none; /* Remove border */
-                border-radius: 5px; /* Rounded corners */
-                padding: 10px; /* Padding for better usability */
-                cursor: pointer; /* Pointer cursor for buttons */
-                transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-            }
-
-            #colorchangebox {
-                width: 100%; /* Full width */
-                height: 40px; /* Increased height for easier interaction */
-                outline: none; /* Remove outline */
-                border: 2px solid #007bff; /* Blue border for modern look */
-                border-radius: 5px; /* Rounded corners */
-            }
-
-            #resetColor,
-            #resetColorBlue {
-                background-color: #007bff; /* Primary button color */
-                color: white; /* Button text color */
-                display: inline-flex;
-            }
-
-            #resetColor:hover,
-            #resetColorBlue:hover {
-                background-color: #0056b3; /* Darker blue on hover */
-            }
-
-            /* Optional: For the checkbox label styling */
-            label {
-                font-size: 16px;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Schoology Colors</h1>
-        <label for="deleteAsignBox" class="colorText">
-            <input type="checkbox" id="deleteAsignBox" class="colorText" />
-            Delete Assignments when done
-        </label>
-
-        <p class="colorText" id="headerColor">Header Color:</p>
-        <input type="color" id="colorchangebox" class="colorText" />
-
-        <input
-            type="button"
-            id="resetColor"
-            class="colorText"
-            value="Reset White"
-        />
-        <input
-            type="button"
-            id="resetColorBlue"
-            class="colorText"
-            value="Reset Blue"
-        />
-
-        <script src="scriptPop.js"></script>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-1514756361724086">
+    <title>Vite + React + TS</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514756361724086" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
