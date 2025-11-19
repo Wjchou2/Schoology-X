@@ -29,16 +29,21 @@ if (
     setTimeout(() => {
         let centerTop = document.getElementById("center-top");
         if (centerTop) {
-            // document.head.innerHTML += `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />`;
-            centerTop.innerHTML += `<a href="${docURL}" target="_blank" id="expandDoc" style=" text-decoration:none; position:absolute; left:95%; top:10%;font-size: 30px "
+            document.head.insertAdjacentHTML(
+                "beforeend",
+                `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />`
+            );
+            setTimeout(() => {
+                centerTop.innerHTML += `<a href="${docURL}" target="_blank" id="expandDoc" style=" text-decoration:none; position:absolute; left:95%; top:10%;font-size: 30px "
              class="material-symbols-outlined">
              
             open_in_full
             </a>`;
-            centerTop.innerHTML += `<a  id="reloadFrame"  target="_blank" id="reload" style=" cursor: pointer; text-decoration:none; position:absolute; left:91%; top:10%;font-size: 30px "
+                centerTop.innerHTML += `<a  id="reloadFrame"  target="_blank" id="reload" style=" cursor: pointer; text-decoration:none; position:absolute; left:91%; top:10%;font-size: 30px "
             class="material-symbols-outlined">
             frame_reload
             </a>`;
+            }, 800);
         }
         document
             .getElementById("reloadFrame")
