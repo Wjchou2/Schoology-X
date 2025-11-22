@@ -786,9 +786,9 @@ timer
                                 if (labelText.includes("quiz") ||
                                     labelText.includes("test") ||
                                     labelText.includes("minor") ||
-                                    labelText.includes("c4u") ||
-                                    labelText.includes("cfu") ||
-                                    labelText.includes("final") ||
+                                    // labelText.includes("c4u") ||
+                                    // labelText.includes("cfu") ||
+                                    labelText.includes("final ") ||
                                     labelText.includes("essay") ||
                                     labelText.includes("prueba") ||
                                     labelText.includes("major")
