@@ -13,4 +13,6 @@ Chrome extension that layers productivity tools onto Schoology to keep upcoming 
 -   Gradebook boosts: inline grade display, auto-open “Recently Completed,” and pop-up notifications when new scores arrive.
 -   Keyboard shortcut to toggle the extension on/off: `Shift` + `Cmd/Ctrl` + `E`.
 
-<img width="300" src="/images//example.png"></img>
+## Watch the Demo:
+
+[![Watch the Demo](https://img.youtube.com/vi/vVT-aT_GDuI/0.jpg)](https://www.youtube.com/watch?v=vVT-aT_GDuI)
