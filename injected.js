@@ -135,8 +135,21 @@ timer
         });
         buttonTemplateClone.before(buttonIcon);
     }
+    function createFinalsButton() {
+        let buttonTemplateClone = document.getElementsByClassName("_24avl _3Rh90 _349XD")[1];
+        let buttonIcon = document.createElement("button");
+        buttonIcon.className = "volunteerBtn";
+        buttonIcon.innerHTML = `<span class="material-symbols-outlined">
+assignment
+</span>`;
+        buttonIcon.addEventListener("click", function () {
+            window.open("https://docs.google.com/document/d/150IcPjjnTO7Ie17rxp59lop4M8iefy4WeAXNuuIe7AY/edit?tab=t.0");
+        });
+        buttonTemplateClone.before(buttonIcon);
+    }
+    // createFinalsButton();
     createStudyButton();
-    createBessyGradeButton();
+    // createBessyGradeButton();
     function adjustButtonHoverBrightness(hexColor, percent) {
         percent = Math.max(-100, Math.min(100, percent));
         let r = parseInt(hexColor.slice(1, 3), 16);
@@ -789,8 +802,9 @@ timer
                                     // labelText.includes("c4u") ||
                                     // labelText.includes("cfu") ||
                                     labelText.includes("final ") ||
-                                    labelText.includes("essay") ||
+                                    // labelText.includes("essay") ||
                                     labelText.includes("prueba") ||
+                                    labelText.includes("exam") ||
                                     labelText.includes("major")
                                 // labelText.includes("hw") == false
                                 ) {
@@ -804,14 +818,16 @@ timer
                                     if (checkboxStates[selectedAssignmentLabel
                                         .innerText]) {
                                         checkbox.checked = true;
-                                        assignmentLabelList[i].innerHTML = `<s>${selectedAssignmentLabel.innerText}</s>`;
+                                        assignmentLabelList[i].innerHTML =
+                                            `<s>${selectedAssignmentLabel.innerText}</s>`;
                                         assignmentLabel.style.opacity =
                                             "0.8";
                                     }
                                     else {
                                         checkbox.checked = false;
                                         assignmentLabel.style.opacity = "1";
-                                        assignmentLabelList[i].innerHTML = `${assignmentLabelList[i].innerHTML.replace(/<\/?s>/g, "")}`;
+                                        assignmentLabelList[i].innerHTML =
+                                            `${assignmentLabelList[i].innerHTML.replace(/<\/?s>/g, "")}`;
                                     }
                                 }
                             }
@@ -847,12 +863,14 @@ timer
                                     if (checkbox.checked) {
                                         checkboxStates[assignmentNameElement.innerText] = true;
                                         localStorage.setItem("saveState", JSON.stringify(checkboxStates));
-                                        assignmentDivList[i].innerHTML = `<s>${assignmentNameElement.innerText}</s>`;
+                                        assignmentDivList[i].innerHTML =
+                                            `<s>${assignmentNameElement.innerText}</s>`;
                                         assignmentDiv.style.opacity = "0.8";
                                     }
                                     else {
                                         assignmentDiv.style.opacity = "1";
-                                        assignmentDivList[i].innerHTML = `${assignmentDivList[i].innerHTML.replace(/<\/?s>/g, "")}`;
+                                        assignmentDivList[i].innerHTML =
+                                            `${assignmentDivList[i].innerHTML.replace(/<\/?s>/g, "")}`;
                                         checkboxStates[assignmentNameElement.innerText] = false;
                                         localStorage.setItem("saveState", JSON.stringify(checkboxStates));
                                     }

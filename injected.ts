@@ -39,7 +39,7 @@ function initExtension() {
         `
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-`
+`,
     );
     const days = [
         "Sunday",
@@ -69,7 +69,7 @@ function initExtension() {
         sortCustomAssignmentsByDate();
         localStorage.setItem(
             "customAssignments",
-            JSON.stringify(customAssignments)
+            JSON.stringify(customAssignments),
         );
     }
     let assignmentLabel: any;
@@ -140,7 +140,7 @@ function initExtension() {
 
     function createBessyGradeButton() {
         let buttonTemplateClone = document.getElementsByClassName(
-            "_24avl _3Rh90 _349XD"
+            "_24avl _3Rh90 _349XD",
         )[1];
         let buttonIcon = document.createElement("button");
         buttonIcon.className = "volunteerBtn";
@@ -155,7 +155,7 @@ check_circle
 
     function createStudyButton() {
         let buttonTemplateClone = document.getElementsByClassName(
-            "_24avl _3Rh90 _349XD"
+            "_24avl _3Rh90 _349XD",
         )[1];
         let buttonIcon = document.createElement("button");
         buttonIcon.className = "volunteerBtn";
@@ -168,8 +168,26 @@ timer
         buttonTemplateClone.before(buttonIcon);
     }
 
+    function createFinalsButton() {
+        let buttonTemplateClone = document.getElementsByClassName(
+            "_24avl _3Rh90 _349XD",
+        )[1];
+        let buttonIcon = document.createElement("button");
+        buttonIcon.className = "volunteerBtn";
+        buttonIcon.innerHTML = `<span class="material-symbols-outlined">
+assignment
+</span>`;
+        buttonIcon.addEventListener("click", function () {
+            window.open(
+                "https://docs.google.com/document/d/150IcPjjnTO7Ie17rxp59lop4M8iefy4WeAXNuuIe7AY/edit?tab=t.0",
+            );
+        });
+        buttonTemplateClone.before(buttonIcon);
+    }
+    // createFinalsButton();
     createStudyButton();
-    createBessyGradeButton();
+    // createBessyGradeButton();
+
     function adjustButtonHoverBrightness(hexColor: any, percent: any) {
         percent = Math.max(-100, Math.min(100, percent));
         let r = parseInt(hexColor.slice(1, 3), 16);
@@ -205,7 +223,7 @@ timer
             } else {
                 headerHoverColor = adjustButtonHoverBrightness(
                     headerColor,
-                    -10
+                    -10,
                 ); // Lighten by 20%
             }
             changeHeaderColor();
@@ -235,22 +253,22 @@ timer
         let headerLinkElements = document.getElementsByTagName("a");
         let headerButtonElements = document.getElementsByTagName("button");
         const headerBackground = document.getElementsByClassName(
-            "_1tpub _3mp5E _24W2g util-justify-content-space-between-3euFK"
+            "_1tpub _3mp5E _24W2g util-justify-content-space-between-3euFK",
         )[0] as HTMLElement;
         headerBackground.style.backgroundColor = headerColor;
         (
             document.getElementsByClassName(
-                "_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD"
+                "_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD",
             )[0] as HTMLElement
         ).style.backgroundColor = headerColor;
         (
             document.getElementsByClassName(
-                "_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD"
+                "_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD",
             )[0] as HTMLElement
         ).style.borderTop = `3px solid ${headerColor}`;
 
         let IMGParent = document.getElementsByClassName(
-            "util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q"
+            "util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q",
         )[0] as HTMLElement;
         let headerIconIds = [
             "icon-search-v2-3US0j",
@@ -294,14 +312,14 @@ timer
                         function () {
                             headerLinkElements[i].style.backgroundColor =
                                 headerHoverColor;
-                        }
+                        },
                     );
                     headerLinkElements[i].addEventListener(
                         "mouseleave",
                         function () {
                             headerLinkElements[i].style.backgroundColor =
                                 headerColor;
-                        }
+                        },
                     );
                 }
             }
@@ -321,7 +339,7 @@ timer
                         (headerButtonElements[i] as HTMLElement).style.color =
                             "#ffffff";
                         let gradebtn = document.getElementsByClassName(
-                            "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
+                            "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx",
                         )[2] as HTMLDivElement;
                         gradebtn.style.color = "#ffffff";
                     } else {
@@ -332,7 +350,7 @@ timer
                         (headerButtonElements[i] as HTMLElement).style.color =
                             "#333333";
                         let gradebtn = document.getElementsByClassName(
-                            "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx"
+                            "_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx",
                         )[2] as HTMLDivElement;
                         gradebtn.style.color = "#333333";
                     }
@@ -343,14 +361,14 @@ timer
                     function () {
                         headerButtonElements[i].style.backgroundColor =
                             headerHoverColor;
-                    }
+                    },
                 );
                 headerButtonElements[i].addEventListener(
                     "mouseleave",
                     function () {
                         headerButtonElements[i].style.backgroundColor =
                             headerColor;
-                    }
+                    },
                 );
             }
         }
@@ -385,10 +403,10 @@ timer
 
                 waitForElement(".Card-card-data-17m6S", function () {
                     const courseCards = document.getElementsByClassName(
-                        "Card-card-data-17m6S"
+                        "Card-card-data-17m6S",
                     );
                     const courseImages = document.getElementsByClassName(
-                        " _2q19q Card-card-image-uV6Bu"
+                        " _2q19q Card-card-image-uV6Bu",
                     );
                     order = ["Other"];
                     for (let i = 0; i < courseCards.length; i++) {
@@ -397,7 +415,7 @@ timer
                         let secondChild = firstChild?.firstElementChild;
                         let className = secondChild?.innerHTML;
                         let isClassLabel = document.getElementsByClassName(
-                            "_2wOCj xjR5v _2qcpH _17Z60 _1Aph- gs0RB"
+                            "_2wOCj xjR5v _2qcpH _17Z60 _1Aph- gs0RB",
                         )[0];
                         if (className && isClassLabel != null) {
                             order.push(className);
@@ -468,7 +486,7 @@ timer
         if (!progressFraction) return;
 
         const checkboxElements = document.getElementsByClassName(
-            "progressCheck"
+            "progressCheck",
         ) as HTMLCollection;
         const total = checkboxElements.length;
         let checks = 0;
@@ -513,7 +531,7 @@ timer
         const step = (now: number) => {
             const progress = Math.min(1, (now - startTime) / duration);
             const value = Math.round(
-                startPercent + (targetPercent - startPercent) * progress
+                startPercent + (targetPercent - startPercent) * progress,
             );
             displayedProgressPercent = value;
             element.innerHTML = `${value}%`;
@@ -527,7 +545,7 @@ timer
         progressAnimationFrame = requestAnimationFrame(step);
     }
     let upcomingEventsDiv = document.getElementById(
-        "upcoming-events"
+        "upcoming-events",
     ) as HTMLDivElement;
     if (upcomingEventsDiv) {
         upcomingEventsDiv.style.display = "none";
@@ -537,7 +555,7 @@ timer
         if (document.getElementById("newTaskBtn") == null) {
             let newTaskBtn = document.createElement("button");
             let upcomingCourseEvents = document.getElementById(
-                "right-column-inner"
+                "right-column-inner",
             ) as HTMLDivElement;
             newTaskBtn.id = "newTaskBtn";
             newTaskBtn.innerHTML = `<span class="material-symbols-outlined">
@@ -550,7 +568,7 @@ timer
             });
         }
         Array.from(document.getElementsByClassName("CustomAssignment")).forEach(
-            (element) => element.remove()
+            (element) => element.remove(),
         );
         let index = 0;
         customAssignments.forEach(([newtitle, newformatted, newclassTag]) => {
@@ -661,7 +679,7 @@ timer
     <div class="popups-footer"></div>
 </div>
 
-  `
+  `,
         );
 
         let newOption = document.createElement("option");
@@ -693,14 +711,14 @@ timer
                 ).value;
                 let classTag = (
                     document.getElementById(
-                        "taskClassSelect"
+                        "taskClassSelect",
                     ) as HTMLInputElement
                 ).value;
                 let [year, month, day] = date.split("-");
                 let formatted = new Date(
                     Number(year),
                     Number(month) - 1,
-                    Number(day)
+                    Number(day),
                 ).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -715,7 +733,7 @@ timer
                 sortCustomAssignmentsByDate();
                 localStorage.setItem(
                     "customAssignments",
-                    JSON.stringify(customAssignments)
+                    JSON.stringify(customAssignments),
                 );
                 drawCustomAssignments();
                 closePopup();
@@ -726,7 +744,7 @@ timer
         title: string,
         date: string,
         classTag: string,
-        index: number
+        index: number,
     ) {
         if (classTag == "Select Class") {
             classTag = "No Class Selected";
@@ -737,7 +755,7 @@ timer
 
         let newEvent = (
             document.getElementsByClassName(
-                "upcoming-event upcoming-event-block course-event"
+                "upcoming-event upcoming-event-block course-event",
             )[0] as HTMLDivElement
         ).cloneNode(true) as HTMLDivElement;
         newEvent.classList.add("CustomAssignment");
@@ -749,7 +767,7 @@ timer
         ) {
             (
                 newEvent.getElementsByClassName(
-                    "progressCheck"
+                    "progressCheck",
                 )[0] as HTMLInputElement
             ).checked = false;
         }
@@ -759,7 +777,7 @@ timer
         Array.from(newEvent.getElementsByClassName("customLabel")).forEach(
             (element) => {
                 element.remove();
-            }
+            },
         );
 
         Array.from(newEvent.getElementsByTagName("img")).forEach((element) => {
@@ -767,10 +785,10 @@ timer
         });
 
         let dateLabel = newEvent.getElementsByClassName(
-            "readonly-title event-subtitle"
+            "readonly-title event-subtitle",
         )[0] as HTMLAnchorElement;
         let classLabel = newEvent.getElementsByClassName(
-            "readonly-title event-subtitle"
+            "readonly-title event-subtitle",
         )[1] as HTMLAnchorElement;
 
         dateLabel.innerText =
@@ -779,7 +797,7 @@ timer
 
         newEvent.insertAdjacentHTML(
             "beforeend",
-            `<img  style="width:24px; height:24px" id="customLabel${index}" src="https://thumbs2.imgbox.com/6b/db/QgdLghvZ_t.png" class="infotip customLabel" alt="Delete Custom Assignment">`
+            `<img  style="width:24px; height:24px" id="customLabel${index}" src="https://thumbs2.imgbox.com/6b/db/QgdLghvZ_t.png" class="infotip customLabel" alt="Delete Custom Assignment">`,
         );
 
         setTimeout(() => {
@@ -792,17 +810,17 @@ timer
                         checkboxStates[title] = false;
                         localStorage.setItem(
                             "customAssignments",
-                            JSON.stringify(customAssignments)
+                            JSON.stringify(customAssignments),
                         );
                         localStorage.setItem(
                             "saveState",
-                            JSON.stringify(checkboxStates)
+                            JSON.stringify(checkboxStates),
                         );
                     }
                 });
         }, 0);
         const upcomingCourseEvents = document.querySelectorAll(
-            ".upcoming-event.upcoming-event-block.course-event:not(.CustomAssignment)"
+            ".upcoming-event.upcoming-event-block.course-event:not(.CustomAssignment)",
         );
         assignmentDates = [];
         for (let j = 0; j < upcomingCourseEvents.length; j++) {
@@ -811,7 +829,7 @@ timer
             ) {
                 assignmentDates[Number(j)] = (
                     upcomingCourseEvents[j].getElementsByClassName(
-                        "readonly-title event-subtitle"
+                        "readonly-title event-subtitle",
                     )[0] as HTMLParagraphElement
                 ).innerText;
             }
@@ -829,7 +847,7 @@ timer
             if (i == 0) {
                 const found = assignmentDates.findIndex(
                     (element: any) =>
-                        !String(element).toLowerCase().includes("overdue")
+                        !String(element).toLowerCase().includes("overdue"),
                 );
                 nextIndex = found + 2;
             } else {
@@ -862,7 +880,7 @@ timer
         }
 
         const items = document.querySelectorAll(
-            ".upcoming-event.upcoming-event-block.course-event:not(.CustomAssignment)"
+            ".upcoming-event.upcoming-event-block.course-event:not(.CustomAssignment)",
         );
 
         let target = items[indexMatch];
@@ -892,7 +910,7 @@ timer
             ".upcoming-event.upcoming-event-block.course-event",
             function () {
                 let upcomingCourseEvents = document.getElementsByClassName(
-                    "upcoming-event upcoming-event-block course-event"
+                    "upcoming-event upcoming-event-block course-event",
                 );
 
                 drawCustomAssignments();
@@ -907,7 +925,7 @@ timer
                 for (let j = 0; j < upcomingCourseEvents.length; j++) {
                     if (
                         upcomingCourseEvents[j].className.includes(
-                            "hidden-important"
+                            "hidden-important",
                         )
                     ) {
                         let hiddenAssignmentCheckElement = upcomingCourseEvents[
@@ -921,7 +939,7 @@ timer
                 if (showMoreButtonInAssignments) {
                     if (document.getElementById("todo") !== undefined) {
                         let assignmentListDiv = document.getElementById(
-                            "todo"
+                            "todo",
                         ) as HTMLDivElement;
                         if (displayedAllAssignments == false) {
                             assignmentListDiv.innerHTML += `<li class="s-edge-feed-more-link last dropdowndiv" style="display: block;"><a id="dropdownMore" class="active sExtlink-processed sEdgeMore-processed">more</a></li>`;
@@ -954,7 +972,7 @@ timer
                                         ?.remove();
                                     let upcoming =
                                         document.getElementsByClassName(
-                                            "upcoming-event upcoming-event-block course-event"
+                                            "upcoming-event upcoming-event-block course-event",
                                         );
                                     if (document.getElementById("dropdown")) {
                                         document
@@ -964,14 +982,14 @@ timer
                                     for (let j = 0; j < upcoming.length; j++) {
                                         if (
                                             upcoming[j].className.includes(
-                                                "hidden-important"
+                                                "hidden-important",
                                             )
                                         ) {
                                             let hiddenAssignmentCheckElement =
                                                 upcoming[
                                                     j
                                                 ].getElementsByTagName(
-                                                    "img"
+                                                    "img",
                                                 )[0] as HTMLImageElement;
                                             if (
                                                 hiddenAssignmentCheckElement ==
@@ -982,14 +1000,14 @@ timer
                                                         j
                                                     ].className.replace(
                                                         "hidden-important",
-                                                        ""
+                                                        "",
                                                     );
 
                                                 upcoming[
                                                     j
                                                 ].previousElementSibling?.className.replace(
                                                     "hidden",
-                                                    ""
+                                                    "",
                                                 );
                                                 upcoming[j].className =
                                                     newHiddenElementClass;
@@ -1003,13 +1021,13 @@ timer
                     }
                 }
                 upcomingCourseEvents = document.getElementsByClassName(
-                    "upcoming-event upcoming-event-block course-event"
+                    "upcoming-event upcoming-event-block course-event",
                 );
 
                 for (let j = 0; j < upcomingCourseEvents.length; j++) {
                     if (
                         !upcomingCourseEvents[j].className.includes(
-                            "hidden-important"
+                            "hidden-important",
                         )
                     ) {
                         let checkbox = document.createElement("input");
@@ -1055,8 +1073,9 @@ timer
                                         // labelText.includes("c4u") ||
                                         // labelText.includes("cfu") ||
                                         labelText.includes("final ") ||
-                                        labelText.includes("essay") ||
+                                        // labelText.includes("essay") ||
                                         labelText.includes("prueba") ||
+                                        labelText.includes("exam") ||
                                         labelText.includes("major")
                                         // labelText.includes("hw") == false
                                     ) {
@@ -1076,23 +1095,21 @@ timer
                                             ]
                                         ) {
                                             checkbox.checked = true;
-                                            assignmentLabelList[
-                                                i
-                                            ].innerHTML = `<s>${selectedAssignmentLabel.innerText}</s>`;
+                                            assignmentLabelList[i].innerHTML =
+                                                `<s>${selectedAssignmentLabel.innerText}</s>`;
 
                                             assignmentLabel.style.opacity =
                                                 "0.8";
                                         } else {
                                             checkbox.checked = false;
                                             assignmentLabel.style.opacity = "1";
-                                            assignmentLabelList[
-                                                i
-                                            ].innerHTML = `${assignmentLabelList[
-                                                i
-                                            ].innerHTML.replace(
-                                                /<\/?s>/g,
-                                                ""
-                                            )}`;
+                                            assignmentLabelList[i].innerHTML =
+                                                `${assignmentLabelList[
+                                                    i
+                                                ].innerHTML.replace(
+                                                    /<\/?s>/g,
+                                                    "",
+                                                )}`;
                                         }
                                     }
                                 }
@@ -1104,7 +1121,7 @@ timer
                         Array.from(dateHeadersList).forEach((dateHeader) => {
                             if (
                                 dateHeader.nextElementSibling?.classList.contains(
-                                    "hidden-important"
+                                    "hidden-important",
                                 ) == false
                             ) {
                                 dateHeader.className =
@@ -1154,29 +1171,27 @@ timer
                                             ] = true;
                                             localStorage.setItem(
                                                 "saveState",
-                                                JSON.stringify(checkboxStates)
+                                                JSON.stringify(checkboxStates),
                                             );
-                                            assignmentDivList[
-                                                i
-                                            ].innerHTML = `<s>${assignmentNameElement.innerText}</s>`;
+                                            assignmentDivList[i].innerHTML =
+                                                `<s>${assignmentNameElement.innerText}</s>`;
                                             assignmentDiv.style.opacity = "0.8";
                                         } else {
                                             assignmentDiv.style.opacity = "1";
-                                            assignmentDivList[
-                                                i
-                                            ].innerHTML = `${assignmentDivList[
-                                                i
-                                            ].innerHTML.replace(
-                                                /<\/?s>/g,
-                                                ""
-                                            )}`;
+                                            assignmentDivList[i].innerHTML =
+                                                `${assignmentDivList[
+                                                    i
+                                                ].innerHTML.replace(
+                                                    /<\/?s>/g,
+                                                    "",
+                                                )}`;
                                             checkboxStates[
                                                 assignmentNameElement.innerText
                                             ] = false;
 
                                             localStorage.setItem(
                                                 "saveState",
-                                                JSON.stringify(checkboxStates)
+                                                JSON.stringify(checkboxStates),
                                             );
                                         }
                                     }
@@ -1185,7 +1200,7 @@ timer
                         });
                     }
                 }
-            }
+            },
         );
     }
     function displayGrades() {
@@ -1194,18 +1209,18 @@ timer
             "https://schoology.shschools.org/grades/grades"
         ) {
             let gradebookCourses = document.getElementsByClassName(
-                "gradebook-course-grades"
+                "gradebook-course-grades",
             );
             for (let i = 0; i < gradebookCourses.length; i++) {
                 let selectedCourse = gradebookCourses[i] as HTMLElement;
                 selectedCourse.style.display = "block";
                 let parent = document.getElementsByClassName(
-                    "course-grade-value"
+                    "course-grade-value",
                 )[i] as HTMLSpanElement;
                 let grade = (parent.firstChild?.firstChild as HTMLElement)
                     .innerHTML;
                 let gradebookCourseDiv = document.getElementsByClassName(
-                    "gradebook-course-title"
+                    "gradebook-course-title",
                 )[i];
                 gradebookCourseDiv.innerHTML += `  <span style="color:green; font-size:20px;">(${grade})<span>`;
             }
@@ -1219,7 +1234,7 @@ timer
     displayGrades();
     function autoOpenRecentlyCompleted() {
         let recentlyCompletedButton = document.getElementsByClassName(
-            "refresh-button"
+            "refresh-button",
         )[0] as HTMLButtonElement;
 
         if (recentlyCompletedButton) {
@@ -1229,7 +1244,7 @@ timer
     autoOpenRecentlyCompleted();
     setTimeout(() => {
         let RecentCompletelist = document.getElementsByClassName(
-            "recently-completed-event"
+            "recently-completed-event",
         );
         let popupIndex = 0;
         for (let i = 0; i < RecentCompletelist.length; i++) {
@@ -1263,7 +1278,7 @@ timer
                         if (!assignmentURL.href.includes("launch")) {
                             grade =
                                 assignmentIframe.contentDocument.getElementsByClassName(
-                                    "grading-grade"
+                                    "grading-grade",
                                 )[0] as HTMLDivElement;
                             if (
                                 grade !== undefined &&
@@ -1290,7 +1305,7 @@ timer
                             } else {
                                 let src = assignmentIframe.src.replace(
                                     "assignment",
-                                    "assignments"
+                                    "assignments",
                                 );
                                 assignmentIframe.src = src + "/mydocument";
                                 assignmentIframe.onload = () => {
@@ -1300,7 +1315,7 @@ timer
                                         setTimeout(() => {
                                             grade =
                                                 content.getElementsByClassName(
-                                                    "document-header-aside-graded-grade-3903705135"
+                                                    "document-header-aside-graded-grade-3903705135",
                                                 )[0] as HTMLDivElement;
                                             if (grade !== null) {
                                                 grade = grade.innerText;
@@ -1312,7 +1327,7 @@ timer
                                                 let message = `You got <span style="color:blue">${grade}</span> on <a style="color:#074a92" href=${assignmentURL.href}>${assignmentURL.innerText}</a>`;
                                                 let popupBanner =
                                                     document.createElement(
-                                                        "div"
+                                                        "div",
                                                     );
                                                 popupBanner.id = "popupBanner";
 
@@ -1323,7 +1338,7 @@ timer
                                                 popupIndex += 1;
 
                                                 document.body.appendChild(
-                                                    popupBanner
+                                                    popupBanner,
                                                 );
 
                                                 setTimeout(() => {
@@ -1347,7 +1362,7 @@ timer
     }, 2000);
     const waitForFrameLoad = setInterval(function () {
         let update = document.getElementsByClassName(
-            "update-body s-rte"
+            "update-body s-rte",
         )[0] as HTMLDivElement;
         if (update) {
             clearInterval(waitForFrameLoad);
@@ -1355,7 +1370,7 @@ timer
             if (localStorage.getItem("oldUpdate") !== update.innerText) {
                 localStorage.setItem("oldUpdate", update.innerText);
                 let div = document.getElementsByClassName(
-                    "s-edge-type-update-post sUpdate-processed"
+                    "s-edge-type-update-post sUpdate-processed",
                 )[0] as HTMLDivElement;
                 div.style.borderColor = "#42c5f9";
                 div.style.borderWidth = "5px";
