@@ -12,7 +12,8 @@ Chrome extension that layers productivity tools onto Schoology to keep upcoming 
 -   Course dashboard tweaks: rounded course cards and remembered course order.
 -   Gradebook boosts: inline grade display, auto-open “Recently Completed,” and pop-up notifications when new scores arrive.
 -   Keyboard shortcut to toggle the extension on/off: `Shift` + `Cmd/Ctrl` + `E`.
-
-## Watch the Demo:
+<h2>Installation</h2>
+Simply download this repo as a zip file, unpack it. Then go to chrome extensions and turn on developer mode. Load unpacked on the unzipped folder and enjoy!
+<h2>Demo</h2>
 
 [![Watch the Demo](https://img.youtube.com/vi/vVT-aT_GDuI/0.jpg)](https://www.youtube.com/watch?v=vVT-aT_GDuI)
