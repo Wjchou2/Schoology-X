@@ -185,7 +185,7 @@ assignment
         buttonTemplateClone.before(buttonIcon);
     }
     // createFinalsButton();
-    createStudyButton();
+    // createStudyButton();
     // createBessyGradeButton();
 
     function adjustButtonHoverBrightness(hexColor: any, percent: any) {
@@ -296,6 +296,9 @@ assignment
                     headerLinkElements[i].innerHTML !== "My Courses" &&
                     headerLinkElements[i].role !== "menuitem"
                 ) {
+                    headerLinkElements[i].style.borderStyle = "none";
+                    headerLinkElements[i].style.outline = "none";
+                    headerLinkElements[i].style.boxShadow = "none";
                     if ((headerLinkElements[i] as HTMLElement) !== null) {
                         if (isBackgroundDark(headerColor)) {
                             (headerLinkElements[i] as HTMLElement).style.color =
@@ -327,6 +330,10 @@ assignment
         for (let i = 0; i < headerButtonElements.length; i++) {
             if (hasHeaderAncestor(headerButtonElements[i])) {
                 headerButtonElements[i].style.backgroundColor = headerColor;
+                headerButtonElements[i].style.borderStyle = "none";
+                headerButtonElements[i].style.outline = "none";
+                headerButtonElements[i].style.boxShadow = "none";
+
                 if (
                     (headerButtonElements[i]
                         .firstElementChild as HTMLElement) !== null
@@ -1271,6 +1278,12 @@ assignment
                 localStorage.setItem("oldGrade", JSON.stringify(oldGrade));
                 let grade: any = null;
                 let assignmentIframe = document.createElement("iframe");
+                assignmentIframe.style.opacity = "0";
+                assignmentIframe.style.position = "absolute";
+                assignmentIframe.style.top = "-100%";
+                assignmentIframe.style.zIndex = "-9999";
+                assignmentIframe.setAttribute("tabindex", "-1");
+
                 document.body.appendChild(assignmentIframe);
                 assignmentIframe.src = assignmentURL.href;
                 assignmentIframe.onload = () => {
@@ -1360,25 +1373,25 @@ assignment
             }
         }
     }, 2000);
-    const waitForFrameLoad = setInterval(function () {
-        let update = document.getElementsByClassName(
-            "update-body s-rte",
-        )[0] as HTMLDivElement;
-        if (update) {
-            clearInterval(waitForFrameLoad);
+    // const waitForFrameLoad = setInterval(function () {
+    //     let update = document.getElementsByClassName(
+    //         "update-body s-rte",
+    //     )[0] as HTMLDivElement;
+    //     if (update) {
+    //         clearInterval(waitForFrameLoad);
 
-            if (localStorage.getItem("oldUpdate") !== update.innerText) {
-                localStorage.setItem("oldUpdate", update.innerText);
-                let div = document.getElementsByClassName(
-                    "s-edge-type-update-post sUpdate-processed",
-                )[0] as HTMLDivElement;
-                div.style.borderColor = "#42c5f9";
-                div.style.borderWidth = "5px";
-                div.style.borderStyle = "solid";
-                div.style.borderRadius = "10px";
-            }
-        }
-    }, 10);
+    //         if (localStorage.getItem("oldUpdate") !== update.innerText) {
+    //             localStorage.setItem("oldUpdate", update.innerText);
+    //             let div = document.getElementsByClassName(
+    //                 "s-edge-type-update-post sUpdate-processed",
+    //             )[0] as HTMLDivElement;
+    //             div.style.borderColor = "#42c5f9";
+    //             div.style.borderWidth = "5px";
+    //             div.style.borderStyle = "solid";
+    //             div.style.borderRadius = "10px";
+    //         }
+    //     }
+    // }, 10);
     function titleCase(str: any) {
         let splitStr = str.toLowerCase().split(" ");
         for (var i = 0; i < splitStr.length; i++) {
