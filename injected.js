@@ -142,7 +142,7 @@ assignment
         buttonTemplateClone.before(buttonIcon);
     }
     // createFinalsButton();
-    createStudyButton();
+    // createStudyButton();
     // createBessyGradeButton();
     function adjustButtonHoverBrightness(hexColor, percent) {
         percent = Math.max(-100, Math.min(100, percent));

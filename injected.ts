@@ -181,7 +181,7 @@ assignment
         buttonTemplateClone.before(buttonIcon);
     }
     // createFinalsButton();
-    createStudyButton();
+    // createStudyButton();
     // createBessyGradeButton();
 
     function adjustButtonHoverBrightness(hexColor: any, percent: any) {
@@ -274,8 +274,9 @@ assignment
             "icon-bell-v2-3oo-G",
         ];
         for (let i = 0; i < headerIconIds.length; i++) {
-            let path = document.getElementById(headerIconIds[i])
-                ?.firstElementChild;
+            let path = document.getElementById(
+                headerIconIds[i],
+            )?.firstElementChild;
             if (!path) continue;
             if (isBackgroundDark(headerColor)) {
                 path.setAttribute("fill", "#ffffff");
