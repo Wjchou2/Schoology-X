@@ -181,7 +181,7 @@ assignment
         buttonTemplateClone.before(buttonIcon);
     }
     // createFinalsButton();
-    // createStudyButton();
+    createStudyButton();
     // createBessyGradeButton();
 
     function adjustButtonHoverBrightness(hexColor: any, percent: any) {
