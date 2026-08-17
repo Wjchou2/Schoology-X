@@ -1,5 +1,4 @@
 "use strict";
-console.log("Schoology X Injected :)");
 const CLASS_NAMES = {
     upcomingEvent: "upcoming-event upcoming-event-block course-event",
     customAssignment: "CustomAssignment",
@@ -14,8 +13,11 @@ const STORAGE_KEYS = {
     readMessage: "readMessage",
     oldGrade: "oldGrade",
 };
-const extensionDisabled = localStorage.getItem(STORAGE_KEYS.extensionOn) === "true";
-if (!extensionDisabled) {
+// Treat the extension as enabled unless the user explicitly turns it off.
+// `extensionOn === "true"` must enable the page changes, not disable them.
+const extensionEnabled = localStorage.getItem(STORAGE_KEYS.extensionOn) !== "false";
+console.log(`Schoology X injected: ${extensionEnabled ? "enabled" : "disabled"}`);
+if (extensionEnabled) {
     initExtension();
 }
 registerExtensionToggleShortcut();
@@ -49,14 +51,6 @@ function initExtension() {
         localStorage.setItem("customAssignments", JSON.stringify(customAssignments));
     }
     let assignmentLabel;
-    let baseUrl = "https://schoology.shschools.org";
-    let allowedURLs = [
-        baseUrl + "/home",
-        baseUrl + "/home/",
-        baseUrl + "/",
-        baseUrl,
-        baseUrl + "/home/recent-activity",
-    ];
     let displayedAllAssignments = false;
     let userHasViewedRecentUpdate = [];
     function recentUpdateCheck() {
@@ -197,6 +191,7 @@ assignment
     }
     window.addEventListener("resize", changeHeaderColor);
     function changeHeaderColor() {
+        var _a;
         function hasHeaderAncestor(element) {
             while (element.parentElement) {
                 element = element.parentElement;
@@ -209,10 +204,16 @@ assignment
         let headerLinkElements = document.getElementsByTagName("a");
         let headerButtonElements = document.getElementsByTagName("button");
         const headerBackground = document.getElementsByClassName("_1tpub _3mp5E _24W2g util-justify-content-space-between-3euFK")[0];
+        const headerBorder = document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0];
+        const IMGParent = document.getElementsByClassName("util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q")[0];
+        // Schoology generates these header class names. If they change, the
+        // header theme should fail independently instead of stopping all of
+        // the assignment enhancements below it.
+        if (!headerBackground || !headerBorder || !IMGParent)
+            return;
         headerBackground.style.backgroundColor = headerColor;
-        document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0].style.backgroundColor = headerColor;
-        document.getElementsByClassName("_1Z0RM Header-bottom-border-2ZE-7 _3v0y7 _349XD")[0].style.borderTop = `3px solid ${headerColor}`;
-        let IMGParent = document.getElementsByClassName("util-height-six-3PHnk util-width-auto-1-HYR util-max-width-sixteen-3-tkk fjQuT _1tpub _2JX1Q")[0];
+        headerBorder.style.backgroundColor = headerColor;
+        headerBorder.style.borderTop = `3px solid ${headerColor}`;
         let headerIconIds = [
             "icon-search-v2-3US0j",
             "icon-app-grid-v2-xZFWs",
@@ -221,8 +222,9 @@ assignment
             "icon-bell-v2-3oo-G",
         ];
         for (let i = 0; i < headerIconIds.length; i++) {
-            let icon = document.getElementById(headerIconIds[i]);
-            let path = icon.firstElementChild;
+            let path = (_a = document.getElementById(headerIconIds[i])) === null || _a === void 0 ? void 0 : _a.firstElementChild;
+            if (!path)
+                continue;
             if (isBackgroundDark(headerColor)) {
                 path.setAttribute("fill", "#ffffff");
             }
@@ -231,8 +233,10 @@ assignment
             }
         }
         const SHSHeaderImage = IMGParent.firstElementChild;
-        SHSHeaderImage.src =
-            "https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png"; // Replace this with the direct URL of the image
+        if (SHSHeaderImage instanceof HTMLImageElement) {
+            SHSHeaderImage.src =
+                "https://i.ibb.co/YpdfP2k/logo-removebg-preview-2.png";
+        }
         for (let i = 0; i < headerLinkElements.length; i++) {
             if (hasHeaderAncestor(headerLinkElements[i])) {
                 if (headerLinkElements[i].title !== "Home" &&
@@ -278,7 +282,8 @@ assignment
                         headerButtonElements[i].style.color =
                             "#ffffff";
                         let gradebtn = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[2];
-                        gradebtn.style.color = "#ffffff";
+                        if (gradebtn)
+                            gradebtn.style.color = "#ffffff";
                     }
                     else {
                         headerButtonElements[i]
@@ -286,7 +291,8 @@ assignment
                         headerButtonElements[i].style.color =
                             "#333333";
                         let gradebtn = document.getElementsByClassName("_13cCs _2M5aC _24avl _3ghFm _3LeCL _31GLY _9GDcm util-height-six-3PHnk util-pds-icon-default-2kZM7 _1Z0RM _1wP6w _2qcpH xjR5v util-v2-header-background-color-22JtI _1Z0RM fjQuT uQOmx")[2];
-                        gradebtn.style.color = "#333333";
+                        if (gradebtn)
+                            gradebtn.style.color = "#333333";
                     }
                 }
                 headerButtonElements[i].style.borderRadius = "10px";
@@ -363,31 +369,37 @@ assignment
     }
     changeCourseStyles();
     let checkboxStates = {};
-    if (allowedURLs.includes(window.location.href) ||
-        window.location.href.includes("course-dashboard")) {
-        let waitForHomePageInterval = setInterval(function () {
-            if (document.getElementsByClassName("submissions-title")[0] !==
-                undefined &&
-                document.getElementsByClassName("submissions-title")[1] !==
-                    undefined) {
-                clearInterval(waitForHomePageInterval);
-                setTimeout(function () {
-                    var _a, _b;
-                    drawCheckboxes();
-                    let p = document.createElement("p");
-                    p.innerHTML = "";
-                    p.id = "progress";
-                    (_a = document.getElementById("todo")) === null || _a === void 0 ? void 0 : _a.appendChild(p);
-                    let div2 = document.createElement("div");
-                    div2.id = "myProgressFrame";
-                    (_b = document.getElementById("todo")) === null || _b === void 0 ? void 0 : _b.appendChild(div2);
-                    let div = document.createElement("div");
-                    div.id = "myProgress";
-                    div2.appendChild(div);
-                    updateProgressBarState();
-                }, 0);
+    let progressAnimationFrame = null;
+    let displayedProgressPercent = 0;
+    const assignmentOverviewPaths = new Set([
+        "/",
+        "/home",
+        "/home/",
+        "/home/recent-activity",
+    ]);
+    const isAssignmentOverviewPage = assignmentOverviewPaths.has(window.location.pathname) ||
+        window.location.pathname.includes("course-dashboard");
+    if (isAssignmentOverviewPage) {
+        // `drawCheckboxes` already waits for the assignment rows themselves.
+        // Schoology no longer consistently renders two `submissions-title`
+        // elements, so using those as a readiness signal could wait forever.
+        drawCheckboxes();
+        waitForElement("#todo", function (todoElement) {
+            if (!document.getElementById("progress")) {
+                let progressLabel = document.createElement("p");
+                progressLabel.id = "progress";
+                todoElement.appendChild(progressLabel);
             }
-        }, 10);
+            if (!document.getElementById("myProgressFrame")) {
+                let progressFrame = document.createElement("div");
+                progressFrame.id = "myProgressFrame";
+                todoElement.appendChild(progressFrame);
+                let progressBar = document.createElement("div");
+                progressBar.id = "myProgress";
+                progressFrame.appendChild(progressBar);
+            }
+            updateProgressBarState();
+        });
     }
     function updateProgressBarState() {
         let progressFraction = document.getElementById("progress");
@@ -414,8 +426,6 @@ assignment
         const normalized = Math.min(100, widthPercent);
         progressBarDiv.style.backgroundColor = `rgb(${255 / 2 - (normalized * 2.25) / 1}, ${(normalized * 2.25) / 1.2}, ${(normalized * 2.25) / 2})`;
     }
-    let progressAnimationFrame = null;
-    let displayedProgressPercent = 0;
     function animateProgressLabel(element, targetPercent) {
         const duration = 300;
         const startPercent = displayedProgressPercent;
