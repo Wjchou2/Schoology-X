@@ -150,18 +150,36 @@ check_circle
     }
 
     function createStudyButton() {
-        let buttonTemplateClone = document.getElementsByClassName(
-            "_24avl _3Rh90 _349XD",
-        )[1];
-        let buttonIcon = document.createElement("button");
-        buttonIcon.className = "volunteerBtn";
-        buttonIcon.innerHTML = `<span class="material-symbols-outlined">
+        const insertStudyButton = () => {
+            if (document.getElementById("studyBtn")) return true;
+
+            const buttonTemplateClone = document.getElementsByClassName(
+                "_24avl _3Rh90 _349XD",
+            )[1];
+            if (!buttonTemplateClone) return false;
+
+            let buttonIcon = document.createElement("button");
+            buttonIcon.id = "studyBtn";
+            buttonIcon.className = "volunteerBtn";
+            buttonIcon.innerHTML = `<span class="material-symbols-outlined">
 timer
 </span>`;
-        buttonIcon.addEventListener("click", function () {
-            window.open("https://wjchou2.github.io/Learnify/index.html");
+            buttonIcon.addEventListener("click", function () {
+                window.open("https://wjchou2.github.io/Learnify/index.html");
+            });
+            buttonTemplateClone.before(buttonIcon);
+            return true;
+        };
+
+        if (insertStudyButton()) return;
+
+        const studyButtonObserver = new MutationObserver(() => {
+            if (insertStudyButton()) studyButtonObserver.disconnect();
         });
-        buttonTemplateClone.before(buttonIcon);
+        studyButtonObserver.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
     }
 
     function createFinalsButton() {
@@ -459,6 +477,9 @@ assignment
     let checkboxStates: any = {};
     let progressAnimationFrame: number | null = null;
     let displayedProgressPercent = 0;
+    let checkboxReconcileTimer: number | null = null;
+    const assignmentRowSelector =
+        ".upcoming-event.upcoming-event-block.course-event";
     const assignmentOverviewPaths = new Set([
         "/",
         "/home",
@@ -469,31 +490,85 @@ assignment
         assignmentOverviewPaths.has(window.location.pathname) ||
         window.location.pathname.includes("course-dashboard");
 
-    if (isAssignmentOverviewPage) {
-        // `drawCheckboxes` already waits for the assignment rows themselves.
-        // Schoology no longer consistently renders two `submissions-title`
-        // elements, so using those as a readiness signal could wait forever.
-        drawCheckboxes();
+    function ensureProgressUI() {
+        const todoElement = document.getElementById("todo");
+        if (!todoElement) return false;
 
-        waitForElement("#todo", function (todoElement: HTMLElement) {
-            if (!document.getElementById("progress")) {
-                let progressLabel = document.createElement("p");
-                progressLabel.id = "progress";
-                todoElement.appendChild(progressLabel);
-            }
+        let createdElement = false;
+        if (!document.getElementById("progress")) {
+            let progressLabel = document.createElement("p");
+            progressLabel.id = "progress";
+            todoElement.appendChild(progressLabel);
+            createdElement = true;
+        }
 
-            if (!document.getElementById("myProgressFrame")) {
-                let progressFrame = document.createElement("div");
-                progressFrame.id = "myProgressFrame";
-                todoElement.appendChild(progressFrame);
+        let progressFrame = document.getElementById("myProgressFrame");
+        if (!progressFrame) {
+            progressFrame = document.createElement("div");
+            progressFrame.id = "myProgressFrame";
+            todoElement.appendChild(progressFrame);
+            createdElement = true;
+        }
 
-                let progressBar = document.createElement("div");
-                progressBar.id = "myProgress";
-                progressFrame.appendChild(progressBar);
-            }
+        if (!document.getElementById("myProgress")) {
+            let progressBar = document.createElement("div");
+            progressBar.id = "myProgress";
+            progressFrame.appendChild(progressBar);
+            createdElement = true;
+        }
 
-            updateProgressBarState();
+        return createdElement;
+    }
+
+    function reconcileAssignmentCheckboxes() {
+        const assignmentRows = Array.from(
+            document.querySelectorAll<HTMLElement>(assignmentRowSelector),
+        ).filter((row) => !row.classList.contains("hidden-important"));
+
+        if (assignmentRows.length === 0) return;
+
+        const createdProgressUI = ensureProgressUI();
+        const checkboxCount =
+            document.getElementsByClassName("progressCheck").length;
+        const missingOrDuplicateCheckbox = assignmentRows.some((row) => {
+            const directCheckboxes = Array.from(row.children).filter((child) =>
+                child.classList.contains("progressCheck"),
+            );
+            return directCheckboxes.length !== 1;
         });
+
+        if (
+            missingOrDuplicateCheckbox ||
+            checkboxCount !== assignmentRows.length
+        ) {
+            drawCheckboxes();
+            updateProgressBarState();
+        } else if (createdProgressUI) {
+            updateProgressBarState();
+        }
+    }
+
+    function scheduleCheckboxReconciliation() {
+        if (checkboxReconcileTimer !== null) return;
+
+        checkboxReconcileTimer = window.setTimeout(() => {
+            checkboxReconcileTimer = null;
+            reconcileAssignmentCheckboxes();
+        }, 100);
+    }
+
+    if (isAssignmentOverviewPage) {
+        // Schoology can replace the assignment list after its initial render.
+        // Reconcile after DOM changes so controls survive that replacement,
+        // while leaving an already-correct list untouched.
+        const assignmentListObserver = new MutationObserver(
+            scheduleCheckboxReconciliation,
+        );
+        assignmentListObserver.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
+        reconcileAssignmentCheckboxes();
     }
 
     function updateProgressBarState() {
