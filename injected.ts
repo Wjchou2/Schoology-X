@@ -640,21 +640,7 @@ assignment
     }
     function drawCustomAssignments() {
         sortCustomAssignmentsByDate();
-        if (document.getElementById("newTaskBtn") == null) {
-            let newTaskBtn = document.createElement("button");
-            let upcomingCourseEvents = document.getElementById(
-                "right-column-inner",
-            ) as HTMLDivElement;
-            newTaskBtn.id = "newTaskBtn";
-            newTaskBtn.innerHTML = `<span class="material-symbols-outlined">
-        add
-        </span>`;
-            upcomingCourseEvents.style.pointerEvents = "auto";
-            upcomingCourseEvents.appendChild(newTaskBtn);
-            newTaskBtn.addEventListener("click", function () {
-                test();
-            });
-        }
+        document.getElementById("newTaskBtn")?.remove();
         Array.from(document.getElementsByClassName("CustomAssignment")).forEach(
             (element) => element.remove(),
         );

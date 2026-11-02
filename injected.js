@@ -160,7 +160,7 @@ assignment
         buttonTemplateClone.before(buttonIcon);
     }
     // createFinalsButton();
-    createStudyButton();
+    // createStudyButton();
     // createBessyGradeButton();
     function adjustButtonHoverBrightness(hexColor, percent) {
         percent = Math.max(-100, Math.min(100, percent));
@@ -514,20 +514,9 @@ assignment
         upcomingEventsDiv.style.display = "none";
     }
     function drawCustomAssignments() {
+        var _a;
         sortCustomAssignmentsByDate();
-        if (document.getElementById("newTaskBtn") == null) {
-            let newTaskBtn = document.createElement("button");
-            let upcomingCourseEvents = document.getElementById("right-column-inner");
-            newTaskBtn.id = "newTaskBtn";
-            newTaskBtn.innerHTML = `<span class="material-symbols-outlined">
-        add
-        </span>`;
-            upcomingCourseEvents.style.pointerEvents = "auto";
-            upcomingCourseEvents.appendChild(newTaskBtn);
-            newTaskBtn.addEventListener("click", function () {
-                test();
-            });
-        }
+        (_a = document.getElementById("newTaskBtn")) === null || _a === void 0 ? void 0 : _a.remove();
         Array.from(document.getElementsByClassName("CustomAssignment")).forEach((element) => element.remove());
         let index = 0;
         customAssignments.forEach(([newtitle, newformatted, newclassTag]) => {
